@@ -117,7 +117,7 @@
                                             </table>
                                         </h:panelGroup>
 
-                                        <h:commandButton class="btn btn-primary btn-xs" 
+                                        <h:commandButton class="btn btn-primary btn-xs pull-right" 
                                                          action="#{ficheDossierMB.loadAddIntervenants}" value="Ajouter"
                                                          type="button"
                                                          onclick="PF('dialog-intervs').show();">
@@ -139,33 +139,45 @@
                                     <i class="fa fa-user"></i>
                                     <h3 class="box-title">Apporteur du dossier</h3>
                                 </div><!-- /.box-header -->
-                                <div class="box-body dl-horizontal">
-                                    <dl>
-                                        <p>#{ficheDossierMB.contDoss.titreContact} #{ficheDossierMB.contDoss.nom} #{ficheDossierMB.contDoss.prenom}</p>
-                                        <p>#{ficheDossierMB.contDoss.adresse}</p>
-                                        <p>#{ficheDossierMB.contDoss.cp}</p>
-                                        <p>#{ficheDossierMB.contDoss.pays}</p>
-                                        <p>#{ficheDossierMB.contDoss.ville}</p>
+                                <h:panelGroup id="panel-apporteur">
+                                    <div class="box-body dl-horizontal">
+                                        <dl>
+                                            <p>#{ficheDossierMB.contDoss.titreContact} #{ficheDossierMB.contDoss.nom} #{ficheDossierMB.contDoss.prenom}</p>
+                                            <p>#{ficheDossierMB.contDoss.adresse}</p>
+                                            <p>#{ficheDossierMB.contDoss.cp}</p>
+                                            <p>#{ficheDossierMB.contDoss.pays}</p>
+                                            <p>#{ficheDossierMB.contDoss.ville}</p>
 
-                                        <dt>Bureau</dt>
-                                        <dd>#{ficheDossierMB.contDoss.bureau}</dd>
+                                            <dt>Bureau</dt>
+                                            <dd>#{ficheDossierMB.contDoss.bureau}</dd>
 
-                                        <dt>Mobile</dt>
-                                        <dd>#{ficheDossierMB.contDoss.mobile}</dd>
+                                            <dt>Mobile</dt>
+                                            <dd>#{ficheDossierMB.contDoss.mobile}</dd>
 
-                                        <dt>Standard</dt>
-                                        <dd>#{ficheDossierMB.contDoss.standard}</dd>
+                                            <dt>Standard</dt>
+                                            <dd>#{ficheDossierMB.contDoss.standard}</dd>
 
-                                        <dt>Fax</dt>
-                                        <dd>#{ficheDossierMB.contDoss.fax}</dd>
+                                            <dt>Fax</dt>
+                                            <dd>#{ficheDossierMB.contDoss.fax}</dd>
 
-                                        <dt>Site web</dt>
-                                        <dd>#{ficheDossierMB.contDoss.web}</dd>
+                                            <dt>Site web</dt>
+                                            <dd>#{ficheDossierMB.contDoss.web}</dd>
 
-                                        <dt>Email</dt>
-                                        <dd>#{ficheDossierMB.contDoss.email}</dd>                                        
-                                    </dl>
-                                </div><!-- /.box-body -->
+                                            <dt>Email</dt>
+                                            <dd>#{ficheDossierMB.contDoss.email}</dd>                                        
+                                        </dl>
+                                    </div>
+                                </h:panelGroup>
+                                <h:form id="form-selectcontact">
+                                    <h:commandButton class="btn btn-primary btn-xs pull-right" 
+                                                     action="#{ficheDossierMB.loadContacts()}" value="Lier un contact"
+                                                     type="button"
+                                                     onclick="PF('dialog-contacts').show();">
+                                        <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                        <f:ajax execute=":form-selectcontact" 
+                                                render=":form-addcontact:panel-setcontact"/>
+                                    </h:commandButton>
+                                </h:form>
                             </div>
                         </div>
 
@@ -235,6 +247,32 @@
                                 <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
                                 <f:ajax execute=":form-addintervs" 
                                         render=":form-interv:intervs"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
+
+                <!-- dialog for contacts -->
+                <h:form id="form-addcontact">
+
+                    <p:dialog header="Contacts" widgetVar="dialog-contacts" modal="true" width="400">
+                        <h:panelGroup id="panel-setcontact">
+
+                            <p:selectOneRadio id="selectcont" value="#{ficheDossierMB.idContactSelected}" 
+                                              layout="responsive" columns="1" 
+                                              required="true"
+                                              requiredMessage="Champ obligatoire">
+                                <f:selectItems value="#{ficheDossierMB.contacts}" var="cont" itemLabel="#{cont.nom} 
+                                               #{cont.prenom}" itemValue="#{cont.id}"/>
+                            </p:selectOneRadio>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{ficheDossierMB.majApporteur()}" value="Valider"
+                                             onclick="PF('dialog-contacts').hide();">
+                                <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                <f:ajax execute=":form-addcontact" 
+                                        render=":panel-apporteur"/>
 
                             </h:commandButton>
                         </h:panelGroup>

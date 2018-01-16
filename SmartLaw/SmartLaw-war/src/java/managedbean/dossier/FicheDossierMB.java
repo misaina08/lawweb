@@ -11,6 +11,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import modeles.contact.Contact;
+import modeles.dossiers.ContactDossier;
 import modeles.dossiers.ContactDossierLibelle;
 import modeles.dossiers.DossierLibelle;
 import modeles.evenement.EvtDossierLibelle;
@@ -36,7 +38,9 @@ public class FicheDossierMB implements Serializable {
     private ContactDossierLibelle contDoss;
     private List<EvtDossierLibelle> listeEvt;
     private List<Intervenant> intervenants;
+    private List<Contact> contacts;
     private Integer idIntervSelected;
+    private Integer idContactSelected;
 
     /**
      * Creates a new instance of FicheDossierMB
@@ -74,9 +78,7 @@ public class FicheDossierMB implements Serializable {
 
     public void loadAddIntervenants() {
         try {
-            System.out.println("debut");
             if (intervenants == null) {
-                System.out.println("null");
                 intervenants = (List<Intervenant>) (List<?>) generiqueBean.getService().find(new Intervenant());
             }
         } catch (Exception ex) {
@@ -109,6 +111,39 @@ public class FicheDossierMB implements Serializable {
         } catch (Exception ex) {
             ex.printStackTrace();
 
+        }
+    }
+
+    public void loadContacts() {
+        try {
+            if (contacts == null) {
+                contacts = (List<Contact>) (List<?>) generiqueBean.getService().find(new Contact());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void majApporteur() {
+
+        try {
+            ContactDossier cDoss = new ContactDossier();
+            cDoss.setId(contDoss.getId());
+            cDoss.setIdDossier(idDossier);
+            cDoss.setTypeContact("APP");
+            cDoss.setIdContact(idContactSelected);
+            System.out.println("id contact "+idContactSelected);
+            generiqueBean.getService().update(cDoss);
+            
+            ContactDossierLibelle cc = new ContactDossierLibelle();
+            cc.setIdDossier(idDossier);
+            cc.setTypeContact("APP");
+                    
+            contDoss = ((List<ContactDossierLibelle>) (List<?>) generiqueBean.getService().find(cc)).get(0);
+            System.out.println("id contact apres"+contDoss.getIdContact());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -195,6 +230,22 @@ public class FicheDossierMB implements Serializable {
 
     public void setIdIntervSelected(Integer idIntervSelected) {
         this.idIntervSelected = idIntervSelected;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public Integer getIdContactSelected() {
+        return idContactSelected;
+    }
+
+    public void setIdContactSelected(Integer idContactSelected) {
+        this.idContactSelected = idContactSelected;
     }
 
 }
