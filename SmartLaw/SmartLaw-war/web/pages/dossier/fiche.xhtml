@@ -98,22 +98,36 @@
 
                                     </dl>
                                     <h:form id="form-interv">
-                                        <table class="table table-striped">
-                                            <ui:repeat value="#{ficheDossierMB.intervs}" var="interv">
-                                                <tr>
-                                                    <td>#{interv.nom}</td>
-                                                    <td width="100">
-                                                        <h:commandButton action="#{ficheDossierMB.supprimerIntervenant(interv.id)}"
-                                                                         class="btn btn-danger btn-xs" value="Supprimer">
-                                                            <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
-                                                            <f:ajax execute=":form-interv" render=":form-interv"/>
-                                                        </h:commandButton>
-                                                    </td>
-                                                </tr>
-                                            </ui:repeat>
-                                        </table>
+                                        <h:panelGroup id="intervs">
+                                            <table class="table table-striped">
+
+                                                <ui:repeat value="#{ficheDossierMB.intervs}" var="interv">
+                                                    <tr>
+                                                        <td>#{interv.nom}</td>
+                                                        <td width="100">
+                                                            <h:commandButton action="#{ficheDossierMB.supprimerIntervenant(interv.id)}"
+                                                                             class="btn btn-danger btn-xs" value="Supprimer">
+                                                                <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                                                <f:ajax execute=":form-interv" render=":form-interv:intervs"/>
+                                                            </h:commandButton>
+                                                        </td>
+                                                    </tr>
+                                                </ui:repeat>
+
+                                            </table>
+                                        </h:panelGroup>
+
+                                        <h:commandButton class="btn btn-primary btn-xs" 
+                                                         action="#{ficheDossierMB.loadAddIntervenants}" value="Ajouter"
+                                                         type="button"
+                                                         onclick="PF('dialog-intervs').show();">
+                                            <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                            <f:ajax execute=":form-interv" 
+                                                    render=":form-addintervs:panel-addintervs"/>
+                                        </h:commandButton>
                                     </h:form>
-                                </div><!-- /.box-body -->
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,6 +213,33 @@
 
                     <div class="clearfix"></div>
                 </section>
+
+
+                <!-- dialog for intervenant -->
+                <h:form id="form-addintervs">
+
+                    <p:dialog header="Intervenants" widgetVar="dialog-intervs" modal="true" width="400">
+                        <h:panelGroup id="panel-addintervs">
+
+                            <p:selectOneRadio id="tarif" value="#{ficheDossierMB.idIntervSelected}" 
+                                              layout="responsive" columns="1" 
+                                              required="true"
+                                              requiredMessage="Champ obligatoire">
+                                <f:selectItems value="#{ficheDossierMB.intervenants}" var="interv" itemLabel="#{interv.nom} 
+                                               #{interv.prenom}" itemValue="#{interv.id}"/>
+                            </p:selectOneRadio>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{ficheDossierMB.ajouterIntervenant()}" value="Valider"
+                                             onclick="PF('dialog-intervs').hide();">
+                                <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                <f:ajax execute=":form-addintervs" 
+                                        render=":form-interv:intervs"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
             </ui:define>
 
         </ui:composition>
