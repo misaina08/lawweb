@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewParam name="idClient" value="#{modificationClientMB.idClient}" required="true"/>
+        <f:viewAction action="#{modificationClientMB.loadClient()}"/>
+
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <section class="content-header">
+                    <h1>
+                        Client
+                        <small>Modification</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/client/liste.xhtml"><i class="fa fa-users"></i>Clients</h:link></li>
+                        <li><h:link outcome="/pages/client/fiche.xhtml?idClient=#{modificationClientMB.idClient}&faces-redirect:true;"><i class="fa fa-info"></i>Fiche</h:link></li>
+                        <li class="active">Modification</li>
+                    </ol>
+                </section>
+
+
+                <section class="content">
+                    <h:form  class="form-horizontal">
+                        <p:growl id="growlCenter"/>
+                        
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Informations</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group">
+                                                <label for="nom" class="control-label">Nom</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.nom}" 
+                                                             id="nom"
+                                                             class="form-control" />
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="adresse" class="control-label">Adresse</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.adresse}" 
+                                                             id="adresse"
+                                                             class="form-control" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="codepostal" class="control-label">Code postal</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.codePostal}" 
+                                                             id="codepostal"
+                                                             class="form-control" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ville" class="control-label">Ville</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.ville}" 
+                                                             id="ville"
+                                                             class="form-control" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pays" class="control-label">Pays</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.pays}" 
+                                                             id="pays"
+                                                             class="form-control" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="box">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Contact</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group">
+                                                <label for="mobile" class="control-label">Mobile</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.mobile}" 
+                                                             id="mobile"
+                                                             class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="standard" class="control-label">Standard</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.standard}" 
+                                                             id="standard"
+                                                             class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="bureau" class="control-label">Bureau</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.bureau}" 
+                                                             id="bureau"
+                                                             class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fax" class="control-label">FAX</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.fax}" 
+                                                             id="fax"
+                                                             class="form-control" />
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="email" class="control-label">Email</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.email}" 
+                                                             id="email"
+                                                             class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="web" class="control-label">Web</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.web}" 
+                                                             id="web"
+                                                             class="form-control" />
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="autre" class="control-label">Autre</label>
+
+                                                <h:inputText value="#{modificationClientMB.client.autre}" 
+                                                             id="autre"
+                                                             class="form-control" />
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <p:commandButton class="btn btn-primary" action="#{modificationClientMB.modifier}" value="Confirmer"
+                                             update="growlCenter"/>
+                        </div>
+                    </h:form>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

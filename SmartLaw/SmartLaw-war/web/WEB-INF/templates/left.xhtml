@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    
+    <h:body>
+        <aside class="main-sidebar">
+
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li class="header">HEADER</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li><h:link outcome="/pages/client/liste.xhtml"><i class="fa fa-users"></i> <span>Clients</span></h:link></li>
+                    <li><h:link outcome="/pages/contact/liste.xhtml"><i class="fa fa-users"></i> <span>Contacts</span></h:link></li>
+                    <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i> <span>Dossiers</span></h:link></li>
+                    
+                    
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="#">Link in level 2</a></li>
+                            <li><a href="#">Link in level 2</a></li>
+                        </ul>
+                    </li>
+                </ul><!-- /.sidebar-menu -->
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+    </h:body>
+</html>
+

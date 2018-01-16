@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+
+        <h:form id="form-prefacturation" class="form-horizontal">
+            
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="datefacturation">Date de facturation </label>
+                <div class="col-md-8">
+                    <p:calendar id="datefacturation" pattern="dd/MM/yyyy"
+                                mask="true"
+                                value="#{listeEvtMB.dateFacturation}" 
+                                inputStyle="width:130px;" 
+                                styleClass="text-center"/>
+                </div>                    
+            </div>
+
+
+            <p:dataTable value="#{listeEvtMB.evtAImprimer}" var="tache">
+
+                <p:column headerText="Date" width="120" styleClass="text-center" >
+                    <h:outputText value="#{tache.daty}">
+                        <f:convertDateTime pattern="DD/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+
+
+                <p:column headerText="Tâche" >
+                    <h:outputText value="#{tache.libelle}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Montant (Ar)" styleClass="text-right">
+                    <h:outputText value="#{tache.mt}">
+                        <f:convertNumber type="currency" currencySymbol=""/>
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+
+            <hr></hr>
+            <table class="table table-condensed">
+                <tbody>
+                    <ui:repeat value="#{listeEvtMB.totauxTarif}" var="tarif">
+                        <tr>
+                            <td style="width: 10px">#{tarif.libTypeTarif}</td>
+                            <td class="text-right">
+                                <h:outputText value="#{tarif.mtTotal}">
+                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                </h:outputText>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+
+            <table class="table table-condensed">
+                <h3 class="box-title">Totaux</h3>
+                <tr>
+                    <td>HT</td>
+                    <td class="text-right"><h:outputText id="ht" styleClass="text-right" value="#{listeEvtMB.totalHT}">
+                            <f:convertNumber type="currency" currencySymbol="Ariary "/>
+                        </h:outputText></td>
+                </tr>
+                <tr>
+                    <td>TVA</td>
+                    <td class="text-right">
+                        <h:outputText id="tva" class="text-right" value="#{listeEvtMB.tva} %">
+                            <f:convertNumber type="currency"/>
+                        </h:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td>TTC</td>
+                    <td class="text-right font-weight-bold">
+                        <h:outputText id="ttc" value="#{listeEvtMB.totalTTC}">
+                            <f:convertNumber type="currency" currencySymbol="Ariary "/>
+                        </h:outputText>
+                    </td>
+                </tr>
+            </table>
+            
+            <h:commandButton value="Valider" class="btn btn-primary pull-right"
+                             action="#{listeEvtMB.huhu()}" 
+                             >
+                
+            </h:commandButton>
+
+        </h:form>
+
+
+
+    </body>
+</html>

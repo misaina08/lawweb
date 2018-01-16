@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Contact
+                        <small>Nouveau</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/contact/liste.xhtml"><i class="fa fa-users"></i>Contacts</h:link></li>
+                        <li class="active">Ajout</li>
+                    </ol>
+                </section>
+
+
+                <section class="content">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header  with-border">
+                                    <h3 class="box-title">Formulaire</h3>
+                                </div>
+                                <div class="box-body">
+
+                                    <f:view>
+                                        <h:form class="form-horizontal">
+                                            <p:growl id="growlCenter" showDetail="false"/>
+                                            <div class="box-body">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="titre" class="control-label col-md-3">Titre</label>
+                                                        <div class=" col-md-9">
+                                                            <h:selectOneMenu id="titre" class="form-control" value="#{ajoutContactMB.titreSelected}" 
+                                                                             title="Titre" required="true" requiredMessage="The Titre field is required."
+                                                                             converter="#{ajoutContactMB.titreConverter}">
+                                                                <f:selectItems value="#{ajoutContactMB.titres}" var="titre" 
+                                                                               itemLabel="#{titre.libelle}" itemValue="#{titre}" />
+                                                            </h:selectOneMenu>
+                                                            <h:message for="titre"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nom" class="control-label col-md-3">Nom</label>
+                                                        <div class=" col-md-9"><h:inputText id="nom" class="form-control" value="#{ajoutContactMB.newContact.nom}" title="Nom" />
+                                                        </div>
+                                                        <h:message for="nom"/>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="prenom" class="control-label col-md-3">Prénom</label>
+                                                        <div class=" col-md-9"><h:inputText id="prenom" class="form-control" value="#{ajoutContactMB.newContact.prenom}" title="Prenom" />
+                                                        </div>
+                                                        <h:message for="prenom"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fonction" class="control-label col-md-3">Fonction</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="fonction" value="#{ajoutContactMB.newContact.fonction}" title="Fonction" />
+                                                        </div>
+                                                        <h:message for="fonction"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="adresse" class="control-label col-md-3">Adresse</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="adresse" value="#{ajoutContactMB.newContact.adresse}" title="Adresse" />
+                                                        </div>
+                                                        <h:message for="adresse"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="codepostal" class="control-label col-md-3">Code postal</label>
+                                                        <div class="col-md-9"><h:inputText class="form-control"  id="codepostal" value="#{ajoutContactMB.newContact.codePostal}" title="Codepostal" />
+                                                        </div>
+                                                        <h:message for="codepostal"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="ville" class="control-label col-md-3">Ville</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="ville" value="#{ajoutContactMB.newContact.ville}" title="Ville" />
+                                                        </div>
+                                                        <h:message for="ville"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="pays" class="control-label col-md-3">Pays</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="pays" value="#{ajoutContactMB.newContact.pays}" title="Pays" />
+                                                        </div>
+                                                        <h:message for="pays"/>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="standard" class="control-label col-md-3">Standard</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="standard" value="#{ajoutContactMB.newContact.standard}" title="Standard" /></div>
+                                                        <h:message for="standard"/>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="bureau" class="control-label col-md-3">Bureau</label>
+                                                        <div class=" col-md-9">
+                                                            <h:inputText class="form-control"  id="bureau" value="#{ajoutContactMB.newContact.bureau}" title="Bureau" />
+                                                        </div>
+                                                        <h:message for="bureau"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="fax" class="control-label col-md-3">Fax</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="fax" value="#{ajoutContactMB.newContact.fax}" title="Fax" /></div>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="email" class="control-label col-md-3">Email</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="email" value="#{ajoutContactMB.newContact.email}" title="Email" />
+                                                        </div>
+                                                        <h:message for="email"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="telex" class="control-label col-md-3">Telex</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="telex" value="#{ajoutContactMB.newContact.telex}" title="Telex" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="web" class="control-label col-md-3">Web</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="web" value="#{ajoutContactMB.newContact.web}" title="Web" />
+                                                        </div>
+                                                        <h:message for="web"/>
+                                                    </div>
+
+                                                    <div class="form-group"><label for="mobile" class="control-label col-md-3">Mobile</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="mobile" value="#{ajoutContactMB.newContact.mobile}" title="Mobile" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="autre" class="col-md-3 control-label">Autre</label>
+                                                        <div class=" col-md-9"><h:inputText class="form-control"  id="autre" value="#{ajoutContactMB.newContact.autre}" title="Autre" />
+                                                        </div>
+                                                        <h:message for="autre"/>
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <div class="checkbox">
+                                                            <label>
+
+                                                                <h:selectBooleanCheckbox id="ensomeil" class="checkbox" value="#{ajoutContactMB.newContact.enSommeil}">    
+                                                                </h:selectBooleanCheckbox>
+                                                                En someil
+                                                            </label>
+                                                            <h:message for="ensomeil"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="box-footer">
+                                                <p:commandButton action="#{ajoutContactMB.ajouter()}" value="Valider"
+                                                                 class="btn btn-lg pull-right"
+                                                                 update="growlCenter"/>
+                                            </div>
+                                        </h:form>
+                                    </f:view>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

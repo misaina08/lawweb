@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="idClient" value="#{contactsClientMB.idClient}" required="true"/>
+        <f:viewAction action="#{contactsClientMB.loadClient()}"/>
+
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <section class="content-header">
+                    <h1>
+                        Client
+                        <small>#{contactsClientMB.client.nom}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/client/liste.xhtml"><i class="fa fa-users"></i>Clients</h:link></li>
+                        <li><h:link outcome="/pages/client/fiche.xhtml?idClient=#{contactsClientMB.idClient}"><i class="fa fa-users"></i>Fiche</h:link></li>
+                        <li class="active">Contacts</li>
+                    </ol>
+                </section>
+
+
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link class="btn btn-primary" 
+                                outcome="/pages/client/modification.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;" >
+                            <i class="fa fa-edit"></i>&nbsp; Modifier
+                        </h:link>
+
+                        <h:link class="btn btn-primary" 
+                                outcome="/pages/client/modification.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;">
+                            <i class="fa fa-credit-card"></i>&nbsp; Facturation
+                        </h:link>
+                        <h:link class="btn btn-primary" 
+                                outcome="/pages/client/contacts.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;">
+                            <i class="fa fa-users"></i>&nbsp; Contacts
+                        </h:link>
+                    </div>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

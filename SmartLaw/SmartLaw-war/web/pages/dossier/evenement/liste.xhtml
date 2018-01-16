@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <f:metadata>
+        <f:viewParam name="idDossier" value="#{listeEvtMB.idDossier}"/>
+        <f:viewAction action="#{listeEvtMB.loadDossier()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Dossier N° #{listeEvtMB.dossier.numeroDossier} : #{listeEvtMB.dossier.vnomDossier}
+                        <small>Evènements</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i>Dossiers</h:link></li>
+                        <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"><i class="fa fa-info"></i>Fiche</h:link></li>
+                        <li class="active">Evènements</li>
+                    </ol>
+                </section>
+
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link outcome="/pages/dossier/evenement/ajout.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;" class="btn btn-success" value="Nouvelle tâche"/>
+
+
+                    </div>
+                    <div class=" btn-group pull-right">
+                        <h:form id="form-actions">
+
+                            <h:commandButton action="#{listeEvtMB.printListeEvt()}" class="btn bg-maroon" value="Imprimer">
+                            </h:commandButton>
+                            <h:commandButton class="btn bg-olive" value="Génerer la facture"
+                                             onclick="PF('dlprefacturation').show();">
+                                <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
+                                <f:ajax execute=":form-actions" render=":modal-panel" 
+                                        listener="#{listeEvtMB.genererPreFacturation()}" />
+                            </h:commandButton>
+
+                        </h:form>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Liste des tâches non facturées</h3>
+                                </div>
+                                <div class="box-body">
+                                    <h:form id="datatable-form">
+                                        <p:dataTable id="datatable" value="#{listeEvtMB.evtDossier}" var="evt" widgetVar="evtTable">
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('evtTable').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+                                            <p:column width="40">
+                                                <h:selectBooleanCheckbox class="checkbox" value="#{listeEvtMB.checked[evt.id]}"
+                                                                         onclick="#{listeEvtMB.onClickCheckBox()}" >
+                                                    <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
+                                                    <f:ajax event="valueChange" render=":datatable-form:datatable" />
+                                                </h:selectBooleanCheckbox>
+                                            </p:column>
+                                            <p:column headerText="Date" width="120" sortBy="#{evt.daty}" styleClass="text-center" filterBy="#{evt.daty}" filterMatchMode="contains">
+                                                <h:outputText value="#{evt.daty}">
+                                                    <f:convertDateTime pattern="DD/MM/YYYY"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Intervenant" sortBy="#{evt.nomInterv}" filterBy="#{evt.nomInterv}" filterMatchMode="contains">
+                                                <h:outputText value="#{evt.nomInterv}"></h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Tâche" sortBy="#{evt.libelle}" filterBy="#{evt.libelle}" filterMatchMode="contains">
+                                                <h:outputText value="#{evt.libelle}"></h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Durée" sortBy="#{evt.duree}"  width="100" styleClass="text-center">
+                                                <h:outputText value="#{evt.duree}">
+                                                    <f:convertDateTime pattern="HH:mm"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Montant (Ar)" sortBy="#{evt.mt}"  styleClass="text-right">
+                                                <h:outputText value="#{evt.mt}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Actions" styleClass="text-center">
+                                                <div class="btn-group">
+                                                    <h:link outcome="/pages/dossier/evenement/ajout.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;" 
+                                                            class="btn btn-primary btn-xs" value="Modifier"/>
+
+                                                    <h:commandButton class="btn btn-danger btn-xs"
+                                                                     value="Supprimer" action="#{listeEvtMB.supprimerEvt(evt.id)}">
+                                                    </h:commandButton>
+                                                </div>
+
+                                            </p:column>
+
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+
+                            </div>
+                            <div class="box">
+
+                                <div class="box-header">
+                                    <h3 class="box-title">Totaux</h3>
+                                </div>
+                                <h:panelGroup id="totaux">
+
+                                    <ui:repeat value="#{listeEvtMB.totaux}" var="total">
+                                        <div class="col-md-3 bg-primary callout ">
+
+                                            <h5 class="info-box-text">#{total.libTypeTarif}</h5>
+
+                                            <h:outputText class="text-center" value="#{total.dureeTotal}">
+                                                <f:convertDateTime pattern="HH'h'mm"/>
+                                            </h:outputText>
+
+                                            <p class="mb-1 text-right info-box-number">
+                                                <h:outputText value="#{total.mtTotal}">
+                                                    <f:convertNumber type="currency" currencySymbol="Ar "/>
+                                                </h:outputText>
+                                            </p>
+
+                                        </div>
+                                    </ui:repeat>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  dialog for prefacturation -->
+
+                <p:dialog header="Préfacturation" widgetVar="dlprefacturation" modal="true" width="900" height="400">
+                    <h:panelGroup id="modal-panel">
+
+                        <h:form id="sdf" class="form-horizontal">
+
+
+
+                            <p:dataTable value="#{listeEvtMB.evtAImprimer}" var="tache">
+
+                                <p:column headerText="Date" width="120" styleClass="text-center">
+                                    <h:outputText value="#{tache.daty}">
+                                        <f:convertDateTime pattern="DD/MM/YYYY"/>
+                                    </h:outputText>
+                                </p:column>
+
+
+                                <p:column headerText="Tâche" >
+                                    <h:outputText value="#{tache.libelle}">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Montant (Ar)" styleClass="text-right">
+                                    <h:outputText value="#{tache.mt}">
+                                        <f:convertNumber type="currency" currencySymbol=""/>
+                                    </h:outputText>
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <hr></hr>
+                            <table class="table table-condensed">
+                                <tbody>
+                                    <ui:repeat value="#{listeEvtMB.totauxTarif}" var="tarif">
+                                        <tr>
+                                            <td style="width: 10px">#{tarif.libTypeTarif}</td>
+                                            <td class="text-right">
+                                                <h:outputText value="#{tarif.mtTotal}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-condensed">
+                                <h3 class="box-title">Totaux</h3>
+                                <tr>
+                                    <td>HT</td>
+                                    <td class="text-right"><h:outputText id="ht" styleClass="text-right" value="#{listeEvtMB.totalHT}">
+                                            <f:convertNumber type="currency" currencySymbol="Ariary "/>
+                                        </h:outputText></td>
+                                </tr>
+                                <tr>
+                                    <td>TVA</td>
+                                    <td class="text-right">
+                                        <h:outputText id="tva" class="text-right" value="#{listeEvtMB.tva} %">
+                                            <f:convertNumber type="currency"/>
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>TTC</td>
+                                    <td class="text-right font-weight-bold">
+                                        <h:outputText id="ttc" value="#{listeEvtMB.totalTTC}">
+                                            <f:convertNumber type="currency" currencySymbol="Ariary "/>
+                                        </h:outputText>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </h:form>
+
+
+                    </h:panelGroup>
+                    <h:form id="act">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="datefacturation">Date de facturation </label>
+                            <div class="col-md-8">
+                                <p:calendar id="datefacturation" pattern="dd/MM/yyyy"
+                                            mask="true"
+                                            value="#{listeEvtMB.dateFacturation}" 
+                                            inputStyle="width:130px;" 
+                                            styleClass="text-center"/>
+                            </div>                    
+                        </div>
+                        <h:commandButton value="Valider" class="btn btn-primary pull-right"
+                                         action="#{listeEvtMB.validerFacture}"
+                                         onclick="PF('dlprefacturation').hide();">
+                            <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
+                            <f:ajax execute=":sdf" 
+                                    render=":form-actions :datatable-form :totaux"/>
+                        </h:commandButton>
+
+                    </h:form>
+                </p:dialog>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

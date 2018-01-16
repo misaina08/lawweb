@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+          
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Client
+                        <small>Nouveau</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/client/liste.xhtml"><i class="fa fa-users"></i>Clients</h:link></li>
+                        <li class="active">Ajout</li>
+                    </ol>
+                </section>
+
+
+                <section class="content">
+                    <h:form id="growlForm">
+                        <p:growl id="growlCenter"/>
+                    </h:form>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+
+                                <f:view>
+                                    <h:form>
+                                        <div class="box-header  with-border">
+                                            <h3 class="box-title">Formulaire</h3>
+                                        </div>
+                                        <div class="box-body">
+
+                                            <h:outputLabel value="Nom:" for="nom" />
+                                            <h:inputText id="nom" value="#{ajoutClientMB.client.nom}" title="Nom" />
+                                            <h:outputLabel value="Adresse:" for="adresse" />
+                                            <h:inputText id="adresse" value="#{ajoutClientMB.client.adresse}" title="Adresse" />
+                                            <h:outputLabel value="Codepostal:" for="codepostal" />
+                                            <h:inputText id="codepostal" value="#{ajoutClientMB.client.codePostal}" title="Codepostal" />
+                                            <h:outputLabel value="Ville:" for="ville" />
+                                            <h:inputText id="ville" value="#{ajoutClientMB.client.ville}" title="Ville" />
+                                            <h:outputLabel value="Pays:" for="pays" />
+                                            <h:inputText id="pays" value="#{ajoutClientMB.client.pays}" title="Pays" />
+                                            <h:outputLabel value="Standard:" for="standard" />
+                                            <h:inputText id="standard" value="#{ajoutClientMB.client.standard}" title="Standard" />
+                                            <h:outputLabel value="Bureau:" for="bureau" />
+                                            <h:inputText id="bureau" value="#{ajoutClientMB.client.bureau}" title="Bureau" />
+                                            <h:outputLabel value="Fax:" for="fax" />
+                                            <h:inputText id="fax" value="#{ajoutClientMB.client.fax}" title="Fax" />
+                                            <h:outputLabel value="Email:" for="email" />
+                                            <h:inputText id="email" value="#{ajoutClientMB.client.email}" title="Email" />
+                                            <h:outputLabel value="Telex:" for="telex" />
+                                            <h:inputText id="telex" value="#{ajoutClientMB.client.telex}" title="Telex" />
+                                            <h:outputLabel value="Web:" for="web" />
+                                            <h:inputText id="web" value="#{ajoutClientMB.client.web}" title="Web" />
+                                            <h:outputLabel value="Autre:" for="autre" />
+                                            <h:inputText id="autre" value="#{ajoutClientMB.client.autre}" title="Autre" />
+                                            <h:outputLabel value="Mobile:" for="mobile" />
+                                            <h:inputText id="mobile" value="#{ajoutClientMB.client.mobile}" title="Mobile" />
+
+                                            <h:outputLabel value="Titre:" for="titre" />
+                                            <h:selectOneMenu id="titre" value="#{ajoutClientMB.titreSelected}" title="Titre" required="true" requiredMessage="The Titre field is required."
+                                                             converter="#{ajoutClientMB.titreConverter}">
+                                                <f:selectItems value="#{ajoutClientMB.titres}"
+                                                               var="titre"
+                                                               itemLabel="#{titre.libelle}"
+                                                               itemValue="#{titre}"/>
+                                            </h:selectOneMenu>
+
+                                        </div>
+                                        <div class="box-footer">
+                                            <h:commandButton action="#{ajoutClientMB.ajouter()}"
+                                                             value="Valider"
+                                                             update="growlForm:growlCenter"/>
+                                        </div>
+                                    </h:form>
+                                </f:view>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

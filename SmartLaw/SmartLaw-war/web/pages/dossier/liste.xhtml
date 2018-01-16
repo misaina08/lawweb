@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Dossiers
+                        <small></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active">Dossiers</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+
+                    <h:link outcome="/pages/dossier/ajout.xhtml" class="btn btn-success" value="Nouveau"/>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Liste</h3>
+                                </div>
+                                <div class="box-body">
+
+
+                                    <h:form>
+
+                                        <p:dataTable value="#{listeDossierMB.dossiers}" var="dossier" 
+                                                     emptyMessage="Aucun dossier trouvé"
+                                                     widgetVar="dossierTable">
+
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('dossierTable').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+                                            <p:column sortBy="#{dossier.numeroDossier}" headerText="Numéro" filterBy="#{dossier.numeroDossier}" filterMatchMode="contains"
+                                                      id="numero" style="width:120px;">
+                                                <h:outputText value="#{dossier.numeroDossier}"/>
+                                            </p:column>
+                                            <p:column sortBy="#{dossier.dateOuverture}" headerText="Date d'ouverture" filterBy="#{dossier.dateOuverture}"
+                                                      filterMatchMode="contains"
+                                                      id="dateouverture" style="width:120px;">
+                                                <h:outputText value="#{dossier.dateOuverture}">
+                                                    <f:convertDateTime pattern="DD/MM/yyyy"/>
+                                                </h:outputText>
+
+                                            </p:column>
+                                            <p:column sortBy="#{dossier.vnomDossier}" headerText="Nom" filterBy="#{dossier.vnomDossier}" filterMatchMode="contains"
+                                                      id="nom">
+                                                <h:link class="text-light-blue" outcome="/pages/dossier/fiche.xhtml?idDossier=#{dossier.id}&faces-redirect:true;">
+                                                    #{dossier.vnomDossier}
+                                                </h:link>
+                                                
+                                            </p:column>
+                                            <p:column sortBy="#{dossier.nature}" headerText="Nature" filterBy="#{dossier.nature}" filterMatchMode="contains"
+                                                      id="nature">
+                                                <h:outputText value="#{dossier.nature}"/>
+                                            </p:column>
+                                            <p:column sortBy="#{dossier.nomGestionnaire}" headerText="Gestionnaire" filterBy="#{dossier.nomGestionnaire}" filterMatchMode="contains"
+                                                      id="gestionnaire">
+                                                <h:outputText value="#{dossier.nomGestionnaire}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

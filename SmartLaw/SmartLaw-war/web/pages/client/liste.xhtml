@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <body>
+
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Clients
+                        <small></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active"></li>
+                    </ol>
+                </section>
+
+
+                <section class="content">
+                    <h:form id="growlForm">
+                        <p:growl id="growlCenter"/>
+                    </h:form>
+                    <h:link outcome="/pages/client/ajout.xhtml" class="btn btn-success" value="Nouveau"/>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Liste</h3>
+
+                                </div>
+                                <div class="box-body">
+                                    <h:form>
+                                        <p:dataTable value="#{listeClientMB.clients}" var="item" 
+                                                     emptyMessage="Aucun client trouvé"
+                                                     widgetVar="clientsTable"
+                                                     filteredValue="#{listeClientMB.filteredClients}">
+
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('clientsTable').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+                                            <p:column filterBy="#{item.id}" id="id" headerText="Numéro" style="width:120px;" filterMatchMode="contains">
+                                                <h:outputText value="#{item.id}" />
+                                            </p:column>
+                                            <p:column filterBy="#{item.titre}" id="titre" headerText="Titre" filterMatchMode="contains">
+                                                <h:outputText value="#{item.titre}" />
+                                            </p:column>
+                                            <p:column filterBy="#{item.nom}" id="nom" headerText="Nom" filterMatchMode="contains">
+                                                <h:outputText value="#{item.nom}" />
+                                            </p:column>
+                                            <p:column filterBy="#{item.adresse}" id="adresse" headerText="Adresse" filterMatchMode="contains">
+                                                <h:outputText value="#{item.adresse}" />
+                                            </p:column>
+                                            <p:column styleClass="text-center">
+                                                <div class="btn-group">
+                                                    <h:link class="btn btn-info" outcome="/pages/client/fiche.xhtml?idClient=#{item.id}&faces-redirect:true;">
+                                                        <i class="fa fa-info"></i>
+                                                    </h:link>
+                                                    <h:link class="btn btn-primary" outcome="/pages/client/modification.xhtml?idClient=#{item.id}&faces-redirect:true;" >
+                                                        <i class="fa fa-edit"></i>
+                                                    </h:link>
+                                                </div>
+                                            </p:column>
+
+
+                                        </p:dataTable>
+
+
+                                    </h:form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

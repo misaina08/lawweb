@@ -29,6 +29,7 @@ hs_err_pid*
 /SmartLaw/SmartLaw-ejb/src/*
 !/SmartLaw/SmartLaw-ejb/src/java
 
+!/SmartLaw/SmartLaw-war
 /SmartLaw/SmartLaw-war/*
 !/SmartLaw/SmartLaw-war/src
 !/SmartLaw/SmartLaw-war/web
