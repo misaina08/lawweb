@@ -7,10 +7,15 @@ package managedbean.dossier;
 
 import ejb.GeneriqueBean;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import modeles.dossiers.ContactDossierLibelle;
 import modeles.dossiers.DossierLibelle;
+import modeles.evenement.EvtDossierLibelle;
+import modeles.intervenants.IntervDossierLibelle;
+import modeles.intervenants.IntervenantDossier;
 import utilitaire.MessageUtil;
 
 /**
@@ -19,13 +24,17 @@ import utilitaire.MessageUtil;
  */
 @Named(value = "ficheDossierMB")
 @ViewScoped
-public class FicheDossierMB implements Serializable{
-
+public class FicheDossierMB implements Serializable {
+    
     @EJB
     private GeneriqueBean generiqueBean;
-
+    
     private Integer idDossier;
     private DossierLibelle dossier;
+    private List<IntervDossierLibelle> intervs;
+    private ContactDossierLibelle contDoss;
+    private List<EvtDossierLibelle> listeEvt;
+
     /**
      * Creates a new instance of FicheDossierMB
      */
@@ -37,28 +46,91 @@ public class FicheDossierMB implements Serializable{
             DossierLibelle d = new DossierLibelle();
             d.setId(idDossier);
             dossier = (DossierLibelle) generiqueBean.getService().findById(d);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtil.addFlashErrorMessage("Erreur de chargement");
         }
     }
-
+    
+    public void supprimerIntervenant(Integer id) {
+        try {
+            IntervenantDossier interv = new IntervenantDossier();
+            interv.setId(id);
+            generiqueBean.getService().delete(interv);
+            MessageUtil.messageInfo("Intervenant supprimé");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtil.messageErreur("Erreur de suppression");
+        }
+    }
+    
     public Integer getIdDossier() {
         return idDossier;
     }
-
+    
     public void setIdDossier(Integer idDossier) {
         this.idDossier = idDossier;
     }
-
+    
     public DossierLibelle getDossier() {
         return dossier;
     }
-
+    
     public void setDossier(DossierLibelle dossier) {
         this.dossier = dossier;
     }
     
+    public List<IntervDossierLibelle> getIntervs() {
+        if (intervs == null) {
+            try {
+                IntervDossierLibelle i = new IntervDossierLibelle();
+                i.setIdDossier(idDossier);
+                intervs = (List<IntervDossierLibelle>) (List<?>) generiqueBean.getService().find(i);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return intervs;
+    }
     
+    public void setIntervs(List<IntervDossierLibelle> intervs) {
+        this.intervs = intervs;
+    }
+    
+    public ContactDossierLibelle getContDoss() {
+        if (contDoss == null) {
+            try {
+                contDoss = new ContactDossierLibelle();
+                contDoss.setIdDossier(idDossier);
+                contDoss.setTypeContact("APP");
+                contDoss = ((List<ContactDossierLibelle>) (List<?>) generiqueBean.getService().find(contDoss)).get(0);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return contDoss;
+    }
+    
+    public void setContDoss(ContactDossierLibelle contDoss) {
+        this.contDoss = contDoss;
+    }
+    
+    public List<EvtDossierLibelle> getListeEvt() {
+        if (listeEvt == null) {
+            try {
+                EvtDossierLibelle evl = new EvtDossierLibelle();
+                evl.setIdDossier(idDossier);
+                evl.setAfacturer(true);
+                listeEvt = (List<EvtDossierLibelle>) (List<?>) generiqueBean.getService().find(evl);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return listeEvt;
+    }
+    
+    public void setListeEvt(List<EvtDossierLibelle> listeEvt) {
+        this.listeEvt = listeEvt;
+    }
     
 }
