@@ -22,7 +22,8 @@
 hs_err_pid*
 
 # Folders
-/*
+/SmartLaw/*
+!/SmartLaw/SmartLaw-ejb
 /SmartLaw/SmartLaw-ejb/*
 !/SmartLaw/SmartLaw-ejb/src
 /SmartLaw/SmartLaw-ejb/src/*
