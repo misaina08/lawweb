@@ -11,14 +11,19 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import modeles.clients.Client;
 import modeles.contact.Contact;
 import modeles.dossiers.ContactDossier;
 import modeles.dossiers.ContactDossierLibelle;
+import modeles.dossiers.Dossier;
 import modeles.dossiers.DossierLibelle;
 import modeles.evenement.EvtDossierLibelle;
 import modeles.intervenants.IntervDossierLibelle;
 import modeles.intervenants.Intervenant;
 import modeles.intervenants.IntervenantDossier;
+import modeles.parametres.Juridiction;
+import modeles.parametres.Nature;
+import statiques.ObjetStatique;
 import utilitaire.MessageUtil;
 
 /**
@@ -41,6 +46,10 @@ public class FicheDossierMB implements Serializable {
     private List<Contact> contacts;
     private Integer idIntervSelected;
     private Integer idContactSelected;
+
+    private List<Juridiction> juridictions;
+    private List<Nature> natures;
+    private List<Client> clients;
 
     /**
      * Creates a new instance of FicheDossierMB
@@ -107,10 +116,10 @@ public class FicheDossierMB implements Serializable {
                 i.setIdDossier(idDossier);
                 intervs = (List<IntervDossierLibelle>) (List<?>) generiqueBean.getService().find(i);
             }
-
+            MessageUtil.messageInfo("Intervenant ajouté");
         } catch (Exception ex) {
             ex.printStackTrace();
-
+            MessageUtil.messageInfo("Modification effectuée");
         }
     }
 
@@ -132,18 +141,46 @@ public class FicheDossierMB implements Serializable {
             cDoss.setIdDossier(idDossier);
             cDoss.setTypeContact("APP");
             cDoss.setIdContact(idContactSelected);
-            System.out.println("id contact "+idContactSelected);
+
             generiqueBean.getService().update(cDoss);
-            
+
             ContactDossierLibelle cc = new ContactDossierLibelle();
             cc.setIdDossier(idDossier);
             cc.setTypeContact("APP");
-                    
-            contDoss = ((List<ContactDossierLibelle>) (List<?>) generiqueBean.getService().find(cc)).get(0);
-            System.out.println("id contact apres"+contDoss.getIdContact());
 
+            contDoss = ((List<ContactDossierLibelle>) (List<?>) generiqueBean.getService().find(cc)).get(0);
+
+            MessageUtil.messageInfo("Apporteur mis à jour");
         } catch (Exception ex) {
             ex.printStackTrace();
+            MessageUtil.messageInfo("Erreur de modification de l'apporteur");
+        }
+    }
+
+    public void majInfoDossier() {
+        try {
+            Dossier d = new Dossier();
+            d.setId(dossier.getId());
+            d = (Dossier) generiqueBean.getService().findById(d);
+            d.setIdJuridiction(dossier.getIdJuridiction());
+            d.setIdNature(dossier.getIdNature());
+            d.setNoProcedure(dossier.getNoProcedure());
+            d.setRegion(dossier.getRegion());
+            d.setVnomDossier(dossier.getVnomDossier());
+            d.setNomAdversaire(dossier.getNomAdversaire());
+            d.setIdClient(dossier.getIdClient());
+            d.setDateOuverture(dossier.getDateOuverture());
+            d.setLieu(dossier.getLieu());
+            generiqueBean.getService().update(d);
+
+            DossierLibelle dl = new DossierLibelle();
+            dl.setId(idDossier);
+            dossier = (DossierLibelle) generiqueBean.getService().findById(dl);
+
+            MessageUtil.messageInfo("Modification effectuée");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtil.messageErreur("Erreur de modification");
         }
     }
 
@@ -248,4 +285,42 @@ public class FicheDossierMB implements Serializable {
         this.idContactSelected = idContactSelected;
     }
 
+    public List<Juridiction> getJuridictions() {
+        if (juridictions == null) {
+            juridictions = ObjetStatique.getJuridictions();
+        }
+        return juridictions;
+    }
+
+    public void setJuridictions(List<Juridiction> juridictions) {
+        this.juridictions = juridictions;
+    }
+
+    public List<Nature> getNatures() {
+        if (natures == null) {
+            natures = ObjetStatique.getNatures();
+        }
+        return natures;
+    }
+
+    public void setNatures(List<Nature> natures) {
+        this.natures = natures;
+    }
+
+    public List<Client> getClients() {
+        try {
+            if (clients == null) {
+                System.out.println("get set" + clients);
+                clients = (List<Client>) (List<?>) generiqueBean.getService().find(new Client());
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
 }

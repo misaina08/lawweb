@@ -27,7 +27,9 @@
                     </ol>
                 </section>
 
-                <p:growl id="growlCenter"/>
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
 
                 <section class="content">
                     <div class="btn-group">
@@ -39,13 +41,24 @@
                     <br></br>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="box box-solid">
+                            <div class="box  box-solid box-pane">
                                 <div class="box-header with-border">
                                     <i class="fa fa-info"></i>
                                     <h3 class="box-title">Informations</h3>
+                                    <div class="box-tools pull-right">
+                                        <button class="btn btn-primary" onclick="#{ficheDossierMB.loadAddIntervenants()};PF('dialog-updatedos').show();">
+                                            <i class="fa fa-edit" />
+                                        </button>
+                                    </div>
+                                    
                                 </div>
-                                <div class="box-body" >
+                                <h:panelGroup class="box-body" id="panel-info">
                                     <dl class="dl-horizontal">
+                                        <style>
+                                            dt{
+                                                margin-bottom: 5px;
+                                            }
+                                        </style>
                                         <dt>Nom du dossier</dt>
                                         <dd>#{ficheDossierMB.dossier.vnomDossier}</dd>
                                         <dt>Client</dt>
@@ -79,7 +92,7 @@
                                         <dt>En cours</dt>
                                         <dd>#{ficheDossierMB.dossier.enCours}</dd>
                                     </dl>
-                                </div>
+                                </h:panelGroup>
                             </div>
                         </div>
 
@@ -108,23 +121,25 @@
                                                             <h:commandButton action="#{ficheDossierMB.supprimerIntervenant(interv.id)}"
                                                                              class="btn btn-danger btn-xs" value="Supprimer">
                                                                 <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
-                                                                <f:ajax execute=":form-interv" render=":form-interv:intervs"/>
+                                                                <f:ajax execute=":form-interv" render=":form-interv:intervs :growlForm:growlCenter"/>
                                                             </h:commandButton>
+                                                            
                                                         </td>
                                                     </tr>
                                                 </ui:repeat>
 
                                             </table>
                                         </h:panelGroup>
-
-                                        <h:commandButton class="btn btn-primary btn-xs pull-right" 
-                                                         action="#{ficheDossierMB.loadAddIntervenants}" value="Ajouter"
-                                                         type="button"
-                                                         onclick="PF('dialog-intervs').show();">
-                                            <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
-                                            <f:ajax execute=":form-interv" 
-                                                    render=":form-addintervs:panel-addintervs"/>
-                                        </h:commandButton>
+                                        <div class="box-footer">
+                                            <h:commandButton class="btn btn-primary" 
+                                                             action="#{ficheDossierMB.loadAddIntervenants}" value="Ajouter"
+                                                             type="button"
+                                                             onclick="PF('dialog-intervs').show();">
+                                                <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                                <f:ajax execute=":form-interv" 
+                                                        render=":form-addintervs:panel-addintervs"/>
+                                            </h:commandButton>
+                                        </div>
                                     </h:form>
 
                                 </div>
@@ -138,6 +153,13 @@
                                 <div class="box-header with-border">
                                     <i class="fa fa-user"></i>
                                     <h3 class="box-title">Apporteur du dossier</h3>
+                                    <div class="box-tools pull-right">
+
+                                        <button class="btn btn-primary btn-sm" onclick="#{ficheDossierMB.loadContacts()};PF('dialog-contacts').show();">
+                                            <i class="fa fa-edit"></i>&nbsp;&nbsp;Lier un contact
+                                        </button>
+
+                                    </div>
                                 </div><!-- /.box-header -->
                                 <h:panelGroup id="panel-apporteur">
                                     <div class="box-body dl-horizontal">
@@ -168,16 +190,10 @@
                                         </dl>
                                     </div>
                                 </h:panelGroup>
-                                <h:form id="form-selectcontact">
-                                    <h:commandButton class="btn btn-primary btn-xs pull-right" 
-                                                     action="#{ficheDossierMB.loadContacts()}" value="Lier un contact"
-                                                     type="button"
-                                                     onclick="PF('dialog-contacts').show();">
-                                        <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
-                                        <f:ajax execute=":form-selectcontact" 
-                                                render=":form-addcontact:panel-setcontact"/>
-                                    </h:commandButton>
-                                </h:form>
+                                <div class="box-footer">
+
+                                </div>
+
                             </div>
                         </div>
 
@@ -246,7 +262,7 @@
                                              onclick="PF('dialog-intervs').hide();">
                                 <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
                                 <f:ajax execute=":form-addintervs" 
-                                        render=":form-interv:intervs"/>
+                                        render=":form-interv:intervs :growlForm:growlCenter"/>
 
                             </h:commandButton>
                         </h:panelGroup>
@@ -272,7 +288,120 @@
                                              onclick="PF('dialog-contacts').hide();">
                                 <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
                                 <f:ajax execute=":form-addcontact" 
-                                        render=":panel-apporteur"/>
+                                        render=":panel-apporteur :growlForm:growlCenter"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
+
+                <!-- dialog for update dossier -->
+                <h:form id="form-setinfo" class="form-horizontal">
+
+                    <p:dialog header="Modification" widgetVar="dialog-updatedos" modal="true" width="500">
+                        <h:panelGroup id="panel-setinfo">
+
+                            <div class="form-group">
+                                <label class="col-md-3" for="snomdossier">Nom du dossier</label>
+                                <div class="col-md-9">
+                                    <h:inputText class="form-control" 
+                                                 id="snomdossier" value="#{ficheDossierMB.dossier.vnomDossier}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3" for="sclient">Client</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="sclient" value="#{ficheDossierMB.dossier.idClient}"
+                                                     class="form-control"
+                                                     >
+                                        <f:selectItems value="#{ficheDossierMB.clients}" var="c"
+                                                       itemValue="#{c.id}" itemLabel="#{c.nom}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3" for="sadversaire">Adversaire</label>
+                                <div class="col-md-9">
+                                    <h:inputText class="form-control" 
+                                                 id="sadversaire" value="#{ficheDossierMB.dossier.nomAdversaire}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3" for="slieu">Lieu</label>
+                                <div class="col-md-9">
+                                    <h:inputText class="form-control" 
+                                                 id="slieu" value="#{ficheDossierMB.dossier.lieu}"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-3" for="sdate">Date d'ouverture</label>
+                                <div class="col-md-9">
+                                    <p:calendar id="sdate" inputStyle="width:200px;" 
+                                                value="#{ficheDossierMB.dossier.dateOuverture}"
+                                                pattern="dd/MM/yyyy"
+                                                mask="true">
+
+                                    </p:calendar>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3" for="snature">Nature</label>
+                                <div class="col-md-9">
+                                    <h:selectOneMenu id="snature" value="#{ficheDossierMB.dossier.idNature}"
+                                                     class="form-control"
+                                                     >
+                                        <f:selectItems value="#{ficheDossierMB.natures}" var="jur"
+                                                       itemValue="#{jur.id}" itemLabel="#{jur.libelle}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="noproc" class="control-label col-md-3">Numéro de procédure</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="noproc" class="form-control" 
+                                                 value="#{ficheDossierMB.dossier.noProcedure}"/>
+
+                                </div>
+                                <h:message for="noproc"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="juridiction" class="control-label col-md-3">Juridiction</label>
+                                <div class=" col-md-9">
+                                    <h:selectOneMenu id="juridiction" value="#{ficheDossierMB.dossier.idJuridiction}"
+                                                     class="form-control"
+                                                     >
+                                        <f:selectItems value="#{ficheDossierMB.juridictions}" var="jur"
+                                                       itemValue="#{jur.id}" itemLabel="#{jur.libelle}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <h:message for="juridiction"/>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="region" class="control-label col-md-3">Région</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="region" class="form-control" 
+                                                 value="#{ficheDossierMB.dossier.region}"/>
+
+                                </div>
+                                <h:message for="region"/>
+                            </div>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{ficheDossierMB.majInfoDossier()}" value="Valider"
+                                             onclick="PF('dialog-updatedos').hide();">
+                                <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
+                                <f:ajax execute=":form-setinfo" 
+                                        render=":panel-info :growlForm:growlCenter"/>
 
                             </h:commandButton>
                         </h:panelGroup>
