@@ -5,6 +5,7 @@
  */
 package managedbean.dossier;
 
+import ejb.DossierBean;
 import ejb.GeneriqueBean;
 import java.io.Serializable;
 import java.util.List;
@@ -35,7 +36,11 @@ import utilitaire.MessageUtil;
 public class FicheDossierMB implements Serializable {
 
     @EJB
+    private DossierBean dossierBean;
+
+    @EJB
     private GeneriqueBean generiqueBean;
+    
 
     private Integer idDossier;
     private DossierLibelle dossier;
@@ -181,6 +186,14 @@ public class FicheDossierMB implements Serializable {
         } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtil.messageErreur("Erreur de modification");
+        }
+    }
+    
+    public void printFiche() {
+        try {
+            dossierBean.printFiche(dossier);
+        } catch(Exception ex) {
+            ex.printStackTrace();
         }
     }
 

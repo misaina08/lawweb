@@ -35,8 +35,16 @@
                     <div class="btn-group">
                         <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{ficheDossierMB.idDossier}&faces-redirect:true;"
                                 class="btn btn-primary">Evènements</h:link>
-                    </div>
 
+                    </div>
+                    <div class=" btn-group pull-right">
+                        <h:form>
+
+                            <h:commandButton class="btn bg-maroon pull-right" 
+                                             action="#{ficheDossierMB.printFiche()}" value="Imprimer">
+                            </h:commandButton>
+                        </h:form>
+                    </div>
                     <br></br>
                     <br></br>
                     <div class="row">
@@ -50,7 +58,7 @@
                                             <i class="fa fa-edit" />
                                         </button>
                                     </div>
-                                    
+
                                 </div>
                                 <h:panelGroup class="box-body" id="panel-info">
                                     <dl class="dl-horizontal">
@@ -123,7 +131,7 @@
                                                                 <f:param name="idDossier" value="#{ficheDossierMB.idDossier}"/>
                                                                 <f:ajax execute=":form-interv" render=":form-interv:intervs :growlForm:growlCenter"/>
                                                             </h:commandButton>
-                                                            
+
                                                         </td>
                                                     </tr>
                                                 </ui:repeat>

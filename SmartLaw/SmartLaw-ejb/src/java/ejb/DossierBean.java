@@ -7,22 +7,28 @@ package ejb;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 import modeles.BaseModele;
 import modeles.contact.ContactClient;
 import modeles.dossiers.ContactDossier;
 import modeles.dossiers.Dossier;
+import modeles.dossiers.DossierLibelle;
 import modeles.parametres.DefaultDir;
 import modeles.parametres.TypeFacturationClient;
 import modeles.parametres.TypeFacturationDossier;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import services.ClientService;
+import services.DossierService;
 import statiques.ObjetStatique;
 import utilitaire.ConstanteDirectory;
 import utilitaire.DefaultsDirectory;
-import utilitaire.Util;
+import utilitaire.ReportUtil;
 
 /**
  *
@@ -110,6 +116,25 @@ public class DossierBean {
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
+        }
+    }
+    
+    public void printFiche(DossierLibelle dLib) {
+        ReportUtil reportUtil = null;
+        try {
+            DossierService service = new DossierService();
+
+            Map<String, Object> map = service.produceMapFicheDossier(dLib);
+            reportUtil = new ReportUtil();
+            String pathReport = ReportUtil.pathDocs + "/report/dossier-fiche";
+
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.reset();
+//            Nom du fichier
+            reportUtil.download(map, response, ReportUtil.ReportType.PDF, pathReport, "Dossier No"+dLib.getNumeroDossier()+" - "+dLib.getVnomDossier());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
     

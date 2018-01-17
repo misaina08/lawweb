@@ -72,11 +72,13 @@
                                                 </p:outputPanel>
                                             </f:facet>
                                             <p:column width="40">
+
                                                 <h:selectBooleanCheckbox class="checkbox" value="#{listeEvtMB.checked[evt.id]}"
                                                                          onclick="#{listeEvtMB.onClickCheckBox()}" >
                                                     <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
                                                     <f:ajax event="valueChange" render=":datatable-form:datatable" />
                                                 </h:selectBooleanCheckbox>
+
                                             </p:column>
                                             <p:column headerText="Date" width="120" sortBy="#{evt.daty}" styleClass="text-center" filterBy="#{evt.daty}" filterMatchMode="contains">
                                                 <h:outputText value="#{evt.daty}">
@@ -122,26 +124,28 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Totaux</h3>
                                 </div>
-                                <h:panelGroup id="totaux">
+                                <div class="box-body">
+                                    <h:panelGroup id="totaux">
 
-                                    <ui:repeat value="#{listeEvtMB.totaux}" var="total">
-                                        <div class="col-md-3 bg-primary callout ">
+                                        <ui:repeat value="#{listeEvtMB.totaux}" var="total">
+                                            <div class="col-md-3 bg-primary callout ">
 
-                                            <h5 class="info-box-text">#{total.libTypeTarif}</h5>
+                                                <h5 class="info-box-text">#{total.libTypeTarif}</h5>
 
-                                            <h:outputText class="text-center" value="#{total.dureeTotal}">
-                                                <f:convertDateTime pattern="HH'h'mm"/>
-                                            </h:outputText>
-
-                                            <p class="mb-1 text-right info-box-number">
-                                                <h:outputText value="#{total.mtTotal}">
-                                                    <f:convertNumber type="currency" currencySymbol="Ar "/>
+                                                <h:outputText class="text-center" value="#{total.dureeTotal}">
+                                                    <f:convertDateTime pattern="HH'h'mm"/>
                                                 </h:outputText>
-                                            </p>
 
-                                        </div>
-                                    </ui:repeat>
-                                </h:panelGroup>
+                                                <p class="mb-1 text-right info-box-number">
+                                                    <h:outputText value="#{total.mtTotal}">
+                                                        <f:convertNumber type="currency" currencySymbol="Ar "/>
+                                                    </h:outputText>
+                                                </p>
+
+                                            </div>
+                                        </ui:repeat>
+                                    </h:panelGroup>
+                                </div>
                             </div>
                         </div>
                     </div>
