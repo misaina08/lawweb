@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <f:metadata>
+        <f:viewParam name="idDossier" value="#{facturationDossierMB.idDossier}" required="true"/>
+        <f:viewAction action="#{facturationDossierMB.loadDossier()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+
+                <section class="content-header">
+                    <h1>
+                        Dossier N° #{facturationDossierMB.dossier.numeroDossier} : #{facturationDossierMB.dossier.vnomDossier}
+                        <small>Facturation</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i>Dossiers</h:link></li>
+                        <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{facturationDossierMB.idDossier}"><i class="fa fa-info"></i>Fiche</h:link></li>
+                        <li class="active">Facturation</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{facturationDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Fiche</h:link>
+                        <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{facturationDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Evènements</h:link>
+                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{facturationDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Facturation</h:link>
+
+                    </div>
+
+                    <br></br>
+                    <br></br>
+                    <div class="row">
+                        <h:panelGroup class="col-md-7" id="panefact">
+                            <div class="box  box-solid box-pane">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-info"></i>
+                                    <h3 class="box-title">Mode de facturation</h3>
+                                    <div class="box-tools pull-right">
+
+                                    </div>
+
+                                </div>
+                                <h:form class="form-horizontal">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label class="col-md-3">Type par défaut</label>
+                                            <div class="col-md-9">
+                                                <h:selectOneMenu value="#{facturationDossierMB.typeFacturation.idTypeFacture}"
+                                                                 class="form-control">
+                                                    <f:selectItems value="#{facturationDossierMB.typeFacture}"
+                                                                   var="typeFacture"
+                                                                   itemLabel="#{typeFacture.libelle}"
+                                                                   itemValue="#{typeFacture.id}"
+                                                                   />
+
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Taux TVA</label>
+                                            <div class="col-md-9">
+
+                                                <h:panelGroup class="input-group">
+                                                    <h:inputText value="#{facturationDossierMB.typeFacturation.tauxTva}"
+                                                                 class="form-control text-right">
+                                                        <f:convertNumber type="currency" currencySymbol=""/>
+                                                    </h:inputText>
+                                                    <span class="input-group-addon">%</span>
+                                                </h:panelGroup>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Mode de facturation</label>
+                                            <div class="col-md-3">
+                                                <h:selectOneMenu value="#{facturationDossierMB.typeFacturation.idMode}"
+                                                                 onchange="onModeChanged(this.value);"
+                                                                 id="modefact" class="form-control">
+                                                    <f:selectItems value="#{facturationDossierMB.modeFacturation}"
+                                                                   var="mode"
+                                                                   itemLabel="#{mode.libelle}"
+                                                                   itemValue="#{mode.id}"
+                                                                   />
+
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="col-md-3" id="pantauxmode">
+                                                <h:panelGroup class="input-group ">
+                                                    <h:inputText value="#{facturationDossierMB.typeFacturation.tauxMode}"
+                                                                 class="form-control text-right"/>
+                                                    <span class="input-group-addon">%</span>
+                                                </h:panelGroup>
+                                            </div>
+                                            <div class="col-md-3" id="panmtforfait">
+                                                <h:panelGroup class="input-group">
+                                                    <h:inputText value="#{facturationDossierMB.typeFacturation.mtForfait}"
+                                                                 class="form-control text-right"> 
+                                                        <f:convertNumber type="currency" currencySymbol=""/>
+                                                    </h:inputText>
+                                                    <span class="input-group-addon">Ar</span>
+                                                </h:panelGroup>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Périodicité</label>
+                                            <div class="col-md-9">
+                                                <h:selectOneMenu value="#{facturationDossierMB.typeFacturation.periodicite}"
+                                                                 class="form-control">
+                                                    <f:selectItems value="#{facturationDossierMB.periodicite}"
+                                                                   var="p"
+                                                                   itemLabel="#{p}"
+                                                                   itemValue="#{p}"
+                                                                   />
+
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Echéance</label>
+                                            <div class="col-md-9">
+                                                <div class="input-group">
+                                                    <h:inputText value="#{facturationDossierMB.typeFacturation.echeance}"
+                                                                 class="form-control text-right"/>
+                                                    <span class="input-group-addon">Jours</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Langue</label>
+                                            <div class="col-md-9">
+                                                <h:selectOneMenu value="#{facturationDossierMB.typeFacturation.langue}"
+                                                                 class="form-control">
+                                                    <f:selectItems value="#{facturationDossierMB.langue}"
+                                                                   var="p"
+                                                                   itemLabel="#{p}"
+                                                                   itemValue="#{p}"
+                                                                   />
+
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Compte comptable</label>
+                                            <div class="col-md-9">
+                                                <h:inputText value="#{facturationDossierMB.typeFacturation.compteComptable}"
+                                                             class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Compte tiers</label>
+                                            <div class="col-md-9">
+                                                <h:inputText value="#{facturationDossierMB.typeFacturation.compteTiers}"
+                                                             class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-3" >Catégorie comptable</label>
+                                            <div class="col-md-9">
+                                                <h:inputText value="#{facturationDossierMB.typeFacturation.categorieComptable}"
+                                                             class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="box-footer">
+                                        <h:commandButton value="Mettre à jour"
+                                                         action="#{facturationDossierMB.majFacturation()}"
+                                                         class="btn btn-primary pull-right">
+                                            <f:param name="idDossier" value="#{facturationDossierMB.idDossier}"/>
+                                            <f:ajax execute="@form" render=":panefact :growlForm:growlCenter"/>
+                                        </h:commandButton>
+
+                                    </div>
+                                </h:form>
+                            </div>
+                        </h:panelGroup>
+
+                        <h:panelGroup class="col-md-5" id="panadfact">
+
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-user"></i>
+                                    <h3 class="box-title">Apporteur du dossier</h3>
+                                    <div class="box-tools pull-right">
+
+                                        <button class="btn btn-primary btn-sm" 
+                                                onclick="#{facturationDossierMB.loadContacts()};PF('dialog-contacts').show();">
+                                            <i class="fa fa-edit"></i>&nbsp;&nbsp;Lier un contact
+                                        </button>
+
+                                    </div>
+                                </div><!-- /.box-header -->
+                                <h:panelGroup id="panel-adf">
+                                    <div class="box-body dl-horizontal">
+                                        <dl>
+                                            <p>#{facturationDossierMB.adresseFact.titreContact} #{facturationDossierMB.adresseFact.nom} #{facturationDossierMB.adresseFact.prenom}</p>
+                                            <p>#{facturationDossierMB.adresseFact.adresse}</p>
+                                            <p>#{facturationDossierMB.adresseFact.cp}</p>
+                                            <p>#{facturationDossierMB.adresseFact.pays}</p>
+                                            <p>#{facturationDossierMB.adresseFact.ville}</p>
+
+                                            <dt>Bureau</dt>
+                                            <dd>#{facturationDossierMB.adresseFact.bureau}</dd>
+
+                                            <dt>Mobile</dt>
+                                            <dd>#{facturationDossierMB.adresseFact.mobile}</dd>
+
+                                            <dt>Standard</dt>
+                                            <dd>#{facturationDossierMB.adresseFact.standard}</dd>
+
+                                            <dt>Fax</dt>
+                                            <dd>#{facturationDossierMB.adresseFact.fax}</dd>
+
+                                            <dt>Site web</dt>
+                                            <dd>#{facturationDossierMB.adresseFact.web}</dd>
+
+                                            <dt>Email</dt>
+                                            <dd>#{facturationDossierMB.adresseFact.email}</dd>                                        
+                                        </dl>
+                                    </div>
+                                </h:panelGroup>
+                                <div class="box-footer">
+
+                                </div>
+                            </div>
+
+                        </h:panelGroup>
+                    </div>
+
+                </section>
+
+                <!-- dialog for contacts -->
+                <h:form id="form-addcontact">
+
+                    <p:dialog header="Contacts" widgetVar="dialog-contacts" modal="true" width="400">
+                        <h:panelGroup id="panel-setcontact">
+
+                            <p:selectOneRadio id="selectcont" value="#{facturationDossierMB.idContactSelected}" 
+                                              layout="responsive" columns="1" 
+                                              required="true"
+                                              requiredMessage="Champ obligatoire">
+                                <f:selectItems value="#{facturationDossierMB.contacts}" var="cont" itemLabel="#{cont.nom} 
+                                               #{cont.prenom}" itemValue="#{cont.id}"/>
+                            </p:selectOneRadio>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{facturationDossierMB.majAdFact()}" value="Valider"
+                                             onclick="PF('dialog-contacts').hide();">
+                                <f:param name="idDossier" value="#{facturationDossierMB.idDossier}"/>
+                                <f:ajax execute=":form-addcontact" 
+                                        render=":panel-adf :growlForm:growlCenter"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
+
+                <script>
+                    function onModeChanged(id) {
+
+                        if (id == 1) {
+                            document.getElementById("pantauxmode").style.visibility = "visible";
+                            document.getElementById("panmtforfait").style.visibility = "hidden";
+                        } else if (id == 2) {
+                            document.getElementById("pantauxmode").style.visibility = "hidden";
+                            document.getElementById("panmtforfait").style.visibility = "visible";
+                        } else {
+                            document.getElementById("pantauxmode").style.visibility = "hidden";
+                            document.getElementById("panmtforfait").style.visibility = "hidden";
+                        }
+
+
+                    }
+
+                </script>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+
+</html>

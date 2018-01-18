@@ -291,6 +291,9 @@ public class FicheDossierMB implements Serializable {
     }
 
     public Integer getIdContactSelected() {
+        if (idContactSelected == null) {
+            idContactSelected = getContDoss().getIdContact();
+        }
         return idContactSelected;
     }
 

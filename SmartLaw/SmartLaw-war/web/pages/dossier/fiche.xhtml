@@ -33,8 +33,12 @@
 
                 <section class="content">
                     <div class="btn-group">
+                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{ficheDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Fiche</h:link>
                         <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{ficheDossierMB.idDossier}&faces-redirect:true;"
                                 class="btn btn-primary">Evènements</h:link>
+                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{ficheDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Facturation</h:link>
 
                     </div>
                     <div class=" btn-group pull-right">
