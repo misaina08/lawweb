@@ -24,8 +24,8 @@ public class PlanningLibelle extends BaseModele{
     private Date datePlanning;
     private Integer rappel;
     private String uniteRappel;
-    private Time heureDebut;
-    private Time heureFin;
+    private Date heureDebut;
+    private Date heureFin;
     private Integer idEvt;
     private String codeEvt;
     private String libelleEvt;
@@ -129,19 +129,19 @@ public class PlanningLibelle extends BaseModele{
         this.uniteRappel = uniteRappel;
     }
 
-    public Time getHeureDebut() {
+    public Date getHeureDebut() {
         return heureDebut;
     }
 
-    public void setHeureDebut(Time heureDebut) {
+    public void setHeureDebut(Date heureDebut) {
         this.heureDebut = heureDebut;
     }
 
-    public Time getHeureFin() {
+    public Date getHeureFin() {
         return heureFin;
     }
 
-    public void setHeureFin(Time heureFin) {
+    public void setHeureFin(Date heureFin) {
         this.heureFin = heureFin;
     }
 

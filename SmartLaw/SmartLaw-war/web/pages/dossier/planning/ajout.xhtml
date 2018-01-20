@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:viewParam name="idDossier" value="#{ajoutPlanningDossierMB.idDossier}"/>
+        <f:viewAction action="#{ajoutPlanningDossierMB.loadDossier()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <section class="content-header">
+                    <h1>
+                        Dossier N° #{ajoutPlanningDossierMB.dossier.numeroDossier} : #{ajoutPlanningDossierMB.dossier.vnomDossier}
+                        <small>Planning</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i>Dossiers</h:link></li>
+                        <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}"><i class="fa fa-info"></i>Fiche</h:link></li>
+                        <li class="active">Planning</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter" life="400"/>
+                </h:form>
+
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Fiche</h:link>
+                        <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Evènements</h:link>
+                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Facturation</h:link>
+
+                        <h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Planning</h:link>
+
+                    </div>
+
+                    <br></br>
+                    <br></br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box box-success">
+                                <h:form class="form-horizontal" id="formulaire">
+                                    <div class="box-header with-border">
+                                        <i class="fa fa-plus"></i>
+                                        <h3 class="box-title">Nouveau planning</h3>
+                                    </div>
+                                    <div class="box-body">
+
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3" for="datePlanning">Date</label>
+                                                <div class="col-md-9">
+                                                    <p:calendar id="datePlanning" pattern="dd/MM/yyyy" mask="true"
+                                                                value="#{ajoutPlanningDossierMB.planning.datePlanning}"
+                                                                inputStyle="width:100px;"
+                                                                inputStyleClass="text-center"
+                                                                required="true" requiredMessage="Champ obligatoire"/>
+                                                    <h:message class="text-yellow"  for="datePlanning"/>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3" for="evt">Evènement</label>
+                                                <h:panelGroup class="col-md-6">
+                                                    <h:inputText id="evt" class="form-control" value="#{ajoutPlanningDossierMB.evtSelected.libelle}" required="true" requiredMessage="Champ obligatoire"/>
+                                                    <h:message class="text-yellow" for="evt"/>
+                                                </h:panelGroup>
+
+                                                <h:commandButton class="btn btn-default" value="Sélectionner"
+                                                                 action="#{ajoutPlanningDossierMB.loadEvt}"
+                                                                 onclick="PF('dlEvt').show();">
+                                                    <f:param value="#{ajoutPlanningDossierMB.idDossier}" name="idDossier"/>
+                                                    <f:ajax render=":form-evttarif:panSelectEvt"/>
+                                                </h:commandButton>
+                                                
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3" for="libelle">Libelle</label>
+                                                <div class="col-md-9">
+                                                    <h:inputText id="libelle" class="form-control"
+                                                                 value="#{ajoutPlanningDossierMB.planning.notes}"
+                                                                 required="true" requiredMessage="Champ obligatoire"/>
+                                                    <h:message class="text-yellow"  for="libelle"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3" for="ville">Ville</label>
+                                                <div class="col-md-9">
+                                                    <h:inputText id="ville" class="form-control"
+                                                                 value="#{ajoutPlanningDossierMB.planning.ville}"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="juridiction" class="control-label col-md-3">Juridiction</label>
+                                                <div class=" col-md-9">
+                                                    <h:selectOneMenu id="juridiction" value="#{ajoutPlanningDossierMB.planning.idJur}"
+                                                                     class="form-control"
+                                                                     >
+                                                        <f:selectItems value="#{ajoutPlanningDossierMB.juridictions}" var="jur"
+                                                                       itemValue="#{jur.id}" itemLabel="#{jur.libelle}"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <h:message class="text-yellow"  for="juridiction"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="transport" class="control-label col-md-3">Transport</label>
+                                                <div class=" col-md-9">
+                                                    <h:selectOneMenu id="transport" value="#{ajoutPlanningDossierMB.planning.transport}"
+                                                                     class="form-control"
+                                                                     >
+                                                        <f:selectItems value="#{ajoutPlanningDossierMB.transport}" var="t"
+                                                                       itemValue="#{t}" itemLabel="#{t}"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <h:message class="text-yellow"  for="juridiction"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3" for="datedeb">Début</label>
+                                                <div class="col-md-9">
+                                                    <p:calendar id="datedeb" pattern="HH:mm" mask="true"
+                                                                value="#{ajoutPlanningDossierMB.planning.heureDebut}"
+                                                                inputStyle="width:80px;" timeOnly="true" inputStyleClass="text-center"
+                                                                required="true" requiredMessage="Champ obligatoire"/>
+                                                    <h:message class="text-yellow"  for="datedeb"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3" for="datefin">Fin</label>
+                                                <div class="col-md-9">
+                                                    <p:calendar id="datefin" pattern="HH:mm" mask="true"
+                                                                value="#{ajoutPlanningDossierMB.planning.heureFin}"
+                                                                inputStyle="width:80px;" timeOnly="true" inputStyleClass="text-center"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="intervenant" class="control-label col-md-3">Intervenant</label>
+                                                <div class=" col-md-9">
+                                                    <h:selectOneMenu id="intervenant" value="#{ajoutPlanningDossierMB.planning.idIntervenant}"
+                                                                     class="form-control"
+                                                                     >
+                                                        <f:selectItems value="#{ajoutPlanningDossierMB.intervenants}" var="gest"
+                                                                       itemValue="#{gest.id}" itemLabel="#{gest.nom} #{gest.prenom}"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <h:message class="text-yellow"  for="intervenant"/>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="gestionnaire" class="control-label col-md-3">Gestionnaire</label>
+                                                <div class=" col-md-9">
+                                                    <h:selectOneMenu id="gestionnaire" value="#{ajoutPlanningDossierMB.planning.idGestionnaire}"
+                                                                     class="form-control"
+                                                                     >
+                                                        <f:selectItems value="#{ajoutPlanningDossierMB.gestionnaires}" var="gest"
+                                                                       itemValue="#{gest.id}" itemLabel="#{gest.nom} #{gest.prenom}"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <h:message class="text-yellow"  for="gestionnaire"/>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="box-footer">
+                                        <p:commandButton value="Créer" class="btn btn-primary pull-right"
+                                                         action="#{ajoutPlanningDossierMB.creer()}"
+                                                         update=":growlForm:growlCenter :formulaire">
+                                            <f:param name="idDossier" value="#{ajoutPlanningDossierMB.idDossier}"/>
+                                        </p:commandButton>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- dialog for select evttarif -->
+                <h:form id="form-evttarif">
+                    <p:dialog widgetVar="dlEvt" modal="true" width="400" header="Evènements">
+                        <h:panelGroup id="panSelectEvt">
+                            <p:selectOneRadio layout="responsive" columns="1" 
+                                              value="#{ajoutPlanningDossierMB.planning.idEvt}" >
+                                <f:selectItems value="#{ajoutPlanningDossierMB.evt}" var="evt"
+                                               itemValue="#{evt.id}" itemLabel="#{evt.libelle}"/>
+                            </p:selectOneRadio>
+                            <h:commandButton value="Sélectionner" onclick="PF('dlEvt').hide()" 
+                                             action="#{ajoutPlanningDossierMB.validEvt()}"
+                                             class="btn btn-primary pull-right">
+                                <f:param name="idDossier" value="#{ajoutPlanningDossierMB.idDossier}"/>
+                                <f:ajax execute=":form-evttarif" render=":formulaire:evt"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+
+
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>
