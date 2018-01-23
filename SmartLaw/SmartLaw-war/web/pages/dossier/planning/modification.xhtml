@@ -5,58 +5,49 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
     <f:metadata>
-        <f:viewParam name="idDossier" value="#{ajoutPlanningDossierMB.idDossier}"/>
-        <f:viewAction action="#{ajoutPlanningDossierMB.loadDossier()}"/>
+        <f:viewParam name="idDossier" value="#{modificationPlanningMB.idDossier}" required="true"/>
+        <f:viewParam name="idPlanning" value="#{modificationPlanningMB.idPlanning}" required="true"/>
+        <f:viewAction action="#{modificationPlanningMB.loadPlanning()}"/>
     </f:metadata>
     <body>
 
         <ui:composition template="./../../../WEB-INF/templates/lte-admin.xhtml">
 
             <ui:define name="content">
+                
                 <section class="content-header">
                     <h1>
-                        Dossier N° #{ajoutPlanningDossierMB.dossier.numeroDossier} : #{ajoutPlanningDossierMB.dossier.vnomDossier}
-                        <small>Planning</small>
+                        Planning 
+                        <small>Modification</small>
                     </h1>
+                    
                     <ol class="breadcrumb">
                         <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
                         <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i>Dossiers</h:link></li>
-                        <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}"><i class="fa fa-info"></i>Fiche</h:link></li>
-                        <li class="active">Planning</li>
+                        <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{modificationPlanningMB.idDossier}">
+                                <i class="fa fa-folder"></i>Dossier</h:link>
+                        </li>
+                        <li><h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{modificationPlanningMB.idDossier}">
+                                <i class="fa fa-calendar"></i>Planning</h:link>
+                        </li>
+
+                        <li class="active">Modification</li>
                     </ol>
                 </section>
 
                 <h:form id="growlForm">
-                    <p:growl id="growlCenter" life="400"/>
+                    <p:growl id="growlCenter"/>
                 </h:form>
 
                 <section class="content">
-                    <div class="btn-group">
-                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
-                                class="btn btn-primary">Fiche</h:link>
-                        <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
-                                class="btn btn-primary">Evènements</h:link>
-                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
-                                class="btn btn-primary">Facturation</h:link>
-
-                        <h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
-                                class="btn btn-primary">Planning</h:link>
-                        <h:link outcome="/pages/dossier/interlocuteur.xhtml?idDossier=#{ajoutPlanningDossierMB.idDossier}&faces-redirect:true;"
-                                class="btn btn-primary">Interlocuteurs</h:link>
-
-                    </div>
-
-                    <br></br>
-                    <br></br>
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="box box-success">
+                            <div class="box box-primary">
                                 <h:form class="form-horizontal" id="formulaire">
                                     <div class="box-header with-border">
                                         <i class="fa fa-plus"></i>
-                                        <h3 class="box-title">Nouveau planning</h3>
+                                        <h3 class="box-title">Modification du planning</h3>
                                     </div>
                                     <div class="box-body">
 
@@ -67,7 +58,7 @@
                                                 <label class="control-label col-md-3" for="datePlanning">Date</label>
                                                 <div class="col-md-9">
                                                     <p:calendar id="datePlanning" pattern="dd/MM/yyyy" mask="true"
-                                                                value="#{ajoutPlanningDossierMB.planning.datePlanning}"
+                                                                value="#{modificationPlanningMB.planning.datePlanning}"
                                                                 inputStyle="width:100px;"
                                                                 inputStyleClass="text-center"
                                                                 required="true" requiredMessage="Champ obligatoire"/>
@@ -79,17 +70,18 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-3" for="evt">Evènement</label>
                                                 <h:panelGroup class="col-md-6">
-                                                    <h:inputText id="evt" class="form-control" value="#{ajoutPlanningDossierMB.evtSelected.libelle}" required="true" requiredMessage="Champ obligatoire"/>
+                                                    <h:inputText id="evt" class="form-control" value="#{modificationPlanningMB.evtSelected.libelle}" required="true" requiredMessage="Champ obligatoire"/>
                                                     <h:message class="text-yellow" for="evt"/>
                                                 </h:panelGroup>
 
                                                 <h:commandButton class="btn btn-default" value="Sélectionner"
-                                                                 action="#{ajoutPlanningDossierMB.loadEvt}"
+                                                                 action="#{modificationPlanningMB.loadEvt}"
                                                                  onclick="PF('dlEvt').show();">
-                                                    <f:param value="#{ajoutPlanningDossierMB.idDossier}" name="idDossier"/>
+                                                    <f:param value="#{modificationPlanningMB.idDossier}" name="idDossier"/>
+                                                    <f:param name="idPlanning" value="#{modificationPlanningMB.idPlanning}"/>
                                                     <f:ajax render=":form-evttarif:panSelectEvt"/>
                                                 </h:commandButton>
-
+                                                
 
                                             </div>
 
@@ -97,7 +89,7 @@
                                                 <label class="control-label col-md-3" for="libelle">Libelle</label>
                                                 <div class="col-md-9">
                                                     <h:inputText id="libelle" class="form-control"
-                                                                 value="#{ajoutPlanningDossierMB.planning.notes}"
+                                                                 value="#{modificationPlanningMB.planning.notes}"
                                                                  required="true" requiredMessage="Champ obligatoire"/>
                                                     <h:message class="text-yellow"  for="libelle"/>
                                                 </div>
@@ -107,17 +99,17 @@
                                                 <label class="control-label col-md-3" for="ville">Ville</label>
                                                 <div class="col-md-9">
                                                     <h:inputText id="ville" class="form-control"
-                                                                 value="#{ajoutPlanningDossierMB.planning.ville}"/>
+                                                                 value="#{modificationPlanningMB.planning.ville}"/>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="juridiction" class="control-label col-md-3">Juridiction</label>
                                                 <div class=" col-md-9">
-                                                    <h:selectOneMenu id="juridiction" value="#{ajoutPlanningDossierMB.planning.idJur}"
+                                                    <h:selectOneMenu id="juridiction" value="#{modificationPlanningMB.planning.idJur}"
                                                                      class="form-control"
                                                                      >
-                                                        <f:selectItems value="#{ajoutPlanningDossierMB.juridictions}" var="jur"
+                                                        <f:selectItems value="#{modificationPlanningMB.juridictions}" var="jur"
                                                                        itemValue="#{jur.id}" itemLabel="#{jur.libelle}"/>
                                                     </h:selectOneMenu>
                                                 </div>
@@ -127,10 +119,10 @@
                                             <div class="form-group">
                                                 <label for="transport" class="control-label col-md-3">Transport</label>
                                                 <div class=" col-md-9">
-                                                    <h:selectOneMenu id="transport" value="#{ajoutPlanningDossierMB.planning.transport}"
+                                                    <h:selectOneMenu id="transport" value="#{modificationPlanningMB.planning.transport}"
                                                                      class="form-control"
                                                                      >
-                                                        <f:selectItems value="#{ajoutPlanningDossierMB.transport}" var="t"
+                                                        <f:selectItems value="#{modificationPlanningMB.transport}" var="t"
                                                                        itemValue="#{t}" itemLabel="#{t}"/>
                                                     </h:selectOneMenu>
                                                 </div>
@@ -143,7 +135,7 @@
                                                 <label class="control-label col-md-3" for="datedeb">Début</label>
                                                 <div class="col-md-9">
                                                     <p:calendar id="datedeb" pattern="HH:mm" mask="true"
-                                                                value="#{ajoutPlanningDossierMB.planning.heureDebut}"
+                                                                value="#{modificationPlanningMB.planning.heureDebut}"
                                                                 inputStyle="width:80px;" timeOnly="true" inputStyleClass="text-center"
                                                                 required="true" requiredMessage="Champ obligatoire"/>
                                                     <h:message class="text-yellow"  for="datedeb"/>
@@ -154,7 +146,7 @@
                                                 <label class="control-label col-md-3" for="datefin">Fin</label>
                                                 <div class="col-md-9">
                                                     <p:calendar id="datefin" pattern="HH:mm" mask="true"
-                                                                value="#{ajoutPlanningDossierMB.planning.heureFin}"
+                                                                value="#{modificationPlanningMB.planning.heureFin}"
                                                                 inputStyle="width:80px;" timeOnly="true" inputStyleClass="text-center"/>
                                                 </div>
                                             </div>
@@ -162,10 +154,10 @@
                                             <div class="form-group">
                                                 <label for="intervenant" class="control-label col-md-3">Intervenant</label>
                                                 <div class=" col-md-9">
-                                                    <h:selectOneMenu id="intervenant" value="#{ajoutPlanningDossierMB.planning.idIntervenant}"
+                                                    <h:selectOneMenu id="intervenant" value="#{modificationPlanningMB.planning.idIntervenant}"
                                                                      class="form-control"
                                                                      >
-                                                        <f:selectItems value="#{ajoutPlanningDossierMB.intervenants}" var="gest"
+                                                        <f:selectItems value="#{modificationPlanningMB.intervenants}" var="gest"
                                                                        itemValue="#{gest.id}" itemLabel="#{gest.nom} #{gest.prenom}"/>
                                                     </h:selectOneMenu>
                                                 </div>
@@ -175,10 +167,10 @@
                                             <div class="form-group">
                                                 <label for="gestionnaire" class="control-label col-md-3">Gestionnaire</label>
                                                 <div class=" col-md-9">
-                                                    <h:selectOneMenu id="gestionnaire" value="#{ajoutPlanningDossierMB.planning.idGestionnaire}"
+                                                    <h:selectOneMenu id="gestionnaire" value="#{modificationPlanningMB.planning.idGestionnaire}"
                                                                      class="form-control"
                                                                      >
-                                                        <f:selectItems value="#{ajoutPlanningDossierMB.gestionnaires}" var="gest"
+                                                        <f:selectItems value="#{modificationPlanningMB.gestionnaires}" var="gest"
                                                                        itemValue="#{gest.id}" itemLabel="#{gest.nom} #{gest.prenom}"/>
                                                     </h:selectOneMenu>
                                                 </div>
@@ -190,31 +182,35 @@
                                     </div>
                                     <div class="box-footer">
                                         <p:commandButton value="Créer" class="btn btn-primary pull-right"
-                                                         action="#{ajoutPlanningDossierMB.creer()}"
+                                                         action="#{modificationPlanningMB.modifier()}"
                                                          update=":growlForm:growlCenter :formulaire">
-                                            <f:param name="idDossier" value="#{ajoutPlanningDossierMB.idDossier}"/>
+                                            <f:param name="idDossier" value="#{modificationPlanningMB.idDossier}"/>
+                                            <f:param name="idPlanning" value="#{modificationPlanningMB.idPlanning}"/>
                                         </p:commandButton>
                                     </div>
                                 </h:form>
                             </div>
                         </div>
                     </div>
+                    
                 </section>
 
-
+                
+                
                 <!-- dialog for select evttarif -->
                 <h:form id="form-evttarif">
                     <p:dialog widgetVar="dlEvt" modal="true" width="400" header="Evènements">
                         <h:panelGroup id="panSelectEvt">
                             <p:selectOneRadio layout="responsive" columns="1" 
-                                              value="#{ajoutPlanningDossierMB.planning.idEvt}" >
-                                <f:selectItems value="#{ajoutPlanningDossierMB.evt}" var="evt"
+                                              value="#{modificationPlanningMB.planning.idEvt}" >
+                                <f:selectItems value="#{modificationPlanningMB.evt}" var="evt"
                                                itemValue="#{evt.id}" itemLabel="#{evt.libelle}"/>
                             </p:selectOneRadio>
                             <h:commandButton value="Sélectionner" onclick="PF('dlEvt').hide()" 
-                                             action="#{ajoutPlanningDossierMB.validEvt()}"
+                                             action="#{modificationPlanningMB.validEvt()}"
                                              class="btn btn-primary pull-right">
-                                <f:param name="idDossier" value="#{ajoutPlanningDossierMB.idDossier}"/>
+                                <f:param name="idDossier" value="#{modificationPlanningMB.idDossier}"/>
+                                <f:param name="idPlanning" value="#{modificationPlanningMB.idPlanning}"/>
                                 <f:ajax execute=":form-evttarif" render=":formulaire:evt"/>
 
                             </h:commandButton>
@@ -223,9 +219,9 @@
 
                     </p:dialog>
                 </h:form>
-
             </ui:define>
 
         </ui:composition>
+
     </body>
 </html>

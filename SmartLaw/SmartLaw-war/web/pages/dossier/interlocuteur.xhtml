@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="idDossier" value="#{listeInterlocuteurMB.idDossier}" required="true"/>
+        <f:viewAction action="#{listeInterlocuteurMB.loadDossier()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                    .ui-inputfield{
+                        width:180px;
+                    }
+                    .ui-selectcheckboxmenu-multiple-container {
+                        width:240px;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Dossier N° #{listeInterlocuteurMB.dossier.numeroDossier} : #{listeInterlocuteurMB.dossier.vnomDossier}
+                        <small>Interlocuteurs</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-users"></i>Dossiers</h:link></li>
+                        <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}"><i class="fa fa-users"></i>Fiche</h:link></li>
+                        <li class="active">Interlocuteurs</li>
+                    </ol>
+                </section>
+
+
+                <section class="content">
+                    <h:form id="growlForm">
+                        <p:growl id="growlCenter"/>
+                    </h:form>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-users"></i>
+                                    <h1 class="box-title">Contacts</h1>
+                                    <div class="box-tools pull-right">
+
+                                        <button class="btn btn-primary btn-sm" onclick="#{listeInterlocuteurMB.loadContacts()};PF('dialog-contacts').show();">
+                                            <i class="fa fa-edit"></i>&nbsp;&nbsp;Ajouter
+                                        </button>
+
+                                    </div>
+                                </div>                                         
+                                <div class="box-body">
+                                    <h:panelGroup id="table">
+
+                                        <table class="table table-hover">
+                                            <ui:repeat value="#{listeInterlocuteurMB.liste}" var="interlocuteur">
+                                                <tr>
+                                                    <td>#{interlocuteur.nom} #{interlocuteur.prenom}</td>
+                                                    <td style="width: 130px">
+                                                        <h:form>
+                                                            <div class="btn-group pull-right">
+
+                                                                <h:commandButton value="Voir" class="btn btn-primary btn-xs"
+                                                                                 action="#{listeInterlocuteurMB.voir(interlocuteur.id)}"
+                                                                                 >
+                                                                    <f:param name="idDossier" value="#{listeInterlocuteurMB.idDossier}"/>
+                                                                    <f:ajax render=":info"/>
+                                                                </h:commandButton>
+                                                                <h:commandButton value="Enlever" class="btn btn-danger btn-xs"
+                                                                                 action="#{listeInterlocuteurMB.supprimer(interlocuteur.id)}"
+                                                                                 update=":growlForm:growlCenter">
+                                                                    <f:param name="idDossier" value="#{listeInterlocuteurMB.idDossier}"/>
+                                                                    <f:ajax execute="@this" render=":table"/>
+                                                                </h:commandButton>
+                                                            </div>
+                                                        </h:form>
+
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </table>
+
+                                    </h:panelGroup>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-info"></i>
+                                    <h1 class="box-title">Informations</h1>
+                                </div>                                         
+                                <div class="box-body">
+                                    <h:panelGroup id="info">
+                                        <div class="box-body dl-horizontal">
+                                            <dl>
+                                                <p>#{listeInterlocuteurMB.contact.titreContact} #{listeInterlocuteurMB.contact.nom} #{listeInterlocuteurMB.contact.prenom}</p>
+                                                <p>#{listeInterlocuteurMB.contact.adresse}</p>
+                                                <p>#{listeInterlocuteurMB.contact.cp}</p>
+                                                <p>#{listeInterlocuteurMB.contact.pays}</p>
+                                                <p>#{listeInterlocuteurMB.contact.ville}</p>
+
+                                                <dt>Bureau</dt>
+                                                <dd>#{listeInterlocuteurMB.contact.bureau}</dd>
+
+                                                <dt>Mobile</dt>
+                                                <dd>#{listeInterlocuteurMB.contact.mobile}</dd>
+
+                                                <dt>Standard</dt>
+                                                <dd>#{listeInterlocuteurMB.contact.standard}</dd>
+
+                                                <dt>Fax</dt>
+                                                <dd>#{listeInterlocuteurMB.contact.fax}</dd>
+
+                                                <dt>Site web</dt>
+                                                <dd>#{listeInterlocuteurMB.contact.web}</dd>
+
+                                                <dt>Email</dt>
+                                                <dd>#{listeInterlocuteurMB.contact.email}</dd>                                        
+                                            </dl>
+                                        </div>
+                                    </h:panelGroup>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- dialog for contacts -->
+                <h:form id="form-addcontact">
+
+                    <p:dialog header="Contacts" widgetVar="dialog-contacts" modal="true" width="400">
+                        <h:panelGroup id="panel-setcontact">
+
+                            <p:selectOneRadio id="selectcont" value="#{listeInterlocuteurMB.idContactSelected}" 
+                                              layout="responsive" columns="1" 
+                                              required="true"
+                                              requiredMessage="Champ obligatoire">
+                                <f:selectItems value="#{listeInterlocuteurMB.contacts}" var="cont" itemLabel="#{cont.nom} 
+                                               #{cont.prenom}" itemValue="#{cont.id}"/>
+                            </p:selectOneRadio>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{listeInterlocuteurMB.ajouterInterlocuteur()}" value="Valider"
+                                             onclick="PF('dialog-contacts').hide();">
+                                <f:param name="idDossier" value="#{listeInterlocuteurMB.idDossier}"/>
+                                <f:ajax execute=":form-addcontact" 
+                                        render=":table :growlForm:growlCenter"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
