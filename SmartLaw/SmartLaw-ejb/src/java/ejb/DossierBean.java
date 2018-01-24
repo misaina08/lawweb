@@ -6,8 +6,15 @@
 package ejb;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -16,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import modeles.BaseModele;
 import modeles.contact.ContactClient;
 import modeles.dossiers.ContactDossier;
+import modeles.dossiers.DocumentModele;
 import modeles.dossiers.Dossier;
 import modeles.dossiers.DossierLibelle;
 import modeles.parametres.DefaultDir;
@@ -23,12 +31,12 @@ import modeles.parametres.TypeFacturationClient;
 import modeles.parametres.TypeFacturationDossier;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import services.ClientService;
 import services.DossierService;
 import statiques.ObjetStatique;
 import utilitaire.ConstanteDirectory;
 import utilitaire.DefaultsDirectory;
 import utilitaire.ReportUtil;
+import utilitaire.Util;
 
 /**
  *
@@ -42,7 +50,7 @@ public class DossierBean {
     private GeneriqueBean generiqueBean;
 
     public void save(Dossier dossier) throws Exception {
-        
+
         Session sess = null;
         Transaction tr = null;
         TypeFacturationDossier td = null;
@@ -51,17 +59,16 @@ public class DossierBean {
         List<BaseModele> bm = null;
 
         try {
-            
 
             tf = new TypeFacturationClient();
 
             td = new TypeFacturationDossier();
             sess = generiqueBean.getService().getDao().getSessionFact().openSession();
             tr = sess.beginTransaction();
-            
+
 //            save dossier
             generiqueBean.getService().save(dossier);
-            
+
             //find premier contact du client
             ContactClient cc = new ContactClient();
             cc.setIdClient(dossier.getIdClient());
@@ -109,7 +116,7 @@ public class DossierBean {
                 dir.mkdir();
             }
             // crétaion d'un dossier dénomé "Factures"
-            File dirFacture = new File(dirDossier.getAbsolutePath() + "/"+DefaultsDirectory.FACTURES.toString()+"/");
+            File dirFacture = new File(dirDossier.getAbsolutePath() + "/" + DefaultsDirectory.FACTURES.toString() + "/");
             dirFacture.mkdir();
 
             tr.commit();
@@ -118,7 +125,7 @@ public class DossierBean {
             throw ex;
         }
     }
-    
+
     public void printFiche(DossierLibelle dLib) {
         ReportUtil reportUtil = null;
         try {
@@ -131,12 +138,60 @@ public class DossierBean {
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.reset();
 //            Nom du fichier
-            reportUtil.download(map, response, ReportUtil.ReportType.PDF, pathReport, "Dossier No"+dLib.getNumeroDossier()+" - "+dLib.getVnomDossier());
+            reportUtil.download(map, response, ReportUtil.ReportType.PDF, pathReport, "Dossier No" + dLib.getNumeroDossier() + " - " + dLib.getVnomDossier());
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
-    
+
+    public String[] getTiroirsDossier(DossierLibelle dossier) throws Exception {
+
+        try {
+            String pathDossier = ConstanteDirectory.getDefaultDirectoryServer() + dossier.getNumeroDossier();
+            File dirDossier = new File(pathDossier);
+            File[] listDirectory = dirDossier.listFiles();
+            String[] tiroirs = new String[listDirectory.length];
+            for (int i = 0; i < listDirectory.length; i++) {
+                tiroirs[i] = listDirectory[i].getName();
+            }
+            return tiroirs;
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+    }
+
+    public void ajoutTiroir(DossierLibelle dossier, String nomTiroir) throws Exception {
+        try {
+            new File(ConstanteDirectory.defaultDirectoryServer + dossier.getNumeroDossier() + "/" + nomTiroir).mkdir();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public void supprimerTiroir(DossierLibelle dossier, String nomTiroir) throws Exception {
+        try {
+            Util util = new Util();
+            File dir = new File(ConstanteDirectory.getDefaultDirectoryServer() + dossier.getNumeroDossier() + "/" + nomTiroir);
+            util.recursifDelete(dir);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public List<DocumentModele> filesTiroir(String path) throws Exception {
+
+        File dirDossier = new File(path);
+        File[] listFiles = dirDossier.listFiles();
+
+        List<DocumentModele> listeDocument = new ArrayList<DocumentModele>(listFiles.length);
+        for (int i = 0; i < listFiles.length; i++) {
+            DocumentModele dm = new DocumentModele();
+            dm.setNom(listFiles[i].getName());
+            dm.setDateModif(new Date(listFiles[i].lastModified()));
+            listeDocument.add(dm);
+        }
+        return listeDocument;
+    }
 }

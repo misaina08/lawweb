@@ -43,7 +43,22 @@
                     <h:form id="growlForm">
                         <p:growl id="growlCenter"/>
                     </h:form>
-
+                    <div class="btn-group">
+                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Fiche</h:link>
+                        <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Evènements</h:link>
+                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Facturation</h:link>
+                        <h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Planning</h:link>
+                        <h:link outcome="/pages/dossier/interlocuteur.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Interlocuteurs</h:link>
+                        <h:link outcome="/pages/dossier/documents.xhtml?idDossier=#{listeInterlocuteurMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Documents</h:link>
+                    </div>
+                    <br></br>
+                    <br></br>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="box">

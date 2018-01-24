@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+        <f:viewParam name="idDossier" value="#{listeDocumentMB.idDossier}" />
+        <f:viewAction action="#{listeDocumentMB.loadDossier()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <section class="content-header">
+                    <h1>
+                        Dossier N° #{listeDocumentMB.dossier.numeroDossier} : #{listeDocumentMB.dossier.vnomDossier}
+                        <small>Fiche</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i>Dossiers</h:link></li>
+                        <li class="active">Fiche</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{listeDocumentMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Fiche</h:link>
+                        <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{listeDocumentMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Evènements</h:link>
+                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{listeDocumentMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Facturation</h:link>
+                        <h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{listeDocumentMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Planning</h:link>
+                        <h:link outcome="/pages/dossier/interlocuteur.xhtml?idDossier=#{listeDocumentMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Interlocuteurs</h:link>
+                        <h:link outcome="/pages/dossier/documents.xhtml?idDossier=#{listeDocumentMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Documents</h:link>
+                    </div>
+
+                    <br></br>
+                    <br></br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="box box-solid box-pane">
+                                <div class="box-header">
+                                    <h1 class="box-title">Tiroirs</h1>
+                                    <!-- <div class="box-tools pull-right">
+                                         
+                                             <button class="btn" onclick="modifierTiroir();" id="btnedit">
+                                                 <i class="fa fa-edit" />
+                                             </button>
+                                             <button class="btn " onclick="validModifTiroir();" id="btnok" style="display:none;">
+                                                 <i class="fa fa-check" />
+                                             </button>
+                                         
+                                     </div>-->
+                                </div>
+                                <div class="box-body">
+                                    <h:panelGroup  id="liste-donnee">
+                                        <ul class="list-group">
+                                            <ui:repeat value="#{listeDocumentMB.tiroirs}" var="tiroir">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <h:form id="form-item" class="col-md-10 col-xs-10 col-sm-10 col-lg-10">
+                                                            <h:commandButton value="#{tiroir}" action="#{listeDocumentMB.voirFichiers(tiroir)}"
+                                                                             class="btn-link">
+                                                                <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                                                <f:ajax execute=":form-item" render=":form-don:pane-fichiers"/>
+                                                            </h:commandButton>
+                                                        </h:form>
+                                                        <span class="col-md-2 col-xs-2 col-sm-2 col-lg-2 btn-del-tiroir" style="background:none;">
+                                                            <h:form id="form-del">
+                                                                <h:commandButton value="-" action="#{listeDocumentMB.supprimerTiroir(tiroir)}"
+                                                                                 class="btn-del btn-xs btn-del-tiroir"
+                                                                                 style="display:block;">
+                                                                    <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                                                    <f:ajax execute=":form-del" render=":liste-donnee"/>
+                                                                </h:commandButton>
+                                                            </h:form>
+
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </ui:repeat>
+                                            <h:form id="form-ajout">
+                                                <div class="input-group" >
+                                                    <h:inputText id="newDossier" class="form-control" 
+                                                                 pt:placeholder="Nouveau"
+                                                                 value="#{listeDocumentMB.newDossier}"></h:inputText>
+
+                                                    <div class="input-group-btn">
+                                                        <h:commandButton class="btn btn-primary btn-flat"  value="Créer"
+                                                                         action="#{listeDocumentMB.ajouterTiroir()}">
+
+                                                            <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                                            <f:ajax execute=":form-ajout" render=":liste-donnee"/>
+                                                        </h:commandButton>
+                                                    </div>
+                                                </div>
+                                            </h:form>
+                                        </ul>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="box box-solid box-pane" >
+                                <h:form id="form-don">
+                                    <h:panelGroup id="pane-fichiers">
+                                        <div class="box-header">
+                                            <h1 class="box-title">#{listeDocumentMB.fichiers.size()} document(s)</h1>
+                                        </div>
+                                        <div class="box-body">
+                                            <p:selectOneRadio value="#{listeDocumentMB.fileSelected}"
+                                                              layout="responsive" columns="1" >
+                                                <f:selectItems value="#{listeDocumentMB.fichiers}" var="fichier"
+                                                               itemLabel="#{fichier.nom}" itemValue="#{fichier.nom}"/>
+                                            </p:selectOneRadio>
+
+
+                                        </div>
+                                    </h:panelGroup>
+                                    <div class="box-footer">
+                                        <p:commandButton value="Télécharger" class="btn btn-primary"
+                                                       id="downloadLink" icon="ui-icon-arrowthick-1-s"
+                                                       ajax="false">
+                                            <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                            <p:fileDownload value="#{listeDocumentMB.download()}" />
+                                        </p:commandButton>
+                                        <p:commandButton value="Supprimer" class="btn btn-danger"
+                                                       icon="ui-icon-arrowthick-1-s"
+                                                       ajax="false">
+                                            <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                            <p:fileDownload value="#{listeDocumentMB.download()}" />
+                                        </p:commandButton>
+                                    </div>
+
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+
+                </p:dialog>
+                <script>
+                    function modifierTiroir() {
+                        //document.querySelector('.btn-del-tiroir').style.display = 'none';
+
+//<![CDATA[ 
+                        var items = document.getElementsByClassName('btn-del-tiroir');
+                        for (var i = 0; i < items.length; i++) {
+                            document.querySelector('input[name="' + items[i].name + '"]').style.display = 'block';
+                        }
+                        document.querySelector('#btnedit').style.display = 'none';
+                        document.querySelector('#btnok').style.display = 'block';
+//]]>
+                    }
+                    function validModifTiroir() {
+                        //<![CDATA[ 
+                        var items = document.getElementsByClassName('btn-del-tiroir');
+                        for (var i = 0; i < items.length; i++) {
+                            document.querySelector('input[name="' + items[i].name + '"]').style.display = 'none';
+                        }
+                        document.querySelector('#btnedit').style.display = 'block';
+                        document.querySelector('#btnok').style.display = 'none';
+                        //]]>
+                    }
+                    function start() {
+                        PF('statusDialog').show();
+                    }
+
+                    function stop() {
+                        PF('statusDialog').hide();
+                    }
+                </script>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
