@@ -6,6 +6,8 @@
 package ejb;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -193,5 +195,12 @@ public class DossierBean {
             listeDocument.add(dm);
         }
         return listeDocument;
+    }
+    public void supprimerFichier(String path) {
+        try {
+            Files.delete(Paths.get(path));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

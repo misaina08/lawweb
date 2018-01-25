@@ -45,6 +45,7 @@ public class ListeDocumentMB implements Serializable {
     private String newDossier;
     List<DocumentModele> fichiers;
     private String fileSelected;
+    private String tiroirSelected;
 
     /**
      * Creates a new instance of ListeDocumentMB
@@ -86,8 +87,24 @@ public class ListeDocumentMB implements Serializable {
     public void voirFichiers(String nomTiroir) {
         try {
             setPathDossier(ConstanteDirectory.getDefaultDirectoryServer() + dossier.getNumeroDossier() + "/" + nomTiroir);
+            fichiers = null;
             fichiers = dossierBean.filesTiroir(getPathDossier());
+            for(DocumentModele d:fichiers) {
+                System.out.println("___ "+d.getNom());
+            }
+            tiroirSelected = nomTiroir;
         } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void supprimerFichier() {
+        try {
+            String pa = this.getPathDossier() + "/" + fileSelected;
+            System.out.println("tiroir "+tiroirSelected);
+            dossierBean.supprimerFichier(pa);
+            voirFichiers(tiroirSelected);
+        } catch(Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -154,8 +171,6 @@ public class ListeDocumentMB implements Serializable {
             StreamedContent download = new DefaultStreamedContent();
 
             String pa = this.getPathDossier() + "/" + fileSelected;
-            System.out.println(""+pa);
-            String p = "D:\\work\\smrhr\\lawapp\\docs\\dossiers\\180007\\Honoraires\\20171001_215124.jpg";
             File file = new File(pa);
             input = new FileInputStream(file);
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -175,4 +190,13 @@ public class ListeDocumentMB implements Serializable {
         this.fileSelected = fileSelected;
     }
 
+    public String getTiroirSelected() {
+        return tiroirSelected;
+    }
+
+    public void setTiroirSelected(String tiroirSelected) {
+        this.tiroirSelected = tiroirSelected;
+    }
+
+    
 }

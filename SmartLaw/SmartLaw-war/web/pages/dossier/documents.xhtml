@@ -118,32 +118,36 @@
                             <div class="box box-solid box-pane" >
                                 <h:form id="form-don">
                                     <h:panelGroup id="pane-fichiers">
-                                        <div class="box-header">
-                                            <h1 class="box-title">#{listeDocumentMB.fichiers.size()} document(s)</h1>
-                                        </div>
-                                        <div class="box-body">
-                                            <p:selectOneRadio value="#{listeDocumentMB.fileSelected}"
-                                                              layout="responsive" columns="1" >
-                                                <f:selectItems value="#{listeDocumentMB.fichiers}" var="fichier"
-                                                               itemLabel="#{fichier.nom}" itemValue="#{fichier.nom}"/>
-                                            </p:selectOneRadio>
+                                        <h:panelGroup >
+                                            <div class="box-header">
+                                                <h1 class="box-title">#{listeDocumentMB.fichiers.size()} document(s)</h1>
+                                            </div>
+                                            <div class="box-body" id="fich">
+                                                <p:selectOneRadio value="#{listeDocumentMB.fileSelected}"
+                                                                  layout="responsive" columns="1" >
+                                                    <f:selectItems value="#{listeDocumentMB.fichiers}" var="fichier"
+                                                                   itemLabel="#{fichier.nom}" itemValue="#{fichier.nom}"/>
+                                                </p:selectOneRadio>
 
 
-                                        </div>
+                                            </div>
+                                        </h:panelGroup>
                                     </h:panelGroup>
                                     <div class="box-footer">
+
                                         <p:commandButton value="Télécharger" class="btn btn-primary"
-                                                       id="downloadLink" icon="ui-icon-arrowthick-1-s"
-                                                       ajax="false">
+                                                         id="downloadLink" icon="ui-icon-arrowthick-1-s"
+                                                         ajax="false">
                                             <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
                                             <p:fileDownload value="#{listeDocumentMB.download()}" />
                                         </p:commandButton>
-                                        <p:commandButton value="Supprimer" class="btn btn-danger"
-                                                       icon="ui-icon-arrowthick-1-s"
-                                                       ajax="false">
+
+                                        <p:commandButton value="Supprimer" class="btn btn-primary"
+                                                         action="#{listeDocumentMB.supprimerFichier()}">
                                             <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
-                                            <p:fileDownload value="#{listeDocumentMB.download()}" />
+                                            <f:ajax execute=":form-don" render=":form-don:pane-fichiers :growlForm:growlCenter" />
                                         </p:commandButton>
+
                                     </div>
 
                                 </h:form>
