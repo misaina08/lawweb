@@ -10,18 +10,27 @@ import ejb.GeneriqueBean;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import modeles.dossiers.DocumentModele;
 import modeles.dossiers.DossierLibelle;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 import utilitaire.ConstanteDirectory;
 import utilitaire.MessageUtil;
 
@@ -89,23 +98,63 @@ public class ListeDocumentMB implements Serializable {
             setPathDossier(ConstanteDirectory.getDefaultDirectoryServer() + dossier.getNumeroDossier() + "/" + nomTiroir);
             fichiers = null;
             fichiers = dossierBean.filesTiroir(getPathDossier());
-            for(DocumentModele d:fichiers) {
-                System.out.println("___ "+d.getNom());
+            for (DocumentModele d : fichiers) {
+                System.out.println("___ " + d.getNom());
             }
             tiroirSelected = nomTiroir;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public void supprimerFichier() {
         try {
             String pa = this.getPathDossier() + "/" + fileSelected;
-            System.out.println("tiroir "+tiroirSelected);
+            System.out.println("tiroir " + tiroirSelected);
             dossierBean.supprimerFichier(pa);
             voirFichiers(tiroirSelected);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            UploadedFile file = event.getFile();
+
+            File f = new File(file.getFileName());
+            FileOutputStream fos = new FileOutputStream(f);
+            InputStream is = file.getInputstream();
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int a;
+            while (true) {
+                a = is.read(buffer);
+                if (a < 0) {
+                    break;
+                }
+                fos.write(buffer, 0, a);
+                fos.flush();
+            }
+//            SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//            String newname = fmt.format(new Date())
+//                    + event.getFile().getFileName().substring(
+//                            event.getFile().getFileName().lastIndexOf('.'));
+
+            Path fileToCpy = Paths.get(f.getAbsolutePath());
+            System.out.println("fichier " + this.getPathDossier() + "/" + event.getFile().getFileName());
+            Path fileCopy = Paths.get(this.getPathDossier() + "/" + event.getFile().getFileName());
+            Path newFile = Files.copy(fileToCpy, fileCopy);
+
+            fos.close();
+            is.close();
+            
+            voirFichiers(tiroirSelected);
+            MessageUtil.messageInfo(event.getFile().getFileName() + " a été sauvegardé.");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtil.messageErreur("Erreur de chargement du fichier");
         }
     }
 
@@ -198,5 +247,4 @@ public class ListeDocumentMB implements Serializable {
         this.tiroirSelected = tiroirSelected;
     }
 
-    
 }
