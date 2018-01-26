@@ -47,9 +47,12 @@
 
                         <h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{listePlanningDossier.idDossier}&faces-redirect:true;"
                                 class="btn btn-primary">Planning</h:link>
-                                <h:link outcome="/pages/dossier/interlocuteur.xhtml?idDossier=#{listePlanningDossier.idDossier}&faces-redirect:true;"
-                                        class="btn btn-primary">Interlocuteurs</h:link>
-
+                        <h:link outcome="/pages/dossier/interlocuteur.xhtml?idDossier=#{listePlanningDossier.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Interlocuteurs</h:link>
+                        <h:link outcome="/pages/dossier/documents.xhtml?idDossier=#{listePlanningDossier.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Documents</h:link>
+                        <h:link outcome="/pages/dossier/faits.xhtml?idDossier=#{listePlanningDossier.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Faits</h:link>
                     </div>
 
                     <br></br>
@@ -100,7 +103,7 @@
                                             </p:column>
                                             <p:column headerText="Actions">
                                                 <div class="btn-group">
-                                                    
+
                                                     <h:link outcome="/pages/dossier/planning/modification.xhtml?idDossier=#{listePlanningDossier.idDossier}&amp;idPlanning=#{pl.id}&amp;faces-redirect:true;"
                                                             value="Modifier" class="btn btn-primary btn-xs"/>
                                                     <h:commandButton value="Supprimer" class="btn btn-danger btn-xs"

@@ -14,6 +14,12 @@ import javafx.scene.control.DatePicker;
 
 public class Util {
 
+    public Date setTimeToZero(Date d) {
+        d.setSeconds(0);
+        d.setHours(0);
+        d.setMinutes(0);
+        return d;
+    }
     public String dateToTimeString(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

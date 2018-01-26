@@ -51,7 +51,7 @@ public class AjoutEvtMB implements Serializable {
     private List<Intervenant> observateurs;
     private Integer idIntervenantSelected;
     private Integer idObservateurSelected;
-    private Boolean sansDuree;
+    private Boolean sansDuree = false;
     private Integer idTarifsNSSelected;
 
     private TarifsNS tarifNSSelected;
@@ -100,12 +100,13 @@ public class AjoutEvtMB implements Serializable {
         try {
             tarifNSSelected = null;
             evtDossier.setIdEvtTarif(0);
-            evtDossier.setDuree(null);
+            Util u= new Util();
+            evtDossier.setDuree(u.setTimeToZero(new Date()));
             evtDossier.setMt(new Float(0));
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
-            
+
         }
     }
 
@@ -164,6 +165,24 @@ public class AjoutEvtMB implements Serializable {
 
     };
 
+    public void sansDureeOnChange() {
+        try {
+            if (sansDuree) {
+                Util u = new Util();
+                evtDossier.setMt(new Float(0));
+                evtDossier.setDuree(u.setTimeToZero(new Date()));
+            } else {
+                evtDossier.setDuree(tarifNSSelected.getDuree());
+                evtDossier.setMt(tarifNSSelected.getMt());
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    
+    
     public Converter getTarifNSConverter() {
         return tarifNSConverter;
     }

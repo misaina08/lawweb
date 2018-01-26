@@ -14,6 +14,7 @@
         <ui:composition template="./../../../WEB-INF/templates/lte-admin.xhtml">
 
             <ui:define name="content">
+                <h:outputStylesheet name="/css/all.css"/>
                 <f:view>
                     <section class="content-header">
                         <h1>
@@ -43,7 +44,8 @@
                                         <label for="date" class="control-label col-md-3">Date</label>
                                         <div class="col-md-9">
 
-                                            <p:calendar id="date" inputStyle="width:200px;" 
+                                            <p:calendar id="date" inputStyle="width:120px;"
+                                                        inputStyleClass="text-center" 
                                                         value="#{ajoutEvtMB.evtDossier.daty}"
                                                         pattern="dd/MM/yyyy"
                                                         mask="true"
@@ -51,8 +53,9 @@
                                                         requiredMessage="Le champ date est obligatoire">
 
                                             </p:calendar>
+                                            <h:message class="text-yellow"  for="date"/>
                                         </div>
-                                        <h:message for="date"/>
+
                                     </div>
 
                                     <div class="form-group">
@@ -118,53 +121,51 @@
                                         <h:message for="note"/>
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class=" col-md-9">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <h:selectBooleanCheckbox id="sansduree" class="checkbox" value="#{ajoutEvtMB.sansDuree}">
-                                                    </h:selectBooleanCheckbox>
-                                                    Sans durée
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <h:message for="sansduree"/>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="duree" class="control-label col-md-3">Durée (hh:mm)</label>
-                                            <h:panelGroup id="panel-duree" class="col-md-9">
-
-
-                                                <h:inputText id="duree" value="#{ajoutEvtMB.evtDossier.duree}" class="form-control">
-                                                    <f:convertDateTime type="time" pattern="HH:mm"/>
+                                    <div class="form-group custom-control custom-checkbox">
+                                        <label for="sansduree" class="control-label col-md-3"></label>
+                                        <div class="col-md-9">
+                                            <label>
+                                                <h:selectBooleanCheckbox id="sansduree" value="#{ajoutEvtMB.sansDuree}"
+                                                                         class="custom-control-input"
+                                                                         >
                                                     <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                                    <p:ajax event="keyup" update="mt" listener="#{ajoutEvtMB.dureeOnChange()}" />
-                                                </h:inputText>
-
-
-                                            </h:panelGroup>
-                                            <h:message for="duree"/>
+                                                    <f:ajax render=":formulaire" listener="#{ajoutEvtMB.sansDureeOnChange()}" execute=":sansduree"/>
+                                                </h:selectBooleanCheckbox>
+                                                &nbsp;Sans durée
+                                            </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="mt" class="control-label col-md-3">Montant (Ar)</label>
-                                            <h:panelGroup id="panel-mt" class=" col-md-9">
-                                                <h:inputText id="mt" class="form-control text-right" value="#{ajoutEvtMB.evtDossier.mt}">
-                                                    <f:convertNumber type="currency" currencySymbol=""/>
-                                                </h:inputText>
-                                            </h:panelGroup>
-                                            <h:message for="mt"/>
-                                        </div>
-                                    </div>
+
+
+
+                                    <h:panelGroup class="form-group" rendered="#{!ajoutEvtMB.sansDuree}">
+                                        <label for="duree" class="control-label col-md-3">Durée (hh:mm)</label>
+                                        <h:panelGroup id="panel-duree" class="col-md-3">
+                                            <h:inputText id="duree" value="#{ajoutEvtMB.evtDossier.duree}" class="form-control">
+                                                <f:convertDateTime type="time" pattern="HH:mm"/>
+                                                <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
+                                                <p:ajax event="keyup" update="mt" listener="#{ajoutEvtMB.dureeOnChange()}" />
+                                            </h:inputText>
+
+                                            <h:message class="text-yellow"  for="duree"/>
+                                        </h:panelGroup>
+                                        <label for="mt" class="control-label col-md-3">Montant (Ar)</label>
+                                        <h:panelGroup id="panel-mt" class=" col-md-3">
+                                            <h:inputText id="mt" class="form-control text-right" value="#{ajoutEvtMB.evtDossier.mt}">
+                                                <f:convertNumber type="currency" currencySymbol=""/>
+                                            </h:inputText>
+                                            <h:message class="text-yellow"  for="mt"/>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+
 
                                 </div>
                                 <div class="box-footer">
-                                    <h:commandButton action="#{ajoutEvtMB.valider}" value="Valider" class="btn btn-primary pull-right">
+                                    <p:commandButton action="#{ajoutEvtMB.valider}" value="Valider" 
+                                                     class="btn btn-primary pull-right"
+                                                     update=":growlForm:growlCenter :formulaire">
                                         <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                    </h:commandButton>
+                                    </p:commandButton>
                                 </div>
                             </div>
                         </h:form>
@@ -173,7 +174,7 @@
 
 
                         <h:form id="form-evt">
-                            
+
                             <p:dialog header="Tarifs de l'intervenant sélectionné" widgetVar="dialog-evt" modal="true" width="400">
                                 <h:panelGroup id="panel-evt">
 
@@ -200,9 +201,12 @@
 
                     </section>
                 </f:view>
+
+
             </ui:define>
 
         </ui:composition>
 
     </body>
+
 </html>
