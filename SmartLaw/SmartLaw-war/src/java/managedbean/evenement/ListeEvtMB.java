@@ -31,7 +31,7 @@ import utilitaire.MessageUtil;
  */
 @Named(value = "listeEvtMB")
 @ViewScoped
-public class ListeEvtMB implements Serializable{
+public class ListeEvtMB implements Serializable {
 
     @EJB
     private FacturationBean facturationBean;
@@ -43,15 +43,13 @@ public class ListeEvtMB implements Serializable{
     }
     @EJB
     private GeneriqueBean generiqueBean;
-    
-    
 
     private Integer idDossier;
     private DossierLibelle dossier;
     private List<EvtDossierLibelle> evtDossier;
     private Map<Integer, Boolean> checked = new HashMap<Integer, Boolean>();
     private List<MtTypeTarif> totaux;
-    private List<EvtDossierLibelle> evtAImprimer;
+    private List<EvtDossierLibelle> evtAImprimer = new ArrayList<EvtDossierLibelle>();
 
 //    for prefacturation
     private List<MtTypeTarif> totauxTarif;
@@ -64,7 +62,7 @@ public class ListeEvtMB implements Serializable{
         try {
             DossierLibelle d = new DossierLibelle();
             d.setId(idDossier);
-            System.out.println("id dossssssier " + idDossier);
+
             dossier = (DossierLibelle) generiqueBean.getService().findById(d);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -85,7 +83,7 @@ public class ListeEvtMB implements Serializable{
     public void initializeMt() {
 
         try {
-
+            totalHT = new Float(0);
             for (TypeTarifEvt tte : ObjetStatique.getTypeTarifEvt()) {
                 Float m = new Float(0);
                 for (EvtDossierLibelle edl : evtAImprimer) {
@@ -104,49 +102,23 @@ public class ListeEvtMB implements Serializable{
 
     public String validerFacture() {
         try {
-            System.out.println("validation facture");
-            System.out.println("taches " + evtAImprimer);
+
             facturationBean.genererFacture(evtAImprimer, tva);
             MessageUtil.addFlashInfoMessage("Tâches facturées");
             return "/pages/dossier/liste.xhtml?faces-redirect=true;";
         } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtil.addFlashErrorMessage(ex.getMessage());
-            return "/pages/dossier/evenement/liste.xhtml?idDossier="+idDossier+"&faces-redirect=true;";
-            
+            return "/pages/dossier/evenement/liste.xhtml?idDossier=" + idDossier + "&faces-redirect=true;";
+
         }
     }
 
     // fin prefacturation
     public void genererPreFacturation() {
         try {
-            evtAImprimer = new ArrayList<EvtDossierLibelle>();
-            for (EvtDossierLibelle e : evtDossier) {
-                if (checked.get(e.getId()) != null) {
-                    System.out.println(e.getNomInterv());
-                    evtAImprimer.add(e);
-                }
-
-            }
+            totauxTarif = calculerTotauxSelected();
             initializeMt();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }
-    }
-
-    public void onClickCheckBox() {
-        try {
-            
-            evtAImprimer = new ArrayList<EvtDossierLibelle>();
-            for (EvtDossierLibelle e : evtDossier) {
-                if (checked.get(e.getId()) != null) {
-                    System.out.println("id"+e.getId());
-                    evtAImprimer.add(e);
-                }
-
-            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -156,42 +128,26 @@ public class ListeEvtMB implements Serializable{
 
     public void printListeEvt() {
         try {
-            System.out.println("ato am printlist");
-            evtAImprimer = new ArrayList<EvtDossierLibelle>();
-            for (EvtDossierLibelle e : evtDossier) {
-                if (checked.get(e.getId()) != null) {
-                    System.out.println(e.getNomInterv());
-                    evtAImprimer.add(e);
-                }
-
-            }
-            
+            totauxTarif = calculerTotauxSelected();
             evenementBean.printListeEvt(evtAImprimer, dossier);
-            //            checked.clear();
-            //            evtAImprimer.clear();
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
     }
 
-    public void updateChecked(Integer id) {
-        System.out.println("id " + id);
-    }
-
     public String supprimerEvt(Integer id) {
-        System.out.println("id evt " + id);
         try {
             EvenementDossier ed = new EvenementDossier();
             ed.setId(id);
             generiqueBean.getService().delete(ed);
             totaux = calculerTotaux();
             MessageUtil.addFlashInfoMessage("Tâche supprimée");
-            return "/pages/dossier/evenement/liste.xhtml?idDossier="+idDossier+"&faces-redirect=true;";
+            return "/pages/dossier/evenement/liste.xhtml?idDossier=" + idDossier + "&faces-redirect=true;";
         } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtil.addFlashWarnMessage("Cette tâche ne peut plus être supprimée. Elle est déjà utilisée ailleur");
-            return "/pages/dossier/evenement/liste.xhtml?idDossier="+idDossier+"&faces-redirect=true;";
+            return "/pages/dossier/evenement/liste.xhtml?idDossier=" + idDossier + "&faces-redirect=true;";
         }
     }
 
@@ -204,8 +160,8 @@ public class ListeEvtMB implements Serializable{
             return null;
         }
     }
-    
-    public void huuhu(){
+
+    public void huuhu() {
         System.out.println("asim");
     }
 

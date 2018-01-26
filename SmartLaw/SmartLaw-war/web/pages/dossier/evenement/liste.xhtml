@@ -18,6 +18,16 @@
                     .ui-widget-content a {
                         color: white;
                     }
+                    .ui-button, button.ui-button.ui-state-default, .ui-button.ui-state-default button{
+                        background:white;
+                    }
+                    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+                        background:white;
+                    }
+
+                    .ui-button{
+                        background:white;
+                    }
                 </style>
                 <section class="content-header">
                     <h1>
@@ -38,23 +48,26 @@
                 </h:form>
                 <section class="content">
                     <div class="btn-group">
-                        <h:link outcome="/pages/dossier/evenement/ajout.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;" class="btn btn-success" value="Nouvelle tâche"/>
-
-
+                        <h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Fiche</h:link>
+                        <h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Evènements</h:link>
+                        <h:link outcome="/pages/dossier/facturation.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Facturation</h:link>
+                        <h:link outcome="/pages/dossier/planning/liste.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Planning</h:link>
+                        <h:link outcome="/pages/dossier/interlocuteur.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Interlocuteurs</h:link>
+                        <h:link outcome="/pages/dossier/documents.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Documents</h:link>
+                        <h:link outcome="/pages/dossier/faits.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;"
+                                class="btn btn-primary">Faits</h:link>
                     </div>
-                    <div class=" btn-group pull-right">
-                        <h:form id="form-actions">
 
-                            <h:commandButton action="#{listeEvtMB.printListeEvt()}" class="btn bg-maroon" value="Imprimer">
-                            </h:commandButton>
-                            <h:commandButton class="btn bg-olive" value="Génerer la facture"
-                                             onclick="PF('dlprefacturation').show();">
-                                <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
-                                <f:ajax execute=":form-actions" render=":modal-panel" 
-                                        listener="#{listeEvtMB.genererPreFacturation()}" />
-                            </h:commandButton>
-
-                        </h:form>
+                    <br></br>
+                    <br></br>
+                    <div class="btn-group">
+                        <h:link outcome="/pages/dossier/evenement/ajout.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;" class="btn btn-success" value="Nouvelle tâche"/>
                     </div>
 
                     <div class="row">
@@ -65,21 +78,15 @@
                                 </div>
                                 <div class="box-body">
                                     <h:form id="datatable-form">
-                                        <p:dataTable id="datatable" value="#{listeEvtMB.evtDossier}" var="evt" widgetVar="evtTable">
+                                        <p:dataTable id="datatable" value="#{listeEvtMB.evtDossier}" var="evt" widgetVar="evtTable"
+                                                     selection="#{listeEvtMB.evtAImprimer}" rowKey="#{evt.id}">
                                             <f:facet name="header">
                                                 <p:outputPanel >
                                                     <p:inputText id="globalFilter" onkeyup="PF('evtTable').filter()" style="width:300px" placeholder="Recherche"/>
                                                 </p:outputPanel>
                                             </f:facet>
-                                            <p:column width="40">
 
-                                                <h:selectBooleanCheckbox class="checkbox" value="#{listeEvtMB.checked[evt.id]}"
-                                                                         onclick="#{listeEvtMB.onClickCheckBox()}" >
-                                                    <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
-                                                    <f:ajax event="valueChange" render=":datatable-form:datatable" />
-                                                </h:selectBooleanCheckbox>
-
-                                            </p:column>
+                                            <p:column selectionMode="multiple" style="width:40px;text-align:center"/>
                                             <p:column headerText="Date" width="120" sortBy="#{evt.daty}" styleClass="text-center" filterBy="#{evt.daty}" filterMatchMode="contains">
                                                 <h:outputText value="#{evt.daty}">
                                                     <f:convertDateTime pattern="DD/MM/YYYY"/>
@@ -87,7 +94,6 @@
                                             </p:column>
                                             <p:column headerText="Intervenant" sortBy="#{evt.nomInterv}" filterBy="#{evt.nomInterv}" filterMatchMode="contains">
                                                 <h:outputText value="#{evt.nomInterv}"></h:outputText>
-                                                <h:outputText value="#{evt.id}"></h:outputText>
                                             </p:column>
 
                                             <p:column headerText="Tâche" sortBy="#{evt.libelle}" filterBy="#{evt.libelle}" filterMatchMode="contains">
@@ -111,14 +117,37 @@
                                                     <h:commandButton class="btn btn-danger btn-xs"
                                                                      value="Supprimer" action="#{listeEvtMB.supprimerEvt(evt.id)}">
                                                         <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
-                                                        
+
                                                     </h:commandButton>
                                                 </div>
 
                                             </p:column>
+                                            <f:facet name="footer" >
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <p:commandButton value="Génerer la facture"
+                                                                         styleClass="btn bg-olive pull-right"
+                                                                         process=":datatable-form:datatable" 
+                                                                         update=":modal-panel"
+                                                                         onclick="PF('dlprefacturation').show();"
+                                                                         actionListener="#{listeEvtMB.genererPreFacturation()}">
 
+                                                            <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
+                                                        </p:commandButton>
+                                                        
+                                                        <h:commandButton action="#{listeEvtMB.printListeEvt()}" class="btn bg-maroon pull-right" value="Imprimer">
+                                                        </h:commandButton>
+                                                        
+
+
+                                                    </div>
+                                                </div>
+                                            </f:facet>
                                         </p:dataTable>
                                     </h:form>
+
+
+
                                 </div>
 
                             </div>
@@ -247,7 +276,7 @@
                                          onclick="PF('dlprefacturation').hide();">
                             <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
                             <f:ajax execute=":sdf" 
-                                    render=":form-actions :datatable-form :totaux"/>
+                                    render=":datatable-form :totaux"/>
                         </h:commandButton>
 
                     </h:form>
