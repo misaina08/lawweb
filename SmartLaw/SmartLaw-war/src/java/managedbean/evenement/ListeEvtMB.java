@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import modeles.dossiers.DossierLibelle;
+import modeles.evenement.EvenementDossier;
 import modeles.evenement.EvtDossierLibelle;
 import modeles.evenement.MtTypeTarif;
 import modeles.parametres.TypeTarifEvt;
@@ -137,11 +138,11 @@ public class ListeEvtMB implements Serializable{
 
     public void onClickCheckBox() {
         try {
-            System.out.println("onclick check");
+            
             evtAImprimer = new ArrayList<EvtDossierLibelle>();
             for (EvtDossierLibelle e : evtDossier) {
                 if (checked.get(e.getId()) != null) {
-                    System.out.println(e.getNomInterv());
+                    System.out.println("id"+e.getId());
                     evtAImprimer.add(e);
                 }
 
@@ -178,12 +179,19 @@ public class ListeEvtMB implements Serializable{
         System.out.println("id " + id);
     }
 
-    public void supprimerEvt(Integer id) {
+    public String supprimerEvt(Integer id) {
         System.out.println("id evt " + id);
         try {
+            EvenementDossier ed = new EvenementDossier();
+            ed.setId(id);
+            generiqueBean.getService().delete(ed);
             totaux = calculerTotaux();
+            MessageUtil.addFlashInfoMessage("Tâche supprimée");
+            return "/pages/dossier/evenement/liste.xhtml?idDossier="+idDossier+"&faces-redirect=true;";
         } catch (Exception ex) {
             ex.printStackTrace();
+            MessageUtil.addFlashWarnMessage("Cette tâche ne peut plus être supprimée. Elle est déjà utilisée ailleur");
+            return "/pages/dossier/evenement/liste.xhtml?idDossier="+idDossier+"&faces-redirect=true;";
         }
     }
 

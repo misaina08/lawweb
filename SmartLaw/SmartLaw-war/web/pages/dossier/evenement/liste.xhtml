@@ -87,6 +87,7 @@
                                             </p:column>
                                             <p:column headerText="Intervenant" sortBy="#{evt.nomInterv}" filterBy="#{evt.nomInterv}" filterMatchMode="contains">
                                                 <h:outputText value="#{evt.nomInterv}"></h:outputText>
+                                                <h:outputText value="#{evt.id}"></h:outputText>
                                             </p:column>
 
                                             <p:column headerText="Tâche" sortBy="#{evt.libelle}" filterBy="#{evt.libelle}" filterMatchMode="contains">
@@ -104,11 +105,13 @@
                                             </p:column>
                                             <p:column headerText="Actions" styleClass="text-center">
                                                 <div class="btn-group">
-                                                    <h:link outcome="/pages/dossier/evenement/ajout.xhtml?idDossier=#{listeEvtMB.idDossier}&faces-redirect:true;" 
+                                                    <h:link outcome="/pages/dossier/evenement/modification.xhtml?idDossier=#{listeEvtMB.idDossier}&amp;idEvt=#{evt.id}&amp;faces-redirect:true;" 
                                                             class="btn btn-primary btn-xs" value="Modifier"/>
 
                                                     <h:commandButton class="btn btn-danger btn-xs"
                                                                      value="Supprimer" action="#{listeEvtMB.supprimerEvt(evt.id)}">
+                                                        <f:param name="idDossier" value="#{listeEvtMB.idDossier}"/>
+                                                        
                                                     </h:commandButton>
                                                 </div>
 

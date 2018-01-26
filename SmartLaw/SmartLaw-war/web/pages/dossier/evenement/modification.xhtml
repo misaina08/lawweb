@@ -6,8 +6,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <f:metadata>
-        <f:viewParam name="idDossier" value="#{ajoutEvtMB.idDossier}" />
-        <f:viewAction action="#{ajoutEvtMB.loadDossier()}"/>
+        <f:viewParam name="idDossier" value="#{modificationEvtMB.idDossier}" />
+        <f:viewParam name="idEvt" value="#{modificationEvtMB.idEvt}" />
+        <f:viewAction action="#{modificationEvtMB.loadDossier()}"/>
+        <f:viewAction action="#{modificationEvtMB.loadEvt()}"/>
     </f:metadata>
     <body>
 
@@ -18,15 +20,15 @@
                 <f:view>
                     <section class="content-header">
                         <h1>
-                            Dossier N° #{ajoutEvtMB.dossier.numeroDossier} : #{ajoutEvtMB.dossier.vnomDossier}
-                            <small>Nouvelle tâche</small>
+                            Dossier N° #{modificationEvtMB.dossier.numeroDossier} : #{modificationEvtMB.dossier.vnomDossier}
+                            <small>Modification d'une tâche</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
                             <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa fa-folder"></i>Dossiers</h:link></li>
-                            <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{ajoutEvtMB.idDossier}&faces-redirect:true;"><i class="fa fa-info"></i>Fiche</h:link></li>
-                            <li><h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{ajoutEvtMB.idDossier}&faces-redirect:true;"><i class="fa fa-calendar"></i>Evènements</h:link></li>
-                            <li class="active">Nouvelle tâche</li>
+                            <li><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{modificationEvtMB.idDossier}&faces-redirect:true;"><i class="fa fa-info"></i>Fiche</h:link></li>
+                            <li><h:link outcome="/pages/dossier/evenement/liste.xhtml?idDossier=#{modificationEvtMB.idDossier}&faces-redirect:true;"><i class="fa fa-calendar"></i>Evènements</h:link></li>
+                            <li class="active">Modification d'une tâche</li>
                         </ol>
                     </section>
 
@@ -46,7 +48,7 @@
 
                                             <p:calendar id="date" inputStyle="width:120px;"
                                                         inputStyleClass="text-center" 
-                                                        value="#{ajoutEvtMB.evtDossier.daty}"
+                                                        value="#{modificationEvtMB.evtDossier.daty}"
                                                         pattern="dd/MM/yyyy"
                                                         mask="true"
                                                         required="true"
@@ -57,20 +59,22 @@
                                         </div>
 
                                     </div>
+
                                     <h:panelGroup id="toupdate">
+
                                         <div class="form-group">
                                             <label for="intervenants" class="control-label col-md-3">Intervenant</label>
                                             <div class=" col-md-9">
                                                 <h:selectOneMenu id="intervenants" class="form-control" 
-                                                                 value="#{ajoutEvtMB.idIntervenantSelected}"
+                                                                 value="#{modificationEvtMB.idIntervenantSelected}"
                                                                  required="true" requiredMessage="Ce champ est obligatoire">
 
-                                                    <f:selectItems value="#{ajoutEvtMB.intervenants}" var="intervenant"
+                                                    <f:selectItems value="#{modificationEvtMB.intervenants}" var="intervenant"
                                                                    itemValue="#{intervenant.id}" itemLabel="#{intervenant.nom} #{intervenant.prenom}">
 
                                                     </f:selectItems>
-                                                    <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                                    <f:ajax listener="#{ajoutEvtMB.intervOnChange}" execute=":intervenants"
+                                                    <f:param name="idDossier" value="#{modificationEvtMB.idDossier}"/>
+                                                    <f:ajax listener="#{modificationEvtMB.intervOnChange}" execute=":intervenants"
                                                             render=":formulaire:toupdate">
 
                                                     </f:ajax>
@@ -83,8 +87,8 @@
                                             <label for="observateurs" class="control-label col-md-3">Observateur</label>
                                             <div class=" col-md-9">
                                                 <h:selectOneMenu class="form-control" 
-                                                                 value="#{ajoutEvtMB.idObservateurSelected}" id="observateurs" required="false">
-                                                    <f:selectItems value="#{ajoutEvtMB.observateurs}" var="observateur"
+                                                                 value="#{modificationEvtMB.idObservateurSelected}" id="observateurs" required="false">
+                                                    <f:selectItems value="#{modificationEvtMB.observateurs}" var="observateur"
                                                                    itemValue="#{observateur.id}" itemLabel="#{observateur.nom} #{observateur.prenom}"/>
                                                 </h:selectOneMenu>
                                             </div>
@@ -96,15 +100,15 @@
                                             <label for="tache" class="control-label col-md-3">Evènement</label>
                                             <div class=" col-md-6">
                                                 <h:outputText id="tache" class="form-control bg-gray" 
-                                                              value="#{ajoutEvtMB.tarifNSSelected.libelle} (#{ajoutEvtMB.tarifNSSelected.type})"/>
+                                                              value="#{modificationEvtMB.tarifNSSelected.libelle} (#{modificationEvtMB.tarifNSSelected.type})"/>
                                             </div>
                                             <div class="col-md-3">
 
                                                 <h:commandButton class="btn btn-primary" 
-                                                                 action="#{ajoutEvtMB.selectTarifsNSInterv}" value="Sélectionner"
+                                                                 action="#{modificationEvtMB.selectTarifsNSInterv}" value="Sélectionner"
                                                                  type="button"
                                                                  onclick="PF('dialog-evt').show();">
-                                                    <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
+                                                    <f:param name="idDossier" value="#{modificationEvtMB.idDossier}"/>
                                                     <f:ajax execute=":formulaire" render=":form-evt:panel-evt"/>
                                                 </h:commandButton>
 
@@ -116,7 +120,7 @@
                                         <div class="form-group">
                                             <label for="note" class="control-label col-md-3">Notes</label>
                                             <div class=" col-md-9">
-                                                <h:inputTextarea class="textarea" value="#{ajoutEvtMB.evtDossier.note}" id="note"/>
+                                                <h:inputTextarea class="textarea" value="#{modificationEvtMB.evtDossier.note}" id="note"/>
                                             </div>
                                             <h:message for="note"/>
                                         </div>
@@ -125,11 +129,11 @@
                                             <label for="sansduree" class="control-label col-md-3"></label>
                                             <div class="col-md-9">
                                                 <label>
-                                                    <h:selectBooleanCheckbox id="sansduree" value="#{ajoutEvtMB.sansDuree}"
+                                                    <h:selectBooleanCheckbox id="sansduree" value="#{modificationEvtMB.sansDuree}"
                                                                              class="custom-control-input"
                                                                              >
-                                                        <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                                        <f:ajax render=":formulaire" listener="#{ajoutEvtMB.sansDureeOnChange()}" execute=":sansduree"/>
+                                                        <f:param name="idDossier" value="#{modificationEvtMB.idDossier}"/>
+                                                        <f:ajax render=":formulaire" listener="#{modificationEvtMB.sansDureeOnChange()}" execute=":sansduree"/>
                                                     </h:selectBooleanCheckbox>
                                                     &nbsp;Sans durée
                                                 </label>
@@ -138,38 +142,42 @@
 
 
 
-                                        <h:panelGroup class="form-group" rendered="#{!ajoutEvtMB.sansDuree}">
+                                        <h:panelGroup class="form-group" rendered="#{!modificationEvtMB.sansDuree}">
                                             <label for="duree" class="control-label col-md-3">Durée (hh:mm)</label>
                                             <h:panelGroup id="panel-duree" class="col-md-3">
-                                                <h:inputText id="duree" value="#{ajoutEvtMB.evtDossier.duree}" class="form-control">
+                                                <h:inputText id="duree" value="#{modificationEvtMB.evtDossier.duree}" class="form-control">
                                                     <f:convertDateTime type="time" pattern="HH:mm"/>
-                                                    <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                                    <p:ajax event="keyup" update="mt" listener="#{ajoutEvtMB.dureeOnChange()}" />
+                                                    <f:param name="idDossier" value="#{modificationEvtMB.idDossier}"/>
+                                                    <p:ajax event="keyup" update="mt" listener="#{modificationEvtMB.dureeOnChange()}" />
                                                 </h:inputText>
 
                                                 <h:message class="text-yellow"  for="duree"/>
                                             </h:panelGroup>
                                             <label for="mt" class="control-label col-md-3">Montant (Ar)</label>
                                             <h:panelGroup id="panel-mt" class=" col-md-3">
-                                                <h:inputText id="mt" class="form-control text-right" value="#{ajoutEvtMB.evtDossier.mt}">
+                                                <h:inputText id="mt" class="form-control text-right" value="#{modificationEvtMB.evtDossier.mt}">
                                                     <f:convertNumber type="currency" currencySymbol=""/>
                                                 </h:inputText>
                                                 <h:message class="text-yellow"  for="mt"/>
                                             </h:panelGroup>
                                         </h:panelGroup>
-
                                     </h:panelGroup>
-                                </div>  
 
+
+
+                                </div>
+                                <div class="box-footer">
+
+                                    <p:commandButton action="#{modificationEvtMB.valider}" value="Valider" 
+                                                     class="btn btn-primary pull-right"
+                                                     update=":growlForm:growlCenter :formulaire">
+                                        <f:param name="idDossier" value="#{modificationEvtMB.idDossier}"/>
+                                    </p:commandButton>
+
+                             
+
+                                </div>
                             </div>
-                            <div class="box-footer">
-                                <p:commandButton action="#{ajoutEvtMB.valider}" value="Valider" 
-                                                 class="btn btn-primary pull-right"
-                                                 update=":growlForm:growlCenter :formulaire">
-                                    <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                </p:commandButton>
-                            </div>
-                            
                         </h:form>
 
 
@@ -180,19 +188,19 @@
                             <p:dialog header="Tarifs de l'intervenant sélectionné" widgetVar="dialog-evt" modal="true" width="400">
                                 <h:panelGroup id="panel-evt">
 
-                                    <p:selectOneRadio id="tarif" value="#{ajoutEvtMB.tarifNSSelected}" 
+                                    <p:selectOneRadio id="tarif" value="#{modificationEvtMB.tarifNSSelected}" 
                                                       layout="responsive" columns="1" 
-                                                      converter="#{ajoutEvtMB.tarifNSConverter}"
+                                                      converter="#{modificationEvtMB.tarifNSConverter}"
                                                       required="true"
                                                       requiredMessage="Champ obligatoire">
-                                        <f:selectItems value="#{ajoutEvtMB.tarifsNSInterv}" var="evt" itemLabel="#{evt.libelle} 
+                                        <f:selectItems value="#{modificationEvtMB.tarifsNSInterv}" var="evt" itemLabel="#{evt.libelle} 
                                                        (#{evt.type})" itemValue="#{evt}"/>
                                     </p:selectOneRadio>
 
                                     <h:commandButton class="btn btn-primary pull-right"
-                                                     action="#{ajoutEvtMB.validEvt()}" value="Valider"
+                                                     action="#{modificationEvtMB.validEvt()}" value="Valider"
                                                      onclick="PF('dialog-evt').hide();">
-                                        <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
+                                        <f:param name="idDossier" value="#{modificationEvtMB.idDossier}"/>
                                         <f:ajax execute=":form-evt" 
                                                 render=":formulaire:toupdate"/>
 
