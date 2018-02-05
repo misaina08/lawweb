@@ -16,7 +16,7 @@
 
         <h:outputStylesheet name="/css/pf.min.css"/>
         <h:outputStylesheet name="/css/mystyle.css"/>
-        
+
 
         <title>LawApp</title>
     </h:head>
@@ -52,5 +52,12 @@
 
     <h:outputScript name="/js/bootstrap.min.js"/>
     <h:outputScript name="/js/app.min.js"/>
+    <script>
+        $("button").removeClass("ui-button");
+        $("button").removeClass("ui-state-default");
+        $("button").removeClass("ui-widget-header");
+        $("button").removeClass("ui-widget");
+        $("button").removeClass("ui-widget-content");
+    </script>
 
 </html>

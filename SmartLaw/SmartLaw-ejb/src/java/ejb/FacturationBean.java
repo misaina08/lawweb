@@ -42,6 +42,54 @@ public class FacturationBean {
     @EJB
     private GeneriqueBean generiqueBean;
 
+    public List<TarifFactIntervttarLibelle>[] getDataIntervenantsByFacture(Integer idFacture) throws Exception {
+        List<TarifFactIntervttarLibelle>[] res = new ArrayList[2];
+        
+        List<TarifFactIntervttarLibelle> tarifsParInterv = null;
+        try {
+            tarifsParInterv = new ArrayList<TarifFactIntervttarLibelle>();
+            // récupération des tarifs par intervenants de la facture
+            TarifFactIntervttarLibelle t = new TarifFactIntervttarLibelle();
+            t.setIdFacture(idFacture);
+            tarifsParInterv = (List<TarifFactIntervttarLibelle>) (List<?>) generiqueBean.getService().find(t);
+
+//            données intervenant
+            List<TarifFactIntervttarLibelle> dataIntervs = new ArrayList<TarifFactIntervttarLibelle>();
+            dataIntervs.add(tarifsParInterv.get(0));
+            // récupération des idIntervenant
+            List<Integer> listeIdInterv = new ArrayList<Integer>();
+            listeIdInterv.add(dataIntervs.get(0).getIdIntervenant());
+            for (TarifFactIntervttarLibelle tfl : tarifsParInterv) {
+                Integer idAzo = null;
+                int mt = 0;
+                for (Integer ic : listeIdInterv) {
+                    if (ic.equals(tfl.getIdIntervenant())) {
+                        mt++;
+                        break;
+                    }
+
+                }
+                if (mt == 0) {
+                    dataIntervs.add(tfl);
+                    idAzo = tfl.getIdIntervenant();
+                    listeIdInterv.add(idAzo);
+                }
+            }
+            // ajout d'un élément Tous 
+            t.setNomInterv("Tous");
+            t.setPrenomInterv("");
+            t.setId(0);
+            t.setIdIntervenant(0);
+            dataIntervs.add(0, t);
+            res[0] = tarifsParInterv;
+            res[1] = dataIntervs;
+            return res;
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+    }
+
     public void genererFacture(List<EvtDossierLibelle> liste, Float tva) throws Exception {
         System.out.println("generation facture");
         Session sess = null;

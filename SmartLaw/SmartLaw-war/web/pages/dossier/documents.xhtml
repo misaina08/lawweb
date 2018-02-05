@@ -136,23 +136,26 @@
                                         </h:panelGroup>
                                     </h:panelGroup>
                                     <div class="box-footer">
+                                        <div class="btn-group">
+                                            <p:commandButton value="Télécharger" class="btn btn-primary btn-xs"
+                                                             id="downloadLink"
+                                                             ajax="false">
+                                                <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                                <p:fileDownload value="#{listeDocumentMB.download()}" />
+                                            </p:commandButton>
 
-                                        <p:commandButton value="Télécharger" class="btn btn-primary"
-                                                         id="downloadLink" icon="ui-icon-arrowthick-1-s"
-                                                         ajax="false">
-                                            <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
-                                            <p:fileDownload value="#{listeDocumentMB.download()}" />
-                                        </p:commandButton>
-
-                                        <p:commandButton value="Supprimer" styleClass="btn btn-danger"
-                                                         action="#{listeDocumentMB.supprimerFichier()}">
-                                            <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
-                                            <f:ajax execute=":form-don" render=":form-don:pane-fichiers :growlForm:growlCenter" />
-                                        </p:commandButton>
-
+                                            <p:commandButton value="Supprimer" styleClass="btn btn-danger btn-xs"
+                                                             action="#{listeDocumentMB.supprimerFichier()}">
+                                                <f:param name="idDossier" value="#{listeDocumentMB.idDossier}"/>
+                                                <f:ajax execute=":form-don" render=":form-don:pane-fichiers :growlForm:growlCenter" />
+                                            </p:commandButton>
+                                        </div>
+                                        <br></br>
+                                        <label for="up">Charger un fichier (png, jpeg, xlsx, docx, pdf)</label>
                                         <p:fileUpload fileUploadListener="#{listeDocumentMB.handleFileUpload}" mode="advanced"
                                                       update=":growlForm:growlCenter :form-don:pane-fichiers" auto="true" sizeLimit="200000" 
-                                                      allowTypes="/(\.|\/)(gif|jpe?g|png|xlsx|pdf|doc|docx|xsl)$/" />
+                                                      allowTypes="/(\.|\/)(gif|jpe?g|png|xlsx|pdf|doc|docx|xls)$/" 
+                                                      id="up"/>
 
                                     </div>
 

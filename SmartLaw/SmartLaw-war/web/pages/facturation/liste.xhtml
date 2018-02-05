@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Factures
+                        <small></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active">Factures</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Liste</h3>
+                                </div>
+                                <div class="box-body">
+
+
+                                    <h:form>
+
+                                        <p:dataTable value="#{listeFactureMB.factures}" var="facture" 
+                                                     emptyMessage="Aucune facture trouvée"
+                                                     widgetVar="factureTable">
+
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('factureTable').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+                                            <p:column sortBy="#{facture.id}" headerText="Numéro" filterBy="#{facture.id}" filterMatchMode="contains"
+                                                      id="numero" style="width:120px;" styleClass="text-center">
+                                                <h:outputText value="#{facture.id}"/>
+                                            </p:column>
+                                            <p:column sortBy="#{facture.dateFacture}" headerText="Date" filterBy="#{facture.dateFacture}" filterMatchMode="contains"
+                                                      id="date" style="width:120px;"  styleClass="text-center">
+                                                <h:outputText value="#{facture.dateFacture}">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column sortBy="#{facture.vnomDossier}" headerText="Dossier" filterBy="#{facture.vnomDossier}" filterMatchMode="contains"
+                                                      id="nomdossier" >
+                                                <h:outputText value="#{facture.vnomDossier}"/>
+                                            </p:column>
+                                            <p:column sortBy="#{facture.totalTtc}" headerText="Total TTC (Ar)" filterBy="#{facture.totalTtc}" filterMatchMode="contains"
+                                                      id="totalttc" style="width:200px;" styleClass="text-right">
+                                                <h:outputText value="#{facture.totalTtc}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column sortBy="#{facture.reglee}" headerText="Reglée" filterBy="#{facture.reglee}" filterMatchMode="contains"
+                                                      id="reglee" style="width:120px;"  styleClass="text-center">
+                                                <h:outputText value="#{facture.reglee}"/>
+                                            </p:column>
+                                            <p:column sortBy="#{facture.sansSuite}" headerText="Sans suite" filterBy="#{facture.sansSuite}" filterMatchMode="contains"
+                                                      id="sanssuite" style="width:120px;"  styleClass="text-center">
+                                                <h:outputText value="#{facture.sansSuite}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:link outcome="/pages/facturation/fiche.xhtml?idFacture=#{facture.id}" value="Voir"
+                                                        class="btn btn-primary">
+                                                    <i class="fa fa-in  fo"></i>
+                                                </h:link>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
