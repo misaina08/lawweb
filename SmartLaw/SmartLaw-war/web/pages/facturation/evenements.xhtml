@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam value="#{evenementsFactureMB.idFacture}" name="idFacture" required="true"/>
+        <f:viewAction action="#{evenementsFactureMB.loadFacture()}"/>
+        <f:viewAction action="#{evenementsFactureMB.loadDossier()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Facture
+                        <small>#{evenementsFactureMB.facture.id} : #{evenementsFactureMB.facture.vnomDossier} #{evenementsFactureMB.facture.numeroDossier}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/facturation/liste.xhtml"><i class="fa fa-credit-card"></i>Factures</h:link></li>
+                        <li class="active">Evènements</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+
+                    <div class="btn-group">
+                        <h:link value="Fiche"
+                                outcome="/pages/facturation/fiche.xhtml?idFacture=#{evenementsFactureMB.idFacture}&faces-redirect:true;"
+                                class="btn btn-primary"/>
+                        <h:link value="Evènements"
+                                outcome="/pages/facturation/evenements.xhtml?idFacture=#{evenementsFactureMB.idFacture}&faces-redirect:true;"
+                                class="btn btn-primary"/>
+                    </div>
+                    <div class="btn-group pull-right">
+                        <h:panelGroup id="actions">
+                            <h:form id="form-action">
+                                <h:commandButton value="Réglée"
+                                                 action="#{evenementsFactureMB.regler()}"
+                                                 rendered="#{evenementsFactureMB.facture.reglee==false}"
+                                                 class="btn bg-maroon">
+                                    <f:param value="#{evenementsFactureMB.idFacture}" name="idFacture"/>
+                                    <f:ajax execute=":form-action" render=":actions :growlForm:growlCenter"/>
+                                </h:commandButton>
+                                <h:outputText value="Facture réglée" rendered="#{evenementsFactureMB.facture.reglee}"
+                                              class="btn btn-success"/>
+
+                            </h:form>
+                        </h:panelGroup>
+
+
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box no-border">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Evènements</h3>
+                                </div>
+                                <div class="box-body">
+                                    <h:form>
+                                        <p:dataTable id="datatable" value="#{evenementsFactureMB.evenements}" var="evt" widgetVar="evtTable"
+                                                     >
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('evtTable').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+
+                                            <p:column headerText="Date" width="120" sortBy="#{evt.daty}" styleClass="text-center" filterBy="#{evt.daty}" filterMatchMode="contains">
+                                                <h:outputText value="#{evt.daty}">
+                                                    <f:convertDateTime pattern="DD/MM/YYYY"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Intervenant" sortBy="#{evt.nomInterv}" filterBy="#{evt.nomInterv}" filterMatchMode="contains">
+                                                <h:outputText value="#{evt.nomInterv}"></h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Tâche" sortBy="#{evt.libelle}" filterBy="#{evt.libelle}" filterMatchMode="contains">
+                                                <h:outputText value="#{evt.libelle}"></h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Durée" sortBy="#{evt.duree}"  width="100" styleClass="text-center">
+                                                <h:outputText value="#{evt.duree}">
+                                                    <f:convertDateTime pattern="HH:mm"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Montant (Ar)" sortBy="#{evt.mt}"  styleClass="text-right">
+                                                <h:outputText value="#{evt.mt}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </p:column>
+
+
+
+                                        </p:dataTable>
+                                        <br></br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <span class="info-box-number">
+                                                    <h:outputText class="text-center" value="Total : "/>
+                                                    <h:outputText class="pull-right text-right" value="#{evenementsFactureMB.totalMt}">
+                                                        <f:convertNumber type="currency" currencySymbol="Ar" locale="pt-PT"/>
+                                                    </h:outputText>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

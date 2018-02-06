@@ -36,6 +36,35 @@
                     <p:growl id="growlCenter"/>
                 </h:form>
                 <section class="content">
+
+                    <div class="btn-group">
+                        <h:link value="Fiche"
+                                outcome="/pages/facturation/fiche.xhtml?idFacture=#{ficheFactureMB.idFacture}&faces-redirect:true;"
+                                class="btn btn-primary"/>
+                        <h:link value="Evènements"
+                                outcome="/pages/facturation/evenements.xhtml?idFacture=#{ficheFactureMB.idFacture}&faces-redirect:true;"
+                                class="btn btn-primary"/>
+                    </div>
+                    <div class="btn-group pull-right">
+                        <h:panelGroup id="actions">
+                            <h:form id="form-action">
+                                <h:commandButton value="Réglée"
+                                                 action="#{ficheFactureMB.regler()}"
+                                                 rendered="#{ficheFactureMB.facture.reglee==false}"
+                                                 class="btn bg-maroon">
+                                    <f:param value="#{ficheFactureMB.idFacture}" name="idFacture"/>
+                                    <f:ajax execute=":form-action" render=":actions :growlForm:growlCenter"/>
+                                </h:commandButton>
+                                <h:outputText value="Facture réglée" rendered="#{ficheFactureMB.facture.reglee}"
+                                              class="btn btn-success"/>
+
+                            </h:form>
+                        </h:panelGroup>
+
+
+                    </div>
+                    <br></br>
+                    <br></br>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="row">
@@ -251,7 +280,7 @@
 
                     function addClass(elements, myClass) {
                         removeClass('.li', 'active');
-//<![CDATA[ 
+                        //<![CDATA[ 
                         // if there are no elements, we're done
                         if (!elements) {
                             return;
@@ -280,7 +309,7 @@
                         //]]>
                     }
                     function removeClass(elements, myClass) {
-//<![CDATA[ 
+                        //<![CDATA[ 
                         // if there are no elements, we're done
                         if (!elements) {
                             return;

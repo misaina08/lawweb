@@ -42,9 +42,22 @@ public class FacturationBean {
     @EJB
     private GeneriqueBean generiqueBean;
 
+    public void reglerFacture(Integer idFacture) throws Exception {
+        try {
+            Facture f = new Facture();
+            f.setId(idFacture);
+            f = (Facture) generiqueBean.getService().findById(f);
+            f.setReglee(true);
+            f.setDateReglement(new Date());
+            generiqueBean.getService().update(f);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
     public List<TarifFactIntervttarLibelle>[] getDataIntervenantsByFacture(Integer idFacture) throws Exception {
         List<TarifFactIntervttarLibelle>[] res = new ArrayList[2];
-        
+
         List<TarifFactIntervttarLibelle> tarifsParInterv = null;
         try {
             tarifsParInterv = new ArrayList<TarifFactIntervttarLibelle>();

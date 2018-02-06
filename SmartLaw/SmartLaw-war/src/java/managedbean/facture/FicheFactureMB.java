@@ -21,6 +21,7 @@ import modeles.facturation.LibFloatModele;
 import modeles.facturation.TarifFactIntervttarLibelle;
 import modeles.parametres.TypeTarifEvt;
 import statiques.ObjetStatique;
+import utilitaire.MessageUtil;
 
 /**
  *
@@ -105,6 +106,17 @@ public class FicheFactureMB implements Serializable {
             
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+    
+    public void regler() {
+        try {
+            facturationBean.reglerFacture(idFacture);
+            loadFacture();
+            MessageUtil.messageInfo("Facture réglée");
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            MessageUtil.messageErreur("Erreur");
         }
     }
     
