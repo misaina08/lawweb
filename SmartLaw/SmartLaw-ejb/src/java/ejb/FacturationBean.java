@@ -9,14 +9,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 import modeles.dossiers.ContactDossier;
 import modeles.evenement.EvenementDossier;
 import modeles.evenement.EvtDossierLibelle;
 import modeles.facturation.Facture;
 import modeles.facturation.FactureEvt;
+import modeles.facturation.FactureLibelle;
 import modeles.facturation.TarifFactInterv;
 import modeles.facturation.TarifFactIntervttar;
 import modeles.facturation.TarifFactIntervttarLibelle;
@@ -26,7 +30,9 @@ import modeles.parametres.TypeTarifEvt;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import services.EvenementService;
+import services.FactureService;
 import statiques.ObjetStatique;
+import utilitaire.ReportUtil;
 
 /**
  *
@@ -41,6 +47,25 @@ public class FacturationBean {
 
     @EJB
     private GeneriqueBean generiqueBean;
+
+    public void printFacture(FactureLibelle factLibelle) {
+        ReportUtil reportUtil = null;
+        try {
+            FactureService service = new FactureService();
+
+            Map<String, Object> map = service.produceMap(factLibelle);
+            reportUtil = new ReportUtil();
+            String pathReport = service.getPathReport(factLibelle);
+
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.reset();
+//            Nom du fichier
+            reportUtil.download(map, response, ReportUtil.ReportType.PDF, pathReport, "Facture No " + factLibelle.getId() + " - " + factLibelle.getVnomDossier()+" "+factLibelle.getNumeroDossier());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
 
     public void reglerFacture(Integer idFacture) throws Exception {
         try {

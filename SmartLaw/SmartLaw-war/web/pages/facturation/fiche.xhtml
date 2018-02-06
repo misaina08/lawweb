@@ -45,24 +45,41 @@
                                 outcome="/pages/facturation/evenements.xhtml?idFacture=#{ficheFactureMB.idFacture}&faces-redirect:true;"
                                 class="btn btn-primary"/>
                     </div>
-                    <div class="btn-group pull-right">
+                    
+                    <div class="btn-group pull-right" style="margin-left:50px;">
+
+                        <h:form>
+                            <h:commandButton value="Imprimer"
+                                             action="#{ficheFactureMB.print()}"
+                                             class="btn bg-maroon">
+                            </h:commandButton>
+
+                        </h:form>
+
+                    </div>
+                    
+                    <div class="pull-right">
                         <h:panelGroup id="actions">
                             <h:form id="form-action">
                                 <h:commandButton value="Réglée"
                                                  action="#{ficheFactureMB.regler()}"
                                                  rendered="#{ficheFactureMB.facture.reglee==false}"
-                                                 class="btn bg-maroon">
+                                                 class="btn bg-yellow">
                                     <f:param value="#{ficheFactureMB.idFacture}" name="idFacture"/>
                                     <f:ajax execute=":form-action" render=":actions :growlForm:growlCenter"/>
                                 </h:commandButton>
-                                <h:outputText value="Facture réglée" rendered="#{ficheFactureMB.facture.reglee}"
-                                              class="btn btn-success"/>
+                                <h:link rendered="#{ficheFactureMB.facture.reglee}"
+                                        class="btn btn-block btn-success" disabled="true">
+                                    <i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Facture réglée
+                                </h:link>
 
                             </h:form>
                         </h:panelGroup>
 
 
                     </div>
+                    
+                    
                     <br></br>
                     <br></br>
                     <div class="row">

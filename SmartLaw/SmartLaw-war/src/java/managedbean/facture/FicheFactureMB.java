@@ -30,12 +30,12 @@ import utilitaire.MessageUtil;
 @Named(value = "ficheFactureMB")
 @ViewScoped
 public class FicheFactureMB implements Serializable {
-    
+
     @EJB
     private GeneriqueBean generiqueBean;
     @EJB
     private FacturationBean facturationBean;
-    
+
     private Integer idFacture;
     private FactureLibelle facture;
     private DossierLibelle dossier;
@@ -54,7 +54,7 @@ public class FicheFactureMB implements Serializable {
      */
     public FicheFactureMB() {
     }
-    
+
     public void loadFacture() {
         try {
             FactureLibelle f = new FactureLibelle();
@@ -64,7 +64,7 @@ public class FicheFactureMB implements Serializable {
             ex.printStackTrace();
         }
     }
-    
+
     public void loadDossier() {
         try {
             DossierLibelle d = new DossierLibelle();
@@ -74,16 +74,16 @@ public class FicheFactureMB implements Serializable {
             ex.printStackTrace();
         }
     }
-    
+
     public void onIntervChange(Integer idIntervenant) {
         try {
             tabTarifs = new LibFloatModele[ObjetStatique.getTypeTarifEvt().size()];
             int indice = 0;
             Float tht = new Float(0);
             for (TypeTarifEvt tte : ObjetStatique.getTypeTarifEvt()) {
-                
+
                 Float m = new Float(0);
-                
+
                 for (TarifFactIntervttarLibelle tfi : tarifsParInterv) {
                     if (idIntervenant == 0) {
                         if (tte.getId().equals(tfi.getIdTypeTarif())) {
@@ -99,51 +99,60 @@ public class FicheFactureMB implements Serializable {
                 tabTarifs[indice] = new LibFloatModele(tte.getLibelle(), m);
                 indice++;
             }
-            
+
             totalHT = tht;
             mtTVA = tva * totalHT / 100;
             totalTTC = mtTVA + tht;
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public void regler() {
         try {
             facturationBean.reglerFacture(idFacture);
             loadFacture();
             MessageUtil.messageInfo("Facture réglée");
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtil.messageErreur("Erreur");
         }
     }
-    
+
+    public void print() {
+        try {
+            facturationBean.printFacture(facture);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtil.messageErreur("Erreur d'impression");
+        }
+    }
+
     public Integer getIdFacture() {
         return idFacture;
     }
-    
+
     public void setIdFacture(Integer idFacture) {
         this.idFacture = idFacture;
     }
-    
+
     public FactureLibelle getFacture() {
         return facture;
     }
-    
+
     public void setFacture(FactureLibelle facture) {
         this.facture = facture;
     }
-    
+
     public DossierLibelle getDossier() {
         return dossier;
     }
-    
+
     public void setDossier(DossierLibelle dossier) {
         this.dossier = dossier;
     }
-    
+
     public ContactDossierLibelle getContDoss() {
         if (contDoss == null) {
             try {
@@ -157,11 +166,11 @@ public class FicheFactureMB implements Serializable {
         }
         return contDoss;
     }
-    
+
     public void setContDoss(ContactDossierLibelle contDoss) {
         this.contDoss = contDoss;
     }
-    
+
     public List<TarifFactIntervttarLibelle> getDataIntervs() {
         if (dataIntervs == null) {
             try {
@@ -175,37 +184,37 @@ public class FicheFactureMB implements Serializable {
         }
         return dataIntervs;
     }
-    
+
     public void setDataIntervs(List<TarifFactIntervttarLibelle> dataIntervs) {
         this.dataIntervs = dataIntervs;
     }
-    
+
     public TarifFactIntervttarLibelle getMontantsInterv() {
         return montantsInterv;
     }
-    
+
     public Float getTva() {
         return tva;
     }
-    
+
     public Float getTotalHT() {
         return totalHT;
     }
-    
+
     public Float getTotalTTC() {
         return totalTTC;
     }
-    
+
     public Float getMtTVA() {
         return mtTVA;
     }
-    
+
     public LibFloatModele[] getTabTarifs() {
         return tabTarifs;
     }
-    
+
     public void setTabTarifs(LibFloatModele[] tabTarifs) {
         this.tabTarifs = tabTarifs;
     }
-    
+
 }

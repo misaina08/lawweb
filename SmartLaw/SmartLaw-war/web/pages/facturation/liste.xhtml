@@ -76,10 +76,7 @@
                                                       id="reglee" style="width:120px;"  styleClass="text-center">
                                                 <h:outputText value="#{facture.reglee}"/>
                                             </p:column>
-                                            <p:column sortBy="#{facture.sansSuite}" headerText="Sans suite" filterBy="#{facture.sansSuite}" filterMatchMode="contains"
-                                                      id="sanssuite" style="width:120px;"  styleClass="text-center">
-                                                <h:outputText value="#{facture.sansSuite}"/>
-                                            </p:column>
+                                            
                                             <p:column>
                                                 <h:link outcome="/pages/facturation/fiche.xhtml?idFacture=#{facture.id}" value="Voir"
                                                         class="btn btn-primary">

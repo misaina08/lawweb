@@ -76,6 +76,14 @@ public class EvenementsFactureMB implements Serializable {
             MessageUtil.messageErreur("Erreur");
         }
     }
+    public void print() {
+        try {
+            facturationBean.printFacture(facture);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            MessageUtil.messageErreur("Erreur d'impression");
+        }
+    }
 
     public Integer getIdFacture() {
         return idFacture;
