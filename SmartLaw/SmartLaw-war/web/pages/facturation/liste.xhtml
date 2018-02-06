@@ -37,14 +37,15 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Liste</h3>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body ">
 
 
                                     <h:form>
 
                                         <p:dataTable value="#{listeFactureMB.factures}" var="facture" 
                                                      emptyMessage="Aucune facture trouvée"
-                                                     widgetVar="factureTable">
+                                                     widgetVar="factureTable"
+                                                     rowStyleClass="#{facture.reglee eq 'true' ? 'bg-success' : facture.reglee eq 'false' ? 'bg-yellow': null}">
 
                                             <f:facet name="header">
                                                 <p:outputPanel >
@@ -74,7 +75,7 @@
                                             </p:column>
                                             <p:column sortBy="#{facture.reglee}" headerText="Reglée" filterBy="#{facture.reglee}" filterMatchMode="contains"
                                                       id="reglee" style="width:120px;"  styleClass="text-center">
-                                                <h:outputText value="#{facture.reglee}"/>
+                                                <h:outputText value="#{facture.reglee eq 'true' ? 'Oui' : facture.reglee eq 'false' ? 'Non': null}"/>
                                             </p:column>
                                             
                                             <p:column>
