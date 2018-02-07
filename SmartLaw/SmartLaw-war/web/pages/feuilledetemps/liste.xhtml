@@ -45,7 +45,7 @@
                                                     class="li #{intervenant.nom}#{intervenant.id}">
                                                     <h:commandLink action="#{feuilleDeTempsMB.onIntervChange(intervenant.id)}" 
                                                                    value="#{intervenant.nom} #{intervenant.prenom}">
-                                                        <f:ajax execute=":form-interv" render=":liste-evt"/>
+                                                        <f:ajax execute=":form-interv" render=":liste-evt :totaux"/>
                                                     </h:commandLink>
                                                 </li>
                                             </ui:repeat>
@@ -66,7 +66,9 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Recherche</h3>
                                 </div>
-                                <div class="box-body"></div>
+                                <div class="box-body">
+
+                                </div>
                             </div>
                             <div class="box no-border">
                                 <div class="box-header with-border">
@@ -107,6 +109,31 @@
 
                                             </p:dataTable>
                                         </h:form>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+                            <div class="box no-border">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Totaux</h3>
+                                </div>
+                                <div class="box-body">
+                                    <h:panelGroup id="totaux">
+                                        <ui:repeat value="#{feuilleDeTempsMB.totauxTarif}" var="total">
+                                            <div class="col-md-3 bg-primary callout ">
+
+                                                <h5 class="info-box-text">#{total.libTypeTarif}</h5>
+
+                                                <h:outputText class="text-center" value="#{feuilleDeTempsMB.util.convert(total.dureeTotal)}">
+                                                </h:outputText>
+
+                                                <p class="mb-1 text-right info-box-number">
+                                                    <h:outputText value="#{total.mtTotal}">
+                                                        <f:convertNumber type="currency" currencySymbol="Ar" locale="pt-PT"/>
+                                                    </h:outputText>
+                                                </p>
+
+                                            </div>
+                                        </ui:repeat>
                                     </h:panelGroup>
                                 </div>
                             </div>

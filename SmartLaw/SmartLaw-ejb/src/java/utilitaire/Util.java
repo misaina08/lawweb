@@ -14,18 +14,63 @@ import javafx.scene.control.DatePicker;
 
 public class Util {
 
+    public String convert(Date input) {
+        int hours = (input.getDate()- 1) * 24 + input.getHours();
+//        return addPrefix(5, String.format("%d:%02d", hours, input.getMinutes()), "0");
+        return String.format("%dh%02d", hours, input.getMinutes());
+    }
+
+    //1 minute = 60 seconds
+    //1 hour = 60 x 60 = 3600
+    //1 day = 3600 x 24 = 86400
+    public Date dateDifference(Date startDate, Date endDate) throws Exception {
+
+        //milliseconds
+        long different = endDate.getTime() - startDate.getTime();
+
+        System.out.println("startDate : " + startDate);
+        System.out.println("endDate : " + endDate);
+        System.out.println("different : " + different);
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        long elapsedSeconds = different / secondsInMilli;
+
+        System.out.printf(
+                "%d days, %d hours, %d minutes, %d seconds%n",
+                elapsedDays,
+                elapsedHours, elapsedMinutes, elapsedSeconds);
+        SimpleDateFormat simpleDateFormat
+                = new SimpleDateFormat("dd hh:mm:ss");
+        return simpleDateFormat.parse(elapsedDays + " " + elapsedHours + ":" + elapsedMinutes + ":" + elapsedSeconds);
+
+    }
+
     public Date setTimeToZero(Date d) {
         d.setSeconds(0);
         d.setHours(0);
         d.setMinutes(0);
         return d;
     }
+
     public String dateToTimeString(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
-        return ""+hours+":"+minutes;
+        return "" + hours + ":" + minutes;
     }
 
     public void recursifDelete(File path) throws IOException {
@@ -69,6 +114,7 @@ public class Util {
     public Integer timeToMinute(Time t) {
         return t.getHours() * 60 + t.getMinutes();
     }
+
     public Integer dateToMinute(Date d) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(d);

@@ -46,7 +46,7 @@ public class EvenementBean {
 
     @EJB
     private GeneriqueBean generiqueBean;
-    
+
     public List<MtTypeTarif> calculerTotaux(List<EvtDossierLibelle> taches) {
         List<MtTypeTarif> res = null;
         try {
@@ -61,16 +61,35 @@ public class EvenementBean {
                 t.setHours(0);
                 cal.setTime(t);
                 for (EvtDossierLibelle ev : taches) {
+                    System.out.println("evt " + ev.getLibTypeTarif());
+                    System.out.println("idtypetarif " + ev.getIdTypeTarif());
+                    System.out.println("idtypetarif statique " + te.getId());
+                    System.out.println("duree " + ev.getDuree());
+
                     if (ev.getIdTypeTarif().equals(te.getId())) {
                         mt += ev.getMt();
-                        cal.add(Calendar.SECOND, ev.getDuree().getSeconds());
-                        cal.add(Calendar.MINUTE, ev.getDuree().getMinutes());
                         cal.add(Calendar.HOUR, ev.getDuree().getHours());
+                        cal.add(Calendar.MINUTE, ev.getDuree().getMinutes());
+                        cal.add(Calendar.SECOND, ev.getDuree().getSeconds());
+
                     }
+                    System.out.println("total mt " + mt);
+                    System.out.println("total heure " + cal.getTime().getHours());
+                    System.out.println("===");
                 }
+                Date dateRepere = new Date(0);
+                Calendar calRepere = Calendar.getInstance();
+                dateRepere.setSeconds(0);
+                dateRepere.setMinutes(0);
+                dateRepere.setHours(0);
+                dateRepere.setDate(1);
+                calRepere.setTime(dateRepere);
+//
+//                System.out.println("date repe " + dateRepere);
                 MtTypeTarif tot = new MtTypeTarif();
                 tot.setLibTypeTarif(te.getLibelle().toUpperCase());
                 tot.setMtTotal(mt);
+//                tot.setDureeTotal(util.dateDifference(calRepere.getTime(), cal.getTime()));
                 tot.setDureeTotal(cal.getTime());
                 res.add(tot);
             }
@@ -80,7 +99,7 @@ public class EvenementBean {
             return null;
         }
     }
-    
+
     public void genererFacture(List<EvtDossierLibelle> liste, Float tva) throws Exception {
         EvenementService service = null;
         Session sess = null;
@@ -105,15 +124,14 @@ public class EvenementBean {
             typeFactDossier = ((List<TypeFacturationDossier>) (List<?>) generiqueBean.getService().find(typeFactDossier, sess)).get(0);
 
             Facture fact = new Facture();
-             
-            
+
 //            a faire : trouver adresse de facturation pour dossier : OK
             ContactDossier cd = new ContactDossier();
             cd.setIdDossier(liste.get(0).getIdDossier());
             cd.setTypeContact("FACT");
             cd = ((List<ContactDossier>) (List<?>) generiqueBean.getService().find(cd)).get(0);
-            System.out.println("______________ idcontact "+cd.getIdContact());
-            System.out.println("______________ iddossier "+cd.getIdDossier());
+            System.out.println("______________ idcontact " + cd.getIdContact());
+            System.out.println("______________ iddossier " + cd.getIdDossier());
             fact.setIdContact(cd.getIdContact());
             fact.setIdDossier(liste.get(0).getIdDossier());
             fact.setIdTypeFacture(typeFactDossier.getIdTypeFacture());
