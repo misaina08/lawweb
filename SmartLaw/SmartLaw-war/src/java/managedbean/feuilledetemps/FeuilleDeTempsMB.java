@@ -35,6 +35,7 @@ public class FeuilleDeTempsMB implements Serializable {
     private List<EvtDossierLibelle> evenements = new ArrayList<EvtDossierLibelle>();
     private List<MtTypeTarif> totauxTarif;
     private Util util = new Util();
+    private String dateEntre;
 
     /**
      * Creates a new instance of FeuilleDeTempsMB
@@ -62,6 +63,9 @@ public class FeuilleDeTempsMB implements Serializable {
             return null;
         }
     }
+    public void rechercher() {
+        System.out.println("date range "+dateEntre);
+    }
 
     public List<Intervenant> getIntervenants() {
         if (intervenants == null) {
@@ -88,5 +92,14 @@ public class FeuilleDeTempsMB implements Serializable {
     public Util getUtil() {
         return util;
     }
+
+    public String getDateEntre() {
+        return dateEntre;
+    }
+
+    public void setDateEntre(String dateEntre) {
+        this.dateEntre = dateEntre;
+    }
+    
 
 }

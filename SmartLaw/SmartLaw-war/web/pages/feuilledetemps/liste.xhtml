@@ -11,6 +11,8 @@
         <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
 
             <ui:define name="content">
+                
+                <h:outputStylesheet name="/css/daterangepicker-bs3.css"/>
                 <style>
                     .ui-widget-content a {
                         color: white;
@@ -53,12 +55,12 @@
                                     </h:form>
                                 </div>
                             </div>
-                            <div class="box no-border">
+                            <!--<div class="box no-border">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Calendrier</h3>
                                 </div>
                                 <div class="box-body"></div>
-                            </div>
+                            </div>-->
                         </div>
 
                         <div class="col-md-9">
@@ -68,6 +70,22 @@
                                 </div>
                                 <div class="box-body">
 
+                                    <h:form>
+                                        <div class="form-group">
+                                            <label>Date entre :</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                
+                                                <h:inputText value="#{feuilleDeTempsMB.dateEntre}" class="form-control pull-right"
+                                                             id="reservation" 
+                                                             />
+                                            </div>
+                                        </div>
+                                        <h:commandButton value="OK"
+                                                         action="#{feuilleDeTempsMB.rechercher()}"/>
+                                    </h:form>
                                 </div>
                             </div>
                             <div class="box no-border">
@@ -140,65 +158,72 @@
                         </div>
                     </div>
                 </section>
+                
+                <h:outputScript name="/js/moment.min.js"/>
+                <h:outputScript name="/js/daterangepicker.js"/>
                 <script>
-                    document.querySelector('.Tous0').classList.add('active');
+                                                    //Date range picker
+                                                    $('#reservation').daterangepicker();
+                                                    document.querySelector('.Tous0').classList.add('active');
 
-                    function addClass(elements, myClass) {
-                        removeClass('.li', 'active');
-                        //<![CDATA[ 
-                        // if there are no elements, we're done
-                        if (!elements) {
-                            return;
-                        }
+                                                    function addClass(elements, myClass) {
+                                                        removeClass('.li', 'active');
+                                                        //<![CDATA[ 
+                                                        // if there are no elements, we're done
+                                                        if (!elements) {
+                                                            return;
+                                                        }
 
-                        // if we have a selector, get the chosen elements
-                        if (typeof (elements) === 'string') {
-                            elements = document.querySelectorAll(elements);
-                        }
+                                                        // if we have a selector, get the chosen elements
+                                                        if (typeof (elements) === 'string') {
+                                                            elements = document.querySelectorAll(elements);
+                                                        }
 
-                        // if we have a single DOM element, make it an array to simplify behavior
-                        else if (elements.tagName) {
-                            elements = [elements];
-                        }
+                                                        // if we have a single DOM element, make it an array to simplify behavior
+                                                        else if (elements.tagName) {
+                                                            elements = [elements];
+                                                        }
 
-                        // add class to all chosen elements
-                        for (var i = 0; i < elements.length; i++) {
+                                                        // add class to all chosen elements
+                                                        for (var i = 0; i < elements.length; i++) {
 
-                            // if class is not already found
-                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
+                                                            // if class is not already found
+                                                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
 
-                                // add class
-                                elements[i].className += ' ' + myClass;
-                            }
-                        }
-                        //]]>
-                    }
-                    function removeClass(elements, myClass) {
-                        //<![CDATA[ 
-                        // if there are no elements, we're done
-                        if (!elements) {
-                            return;
-                        }
+                                                                // add class
+                                                                elements[i].className += ' ' + myClass;
+                                                            }
+                                                        }
+                                                        //]]>
+                                                    }
+                                                    function removeClass(elements, myClass) {
+                                                        //<![CDATA[ 
+                                                        // if there are no elements, we're done
+                                                        if (!elements) {
+                                                            return;
+                                                        }
 
-                        // if we have a selector, get the chosen elements
-                        if (typeof (elements) === 'string') {
-                            elements = document.querySelectorAll(elements);
-                        }
+                                                        // if we have a selector, get the chosen elements
+                                                        if (typeof (elements) === 'string') {
+                                                            elements = document.querySelectorAll(elements);
+                                                        }
 
-                        // if we have a single DOM element, make it an array to simplify behavior
-                        else if (elements.tagName) {
-                            elements = [elements];
-                        }
+                                                        // if we have a single DOM element, make it an array to simplify behavior
+                                                        else if (elements.tagName) {
+                                                            elements = [elements];
+                                                        }
 
-                        // create pattern to find class name
-                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
+                                                        // create pattern to find class name
+                                                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
 
-                        // remove class from all chosen elements
-                        for (var i = 0; i < elements.length; i++) {
-                            elements[i].className = elements[i].className.replace(reg, ' ');
-                        }
-                        //]]>
-                    }
+                                                        // remove class from all chosen elements
+                                                        for (var i = 0; i < elements.length; i++) {
+                                                            elements[i].className = elements[i].className.replace(reg, ' ');
+                                                        }
+                                                        //]]>
+                                                    }
+
+
                 </script>
 
             </ui:define>
