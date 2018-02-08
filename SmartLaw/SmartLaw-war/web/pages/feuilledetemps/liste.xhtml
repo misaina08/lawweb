@@ -11,7 +11,7 @@
         <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
 
             <ui:define name="content">
-                
+
                 <h:outputStylesheet name="/css/daterangepicker-bs3.css"/>
                 <style>
                     .ui-widget-content a {
@@ -43,7 +43,7 @@
                                     <h:form id="form-interv">
                                         <ul class="nav nav-pills nav-stacked">
                                             <ui:repeat value="#{feuilleDeTempsMB.intervenants}" var="intervenant">
-                                                <li onclick="addClass('.#{intervenant.nom}#{intervenant.id}', 'active');" 
+                                                <li onclick="addClass('.#{intervenant.nom}#{intervenant.id}', 'active', 'li');" 
                                                     class="li #{intervenant.nom}#{intervenant.id}">
                                                     <h:commandLink action="#{feuilleDeTempsMB.onIntervChange(intervenant.id)}" 
                                                                    value="#{intervenant.nom} #{intervenant.prenom}">
@@ -61,7 +61,47 @@
                                 </div>
                                 <div class="box-body"></div>
                             </div>-->
+                            <div class="box no-border">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Tâches</h3>
+                                </div>
+                                <div class="box-body no-padding">
+                                    <h:form id="form-facturee">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li onclick="addClass('.fact0', 'active', 'lifact');" class="lifact fact0">
+
+                                                <h:commandLink
+                                                               action="#{feuilleDeTempsMB.onLegendeChange(0)}" 
+                                                               >
+                                                    <i class="text-navy fa fa-square"></i><span>Toutes</span>
+                                                    <f:ajax execute=":form-facturee" render=":liste-evt :totaux"/>
+                                                </h:commandLink>
+                                            </li>
+                                            <li onclick="addClass('.fact1', 'active', 'lifact');" class="lifact fact1">
+
+                                                <h:commandLink
+                                                               action="#{feuilleDeTempsMB.onLegendeChange(1)}" 
+                                                               >
+                                                    <i class="text-gray fa fa-square"></i><span>Non facturées</span>
+                                                    <f:ajax execute=":form-facturee" render=":liste-evt :totaux"/>
+                                                </h:commandLink>
+                                            </li>
+                                            <li onclick="addClass('.fact2', 'active', 'lifact');" class="lifact fact2">
+
+                                                <h:commandLink
+                                                               action="#{feuilleDeTempsMB.onLegendeChange(2)}" 
+                                                               >
+                                                    <i class="text-success fa fa-square"></i><span>Facturées</span>
+                                                    <f:ajax execute=":form-facturee" render=":liste-evt :totaux"/>
+                                                </h:commandLink>
+                                            </li>
+                                        </ul>
+                                    </h:form>
+
+                                </div>
+                            </div>
                         </div>
+
 
                         <div class="col-md-9">
                             <div class="box no-border">
@@ -77,7 +117,7 @@
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                
+
                                                 <h:inputText value="#{feuilleDeTempsMB.dateEntre}" class="form-control pull-right"
                                                              id="reservation" 
                                                              />
@@ -95,7 +135,8 @@
                                 <div class="box-body">
                                     <h:panelGroup id="liste-evt">
                                         <h:form>
-                                            <p:dataTable value="#{feuilleDeTempsMB.evenements}" var="evt">
+                                            <p:dataTable value="#{feuilleDeTempsMB.evenements}" var="evt"
+                                                         rowStyleClass="#{evt.afacturer eq 'false' ? 'bg-success' : evt.afacturer eq 'true' ? 'bg-gray': null}">
 
                                                 <p:column headerText="Date" width="120" styleClass="text-center">
                                                     <h:outputText value="#{evt.daty}">
@@ -158,70 +199,71 @@
                         </div>
                     </div>
                 </section>
-                
+
                 <h:outputScript name="/js/moment.min.js"/>
                 <h:outputScript name="/js/daterangepicker.js"/>
                 <script>
-                                                    //Date range picker
-                                                    $('#reservation').daterangepicker();
-                                                    document.querySelector('.Tous0').classList.add('active');
+                    //Date range picker
+                    $('#reservation').daterangepicker();
+                    document.querySelector('.Tous0').classList.add('active');
+                    document.querySelector('.fact0').classList.add('active');
 
-                                                    function addClass(elements, myClass) {
-                                                        removeClass('.li', 'active');
-                                                        //<![CDATA[ 
-                                                        // if there are no elements, we're done
-                                                        if (!elements) {
-                                                            return;
-                                                        }
+                    function addClass(elements, myClass, classToRemove) {
+                        removeClass('.'+classToRemove, 'active');
+                        //<![CDATA[ 
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
 
-                                                        // if we have a selector, get the chosen elements
-                                                        if (typeof (elements) === 'string') {
-                                                            elements = document.querySelectorAll(elements);
-                                                        }
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
 
-                                                        // if we have a single DOM element, make it an array to simplify behavior
-                                                        else if (elements.tagName) {
-                                                            elements = [elements];
-                                                        }
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
 
-                                                        // add class to all chosen elements
-                                                        for (var i = 0; i < elements.length; i++) {
+                        // add class to all chosen elements
+                        for (var i = 0; i < elements.length; i++) {
 
-                                                            // if class is not already found
-                                                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
+                            // if class is not already found
+                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
 
-                                                                // add class
-                                                                elements[i].className += ' ' + myClass;
-                                                            }
-                                                        }
-                                                        //]]>
-                                                    }
-                                                    function removeClass(elements, myClass) {
-                                                        //<![CDATA[ 
-                                                        // if there are no elements, we're done
-                                                        if (!elements) {
-                                                            return;
-                                                        }
+                                // add class
+                                elements[i].className += ' ' + myClass;
+                            }
+                        }
+                        //]]>
+                    }
+                    function removeClass(elements, myClass) {
+                        //<![CDATA[ 
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
 
-                                                        // if we have a selector, get the chosen elements
-                                                        if (typeof (elements) === 'string') {
-                                                            elements = document.querySelectorAll(elements);
-                                                        }
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
 
-                                                        // if we have a single DOM element, make it an array to simplify behavior
-                                                        else if (elements.tagName) {
-                                                            elements = [elements];
-                                                        }
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
 
-                                                        // create pattern to find class name
-                                                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
+                        // create pattern to find class name
+                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
 
-                                                        // remove class from all chosen elements
-                                                        for (var i = 0; i < elements.length; i++) {
-                                                            elements[i].className = elements[i].className.replace(reg, ' ');
-                                                        }
-                                                        //]]>
-                                                    }
+                        // remove class from all chosen elements
+                        for (var i = 0; i < elements.length; i++) {
+                            elements[i].className = elements[i].className.replace(reg, ' ');
+                        }
+                        //]]>
+                    }
 
 
                 </script>
