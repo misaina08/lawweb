@@ -37,16 +37,37 @@
                 </h:form>
                 <section class="content">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-3">
                             <div class="box no-border">
 
                                 <div class="box-body no-padding">
                                     <h:form id="form-interv">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <ui:repeat value="#{calendrierMB.intervenants}" var="intervenant">
+                                                <li onclick="addClass('.#{intervenant.nom}#{intervenant.id}', 'active');" 
+                                                    class="li #{intervenant.nom}#{intervenant.id}">
+                                                    <h:commandLink action="#{calendrierMB.onIntervChange(intervenant.id)}" 
+                                                                   value="#{intervenant.nom} #{intervenant.prenom}">
 
-                                        <!-- THE CALENDAR -->
-                                        <div id="calendar"></div>
+                                                        <f:ajax execute=":form-interv" render=":pane-calendrier :pane-script"/>
+                                                    </h:commandLink>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
 
                                     </h:form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="box no-border">
+
+                                <div class="box-body no-padding">
+                                    <h:panelGroup id="pane-calendrier">
+                                        <div id="calendar"></div>
+</h:panelGroup>
+
                                 </div>
                             </div>
 
@@ -59,6 +80,69 @@
                 <h:outputScript name="/js/fullcalendar.min.js"/>
 
                 <script type="text/javascript">
+                    document.querySelector('.Tous0').classList.add('active');
+                    function addClass(elements, myClass) {
+                        removeClass('.li', 'active');
+                        
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
+
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
+
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
+
+                        //<![CDATA[
+                        for (var i = 0; i<elements.length; i++) {
+
+                            // if class is not already found
+                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
+
+                                // add class
+                                elements[i].className += ' ' + myClass;
+                            }
+                        }
+                        //]]>
+                    }
+                    function removeClass(elements, myClass) {
+                        
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
+
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
+
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
+
+                        // create pattern to find class name
+                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
+//<![CDATA[ 
+                        // remove class from all chosen elements
+                        for (var i = 0; i < elements.length; i++) {
+                            elements[i].className = elements[i].className.replace(reg, ' ');
+                        }
+                        //]]>
+                    }
+                                       
+                    
+                            </script>   
+                
+                <h:panelGroup id="pane-script">
+                <script>
                     $(function () {
 
                     /* initialize the external events
@@ -103,43 +187,43 @@
                             },
                             //Random default events
                             events: [
-                    <ui:repeat value="#{calendrierMB.planning}" var="pl">
-                        {
+                                                                   <ui:repeat value="#{calendrierMB.planning}" var="pl">
+                                                        {
                                     title: '#{pl.libelleEvt}',
                                     start: new Date(<h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="yyyy"/>
-                                                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="MM-1"/>
-                                                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="dd"/>
-                                                </h:outputText>, <h:outputText value="#{pl.heureDebut}">
-                                                    <f:convertDateTime pattern="HH"/>
-                                                </h:outputText>, <h:outputText value="#{pl.heureDebut}">
-                                                    <f:convertDateTime pattern="mm"/>
-                                                </h:outputText>),
+                                            <f:convertDateTime pattern="yyyy"/>
+                                    </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                            <f:convertDateTime pattern="MM-1"/>
+                        </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                            <f:convertDateTime pattern="dd"/>
+                                </h:outputText>, <h:outputText value="#{pl.heureDebut}">
+                                    <f:convertDateTime pattern="HH"/>
+                                    </h:outputText>, <h:outputText value="#{pl.heureDebut}">
+                                <f:convertDateTime pattern="mm"/>
+                        </h:outputText>),
                                     end: new Date(<h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="yyyy"/>
-                                                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="MM-1"/>
-                                                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="dd"/>
-                                                </h:outputText>, <h:outputText value="#{pl.heureFin}">
-                                                    <f:convertDateTime pattern="HH"/>
-                                                </h:outputText>, <h:outputText value="#{pl.heureFin}">
-                                                    <f:convertDateTime pattern="mm"/>
-                                                </h:outputText>),
+                <f:convertDateTime pattern="yyyy"/>
+                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                     <f:convertDateTime pattern="dd"/>
+                    </h:outputText>, <h:outputText value="#{pl.heureFin}">
+                    <f:convertDateTime pattern="HH"/>
+                    </h:outputText>, <h:outputText value="#{pl.heureFin}">
+                    <f:convertDateTime pattern="mm"/>
+                    </h:outputText>),
                                     allDay: false,
                                     backgroundColor: (<h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="MM-1"/>
-                                                </h:outputText> >= <h:outputText value="#{calendrierMB.now}">
-                                                    <f:convertDateTime pattern="MM-1"/>
-                                                </h:outputText>) ? "#0073b7" : "#001f3f", 
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText> >= <h:outputText value="#{calendrierMB.now}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText>) ? "#0073b7" : "#001f3f",
                                     borderColor: (<h:outputText value="#{pl.datePlanning}">
-                                                    <f:convertDateTime pattern="MM-1"/>
-                                                </h:outputText> >= <h:outputText value="#{calendrierMB.now}">
-                                                    <f:convertDateTime pattern="MM-1"/>
-                                                </h:outputText>) ? "#0073b7" : "#001f3f"
-                                    
+                            <f:convertDateTime pattern="MM-1"/>
+                            </h:outputText> >= <h:outputText value="#{calendrierMB.now}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText>) ? "#0073b7" : "#001f3f"
+
                     },
                     </ui:repeat>
 
@@ -195,13 +279,13 @@
                     //Add draggable funtionality
                     ini_events(event);
                     //Remove event from text input
-                    $("#new-event").val("");
+                    $("#new-event").val("                                                                                                                                                                                                                                                                                                                                                                              ");
                     });
                     });
-                            </script>
-                            </ui:define>
-
-                            </ui:composition>
+                    </script>
+                    </h:panelGroup>
+            </ui:define>                                                                                                                                                
+ </ui:composition>
 
                             </body>
                             </html>
