@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Intervenants
+                        <small></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active">Intervenants</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+
+                    <h:link outcome="/pages/intervenant/ajout.xhtml" class="btn btn-success" value="Nouveau"/>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Liste</h3>
+                                </div>
+                                <div class="box-body">
+                                    <h:form>
+                                        <p:dataTable value="#{listeIntervenantMB.liste}" var="intervenant"
+                                                     widgetVar="intervs">
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('intervs').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+                                            <p:column headerText="Nom" sortBy="#{intervenant.nom}" filterBy="#{intervenant.nom}" filterMatchMode="contains">
+                                                <h:outputText value="#{intervenant.nom}"/>
+                                            </p:column>
+                                            <p:column headerText="Prénom" sortBy="#{intervenant.prenom}" filterBy="#{intervenant.prenom}" filterMatchMode="contains">
+                                                <h:outputText value="#{intervenant.prenom}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:link value="Voir"
+                                                        outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{intervenant.id}"
+                                                        class="btn btn-primary"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
