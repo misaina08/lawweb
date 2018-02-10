@@ -31,10 +31,7 @@ public class Fonction extends BaseModele {
         this.libelle = libelle;
     }
 
-    public String toString() {
-        return getLibelle();
-    }
-
+   
     public String getIntervenant() {
         return intervenant;
     }
@@ -107,6 +104,10 @@ public class Fonction extends BaseModele {
 
     public void setUtilisateur(String utilisateur) {
         this.utilisateur = utilisateur;
+    }
+    @Override
+    public String toString() {
+        return "" + getId();
     }
     
 }
