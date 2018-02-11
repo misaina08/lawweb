@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
+import modeles.affichage.EvtDossierLibGroupBy;
 import modeles.dossiers.ContactDossier;
 import modeles.dossiers.DossierLibelle;
 import modeles.evenement.EvenementDossier;
@@ -47,6 +48,16 @@ public class EvenementBean {
     @EJB
     private GeneriqueBean generiqueBean;
 
+    public List<EvtDossierLibGroupBy> findDossierByRoleInterv(Integer iDIntervenant, String type) throws Exception{
+        EvenementService es = new EvenementService();
+        try {
+            return es.findEventByIntervGroupByDossier(iDIntervenant, type);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+    
     public List<MtTypeTarif> calculerTotaux(List<EvtDossierLibelle> taches) {
         List<MtTypeTarif> res = null;
         try {

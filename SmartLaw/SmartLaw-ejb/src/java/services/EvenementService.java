@@ -8,14 +8,18 @@ package services;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import modeles.affichage.EvtDossierLibGroupBy;
 import modeles.dossiers.DossierLibelle;
 import modeles.evenement.EvtDossierLibelle;
 import modeles.evenement.EvtDossierLibellePDF;
 import modeles.facturation.TarifFactIntervttarLibelle;
 import modeles.parametres.TypeTarifEvt;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import statiques.ObjetStatique;
 import utilitaire.Util;
 
@@ -23,7 +27,8 @@ import utilitaire.Util;
  *
  * @author misa
  */
-public class EvenementService {
+public class EvenementService extends BaseService {
+
     public List<TarifFactIntervttarLibelle> groupTarifIntervFactParTypeTarif(List<EvtDossierLibelle> liste) throws Exception {
         List<TarifFactIntervttarLibelle> res = null;
         try {
@@ -68,35 +73,30 @@ public class EvenementService {
         }
 
     }
-    
-    public Map produceMapEvtDossier(List<EvtDossierLibelle> liste, DossierLibelle dLib)throws Exception
-    {
-        Map<String, Object> map=null;
-        Util util=null;
-        try
-        {
-            util=new Util();
-            map=new HashMap<String, Object>();
+
+    public Map produceMapEvtDossier(List<EvtDossierLibelle> liste, DossierLibelle dLib) throws Exception {
+        Map<String, Object> map = null;
+        Util util = null;
+        try {
+            util = new Util();
+            map = new HashMap<String, Object>();
 
 //            evt group by typetarif
-            List<EvtDossierLibellePDF> listeEvtGroupe=new ArrayList<EvtDossierLibellePDF>(ObjetStatique.getTypeTarifEvt().size());
-            
-            for(TypeTarifEvt tarif:ObjetStatique.getTypeTarifEvt())
-            {
-                EvtDossierLibellePDF modeleEvtTarif=new EvtDossierLibellePDF();
+            List<EvtDossierLibellePDF> listeEvtGroupe = new ArrayList<EvtDossierLibellePDF>(ObjetStatique.getTypeTarifEvt().size());
+
+            for (TypeTarifEvt tarif : ObjetStatique.getTypeTarifEvt()) {
+                EvtDossierLibellePDF modeleEvtTarif = new EvtDossierLibellePDF();
                 modeleEvtTarif.setIdTypeTarif(tarif.getId());
                 modeleEvtTarif.setTypeTarif(tarif.getLibelle());
                 modeleEvtTarif.setListeEvt(new ArrayList<EvtDossierLibelle>());
-                Float totalMt=new Float(0);
-                Time totalDuree=new Time(0, 0, 0);
-                for(EvtDossierLibelle evt:liste)
-                {    
-                    if(tarif.getId().equals(evt.getIdTypeTarif()))
-                    {
-                        totalMt+=evt.getMt();
-                        System.out.println("date "+evt.getDuree());
-                        totalDuree.setMinutes(totalDuree.getMinutes()+util.dateToMinute(evt.getDuree()));
-                        
+                Float totalMt = new Float(0);
+                Time totalDuree = new Time(0, 0, 0);
+                for (EvtDossierLibelle evt : liste) {
+                    if (tarif.getId().equals(evt.getIdTypeTarif())) {
+                        totalMt += evt.getMt();
+                        System.out.println("date " + evt.getDuree());
+                        totalDuree.setMinutes(totalDuree.getMinutes() + util.dateToMinute(evt.getDuree()));
+
                         modeleEvtTarif.getListeEvt().add(evt);
                     }
                 }
@@ -107,12 +107,54 @@ public class EvenementService {
             JRBeanCollectionDataSource jrCollTar = new JRBeanCollectionDataSource(listeEvtGroupe);
             map.put("LIST_EVT", jrCollTar);
             map.put("DOSSIER", dLib);
-            
+
             return map;
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             throw ex;
         }
+    }
+
+    public List<EvtDossierLibGroupBy> findEventByIntervGroupByDossier(Integer iDIntervenant, String type) throws Exception {
+        Util u = new Util();
+        Session sess = null;
+        List<EvtDossierLibGroupBy> res = null;
+
+        try {
+            sess = this.getDao().getSessionFact().openSession();
+            String sql = null;
+            if (type.equalsIgnoreCase("intervenant")) {
+                sql = "SELECT e.iddossier,dl.numerodossier,dl.vnomdossier as nomDossier,dl.nomclient   FROM evenementdossier e\n"
+                        + "JOIN intervenant i ON i.idintervenant = e.idintervenant  JOIN evttarif evt ON evt.idevttarif = e.idevttarif  JOIN typetarifevt tt ON tt.idtypetarif = evt.idtypetarif JOIN dossierlibelle dl ON dl.iddossier = e.iddossier\n"
+                        + "where e.idIntervenant = " + iDIntervenant + " group by  e.iddossier,dl.numerodossier,dl.vnomdossier,dl.nomclient";
+            } else {
+                sql = "SELECT e.iddossier,dl.numerodossier,dl.vnomdossier as nomDossier,dl.nomclient   FROM evenementdossier e\n"
+                        + "JOIN intervenant i ON i.idintervenant = e.demandeur  JOIN evttarif evt ON evt.idevttarif = e.idevttarif  JOIN typetarifevt tt ON tt.idtypetarif = evt.idtypetarif JOIN dossierlibelle dl ON dl.iddossier = e.iddossier\n"
+                        + "where e.demandeur = " + iDIntervenant + " group by  e.iddossier,dl.numerodossier,dl.vnomdossier,dl.nomclient";
+            }
+            res = new ArrayList<EvtDossierLibGroupBy>();
+
+            SQLQuery query = sess.createSQLQuery(sql);
+            List list = query.list();
+            Iterator iter = list.iterator();
+            EvtDossierLibGroupBy evt;
+            while (iter.hasNext()) {
+                Object[] objArray = (Object[]) iter.next();
+                evt = new EvtDossierLibGroupBy();
+                evt.setIdDossier((Integer) objArray[0]);
+                evt.setNumDossier(objArray[1].toString());
+                evt.setNomAdversaire(objArray[2].toString());
+                evt.setNomClient(objArray[3].toString());
+                evt.setNomDossier(objArray[2].toString());
+                res.add(evt);
+
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        } finally {
+            sess.close();
+        }
+        return res;
+
     }
 }
