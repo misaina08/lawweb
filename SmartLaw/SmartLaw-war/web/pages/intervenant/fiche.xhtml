@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="idIntervenant" value="#{ficheIntervenantMB.idIntervenant}"/>
+        <f:viewAction action="#{ficheIntervenantMB.loadIntervenant()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        #{ficheIntervenantMB.intervenant.nom} #{ficheIntervenantMB.intervenant.prenom}
+                        <small>Fiche</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/intervenant/liste.xhtml"><i class="fa ion-ios-people"></i>Intervenants</h:link></li>
+                        <li class="active">Fiche</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+
+
+                    <h:form class="form-horizontal" id="formulaire">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="box box-success">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Infos générales</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <dl class="dl-horizontal">
+                                            <dt>Code</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.code}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Nom</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.nom}</dd>
+                                        </dl>  
+                                        <dl class="dl-horizontal">
+                                            <dt>Prénom</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.prenom}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Fonction</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.libelle}</dd>
+                                        </dl>
+                                      
+                                        <dl class="dl-horizontal">
+                                            <dt>Gestionnaire</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.gestionnaire}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Compte tiers</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.comptetiers}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Adresse</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.adresse}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Pays / Ville / Code postal</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.pays} #{ficheIntervenantMB.intervenant.ville} #{ficheIntervenantMB.intervenant.codepostal}</dd>
+                                        </dl>
+
+
+                                    </div>
+                                </div>
+                            
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Contacts</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <dl class="dl-horizontal">
+                                            <dt>Bureau</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.bureau}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Domicile</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.domicile}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Fax</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.fax}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Email</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.email}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Mobile</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.mobile}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Commentaire</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.commentaire}</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Objectifs</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <dl class="dl-horizontal">
+                                            <dt>Seuil bas</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.seuilbas}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Seuil intermediaire</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.seuilintermediaire}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Seuil haut</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.seuilhaut}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Seuil journalier</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.seuiljournalier}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Seuil horaire</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.seuilhoraire}</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+
+                                <div class="box box-danger">
+                                    <div class="box-header">
+                                        <h3 class="box-title">RIB/IBAN</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <dl class="dl-horizontal">
+                                            <dt>BIC</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.bic}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>RIB</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.rib}</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>IBAN</dt>
+                                            <dd>#{ficheIntervenantMB.intervenant.iban}</dd>
+                                        </dl>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+
+                </section>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
