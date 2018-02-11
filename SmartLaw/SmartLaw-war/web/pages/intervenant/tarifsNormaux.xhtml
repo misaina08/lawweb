@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="idIntervenant" value="#{tarifsNormauxIntervenantMB.idIntervenant}"/>
+        <f:viewAction action="#{tarifsNormauxIntervenantMB.loadIntervenant()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        #{tarifsNormauxIntervenantMB.intervenant.nom} #{tarifsNormauxIntervenantMB.intervenant.prenom}
+                        <small>Tarifs normaux</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/intervenant/liste.xhtml"><i class="fa ion-ios-people"></i>Intervenants</h:link></li>
+                        <li><h:link outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{tarifsNormauxIntervenantMB.idIntervenant}"><i class="fa ion-ios-people"></i>Fiche</h:link></li>
+                        <li class="active">Tarifs normaux</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{tarifsNormauxIntervenantMB.idIntervenant}"
+                                value="Fiche" class="btn btn-primary"/>
+                        <h:link outcome="/pages/intervenant/tarifsNormaux.xhtml?idIntervenant=#{tarifsNormauxIntervenantMB.idIntervenant}"
+                                value="Tarifs normaux" class="btn btn-primary"/>
+                    </div>
+
+                    <div class="btn-group pull-right">
+                        <h:link outcome="/pages/intervenant/modification.xhtml?idIntervenant=#{tarifsNormauxIntervenantMB.idIntervenant}"
+                                value="Modifier" class="btn btn-primary"/>
+
+                    </div>
+                    <br></br>
+                    <br></br>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Tarifs normaux</h3>
+                                </div>
+                                <div class="box-body">
+
+                                    <h:form id="form-table">
+                                        <p:dataTable value="#{tarifsNormauxIntervenantMB.tarifs}" var="tarif" widgetVar="tarifstable"
+                                                     id="datatarifs">
+                                            <f:facet name="header">
+                                                <p:outputPanel >
+                                                    <p:inputText id="globalFilter" onkeyup="PF('tarifstable').filter()" style="width:300px" placeholder="Recherche"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+                                            <p:column headerText="Type" sortBy="#{tarif.libelleTypeTarif}" filterBy="#{tarif.libelleTypeTarif}" filterMatchMode="contains">
+                                                <h:outputText value="#{tarif.libelleTypeTarif}"/>
+                                            </p:column>
+                                            <p:column headerText="Libelle" sortBy="#{tarif.libelle}" filterBy="#{tarif.libelle}" filterMatchMode="contains">
+                                                <h:outputText value="#{tarif.libelle}"/>
+                                            </p:column>
+                                            <p:column headerText="Durée" sortBy="#{tarif.duree}" filterBy="#{tarif.duree}" filterMatchMode="contains"
+                                                      styleClass="text-center">
+                                                <h:outputText value="#{tarif.duree}">
+                                                    <f:convertDateTime pattern="hh:mm"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Base (Ar)" sortBy="#{tarif.mtevt}" filterBy="#{tarif.mtevt}" filterMatchMode="equals"
+                                                      styleClass="text-right">
+                                                <h:outputText value="#{tarif.mtevt}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Taux (%)" sortBy="#{tarif.taux}" filterBy="#{tarif.taux}" filterMatchMode="equals"
+                                                      styleClass="text-right">
+                                                <h:outputText value="#{tarif.taux}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Montant (Ar)" sortBy="#{tarif.mt}" filterBy="#{tarif.mt}" filterMatchMode="equals"
+                                                      styleClass="text-right">
+                                                <h:outputText value="#{tarif.mt}">
+                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column>
+                                                <h:form id="form-actions">
+                                                    <h:commandButton value="Modifier"
+                                                                     class="btn btn-primary" 
+                                                                     action="#{tarifsNormauxIntervenantMB.loadTN(tarif)}"
+                                                                     type="button"
+                                                                     onclick="PF('dialog-tn').show();"
+                                                                     >
+                                                        <f:param name="idIntervenant" value="#{tarifsNormauxIntervenantMB.idIntervenant}"/>
+                                                        <f:ajax execute=":form-actions" 
+                                                                render=":form-update:panel-update"/>
+                                                    </h:commandButton>
+                                                </h:form>
+                                            </p:column>
+                                        </p:dataTable>
+
+                                    </h:form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </section>
+                <h:form id="form-update" class="form-horizontal">
+
+                    <p:dialog header="Modification" widgetVar="dialog-tn" modal="true" width="400">
+                        <h:panelGroup id="panel-update">
+                            <div class="form-group">
+                                <label for="type" class="col-sm-3 control-label">Code</label>
+                                <div class="col-sm-9">
+                                    <h:outputText id="type" value="#{tarifsNormauxIntervenantMB.tarif.libelleTypeTarif}"/>
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label for="libelle" class="col-sm-3 control-label">Libellé</label>
+                                <div class="col-sm-9">
+                                    <h:outputText id="libelle" value="#{tarifsNormauxIntervenantMB.tarif.libelle}"/>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label for="duree" class="col-sm-3 control-label">Durée</label>
+                                <div class="col-sm-9">
+                                    <h:outputText id="duree" value="#{tarifsNormauxIntervenantMB.tarif.duree}">
+                                        <f:convertDateTime pattern="hh:mm"/>
+                                    </h:outputText>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label for="base" class="col-sm-3 control-label">Base</label>
+                                <div class="col-sm-9">
+                                    <h:outputText id="base" value="#{tarifsNormauxIntervenantMB.tarif.mtevt}">
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="Ar"/>
+                                    </h:outputText>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label for="taux" class="col-sm-3 control-label">Taux</label>
+                                <div class="col-sm-6">
+                                    <h:inputText id="taux" value="#{tarifsNormauxIntervenantMB.tarif.taux}"
+                                                 class="form-control">
+                                        <p:ajax event="keyup" update="mt" listener="#{tarifsNormauxIntervenantMB.onChangeTaux()}" />
+                                    </h:inputText>
+                                </div>
+                                <div class="col-sm-3">%</div>
+                            </div> 
+                            <div class="form-group">
+                                <label for="mt" class="col-sm-3 control-label">Montant</label>
+                                <div class="col-sm-9">
+                                    <h:outputText id="mt" value="#{tarifsNormauxIntervenantMB.tarif.mt}">
+                                        <f:convertNumber type="currency" locale="pt-PT" currencySymbol="Ar"/>
+                                    </h:outputText>
+                                </div>
+                            </div> 
+                            <h:commandButton value="Valider" class="btn btn-primary pull-right"
+                                             action="#{tarifsNormauxIntervenantMB.validerModif()}"
+                                             onclick="PF('dialog-tn').hide();"
+                                             >
+                                <f:param name="idIntervenant" value="#{tarifsNormauxIntervenantMB.idIntervenant}"/>
+                                <f:ajax execute=":form-update" 
+                                        render=":form-table"/>
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
