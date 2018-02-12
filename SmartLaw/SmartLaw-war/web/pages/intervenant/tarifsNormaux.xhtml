@@ -79,19 +79,19 @@
                                                     <f:convertDateTime pattern="hh:mm"/>
                                                 </h:outputText>
                                             </p:column>
-                                            <p:column headerText="Base (Ar)" sortBy="#{tarif.mtevt}" filterBy="#{tarif.mtevt}" filterMatchMode="equals"
+                                            <p:column headerText="Base (Ar)" sortBy="#{tarif.mtevt}" filterBy="#{tarif.mtevt}" filterMatchMode="contains"
                                                       styleClass="text-right">
                                                 <h:outputText value="#{tarif.mtevt}">
                                                     <f:convertNumber type="currency" currencySymbol=""/>
                                                 </h:outputText>
                                             </p:column>
-                                            <p:column headerText="Taux (%)" sortBy="#{tarif.taux}" filterBy="#{tarif.taux}" filterMatchMode="equals"
+                                            <p:column headerText="Taux (%)" sortBy="#{tarif.taux}" filterBy="#{tarif.taux}" filterMatchMode="contains"
                                                       styleClass="text-right">
                                                 <h:outputText value="#{tarif.taux}">
                                                     <f:convertNumber type="currency" currencySymbol=""/>
                                                 </h:outputText>
                                             </p:column>
-                                            <p:column headerText="Montant (Ar)" sortBy="#{tarif.mt}" filterBy="#{tarif.mt}" filterMatchMode="equals"
+                                            <p:column headerText="Montant (Ar)" sortBy="#{tarif.mt}" filterBy="#{tarif.mt}" filterMatchMode="contains"
                                                       styleClass="text-right">
                                                 <h:outputText value="#{tarif.mt}">
                                                     <f:convertNumber type="currency" currencySymbol=""/>
