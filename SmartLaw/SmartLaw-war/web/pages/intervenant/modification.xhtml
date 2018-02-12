@@ -22,12 +22,12 @@
                 <section class="content-header">
                     <h1>
                         #{modificationIntervenantMB.intervenant.nom} #{modificationIntervenantMB.intervenant.prenom}
-                        <small>Ajout</small>
+                        <small>Modification</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
                         <li><h:link outcome="/pages/intervenant/liste.xhtml"><i class="fa ion-ios-people"></i>Intervenants</h:link></li>
-                        <li><h:link outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{intervenant.id}"><i class="fa ion-ios-people"></i>Fiche</h:link></li>
+                        <li><h:link outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{modificationIntervenantMB.idIntervenant}"><i class="fa ion-ios-people"></i>Fiche</h:link></li>
                         <li class="active">Modification</li>
                     </ol>
                 </section>
@@ -257,12 +257,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="btn-group pull-right">
 
-                        <p:commandButton action="#{modificationIntervenantMB.valider()}"
-                                         class="btn btn-primary"
-                                         update=":growlForm:growlCenter :formulaire"
-                                         value="Valider">
-                        </p:commandButton>
+                            <p:commandButton action="#{modificationIntervenantMB.valider()}"
+                                             class="btn btn-primary"
+                                             update=":growlForm:growlCenter :formulaire"
+                                             value="Valider">
+                            </p:commandButton>
+                        </div>
+                        <br></br>
+                        <br></br>
                     </h:form>
 
                 </section>

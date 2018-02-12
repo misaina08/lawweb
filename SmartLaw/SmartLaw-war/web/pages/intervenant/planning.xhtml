@@ -1,0 +1,313 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="idIntervenant" value="#{planningIntervenantMB.idIntervenant}"/>
+        <f:viewAction action="#{planningIntervenantMB.loadIntervenant()}"/>
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+
+
+                <h:outputStylesheet name="/css/fullcalendar/fullcalendar.min.css"/>
+
+
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        #{ficheIntervenantMB.intervenant.nom} #{ficheIntervenantMB.intervenant.prenom}
+                        <small>Planning</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/intervenant/liste.xhtml"><i class="fa ion-ios-people"></i>Intervenants</h:link></li>
+                        <li><h:link outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{planningIntervenantMB.idIntervenant}"><i class="fa fa-info"></i>Fiche</h:link></li>
+                        <li class="active">Planning</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+                    <div class="btn-group">
+                        <h:link outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{planningIntervenantMB.idIntervenant}"
+                                value="Fiche" class="btn btn-primary"/>
+                        <h:link outcome="/pages/intervenant/tarifsNormaux.xhtml?idIntervenant=#{planningIntervenantMB.idIntervenant}"
+                                value="Tarifs normaux" class="btn btn-primary"/>
+                        <h:link outcome="/pages/intervenant/dossiers.xhtml?idIntervenant=#{planningIntervenantMB.idIntervenant}"
+                                value="Dossiers" class="btn btn-primary"/>
+                    </div>
+
+                    <div class="btn-group pull-right">
+                        <h:link outcome="/pages/intervenant/modification.xhtml?idIntervenant=#{planningIntervenantMB.idIntervenant}"
+                                value="Modifier" class="btn btn-primary"/>
+
+                    </div>
+                    <br></br>
+                    <br></br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="box no-border">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Dossiers</h3>
+                                </div>
+                                <div class="box-body no-padding">
+                                    <h:form id="form-interv">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <ui:repeat value="#{planningIntervenantMB.intervenants}" var="intervenant">
+                                                <li onclick="addClass('.#{intervenant.nom}#{intervenant.id}', 'active');" 
+                                                    class="li #{intervenant.nom}#{intervenant.id}">
+                                                    <h:commandLink action="#{planningIntervenantMB.onIntervChange(intervenant.id)}" 
+                                                                   value="#{intervenant.nom} #{intervenant.prenom}">
+
+                                                        <f:ajax execute=":form-interv" render=":pane-calendrier :pane-script"/>
+                                                    </h:commandLink>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
+
+                                    </h:form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-8">
+                            <div class="box box-success">
+
+                                <div class="box-body no-padding">
+                                    <h:panelGroup id="pane-calendrier">
+                                        <div id="calendar"></div>
+                                    </h:panelGroup>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+                <h:outputScript name="/js/moment.min.js"/>
+                <h:outputScript name="/js/fullcalendar.min.js"/>
+
+                <script type="text/javascript">
+                    document.querySelector('.Tous0').classList.add('active');
+                    function addClass(elements, myClass) {
+                    removeClass('.li', 'active');
+                    // if there are no elements, we're done
+                    if (!elements) {
+                    return;
+                    }
+
+                    // if we have a selector, get the chosen elements
+                    if (typeof (elements) === 'string') {
+                    elements = document.querySelectorAll(elements);
+                    }
+
+                    // if we have a single DOM element, make it an array to simplify behavior
+                    else if (elements.tagName) {
+                    elements = [elements];
+                    }
+
+                    //<![CDATA[
+                    for (var i = 0; i < elements.length; i++) {
+
+                    // if class is not already found
+                    if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
+
+                    // add class
+                    elements[i].className += ' ' + myClass;
+                    }
+                    }
+                    //]]>
+                    }
+                    function removeClass(elements, myClass) {
+
+                    // if there are no elements, we're done
+                    if (!elements) {
+                    return;
+                    }
+
+                    // if we have a selector, get the chosen elements
+                    if (typeof (elements) === 'string') {
+                    elements = document.querySelectorAll(elements);
+                    }
+
+                    // if we have a single DOM element, make it an array to simplify behavior
+                    else if (elements.tagName) {
+                    elements = [elements];
+                    }
+
+                    // create pattern to find class name
+                    var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
+//<![CDATA[ 
+                    // remove class from all chosen elements
+                    for (var i = 0; i < elements.length; i++) {
+                    elements[i].className = elements[i].className.replace(reg, ' ');
+                    }
+                    //]]>
+                    }
+
+
+                </script>   
+
+                <h:panelGroup id="pane-script">
+                    <script>
+                        $(function () {
+
+                        /* initialize the external events
+                         -----------------------------------------------------------------*/
+                        function ini_events(ele) {
+                        ele.each(function () {
+
+                        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                        // it doesn't need to have a start or end
+                        var eventObject = {
+                        title: $.trim($(this).text()) // use the element's text as the event title
+                        };
+                        // store the Event Object in the DOM element so we can get to it later
+                        $(this).data('eventObject', eventObject);
+                        // make the event draggable using jQuery UI
+                        $(this).draggable({
+                        zIndex: 1070,
+                                revert: true, // will cause the event to go back to its
+                                revertDuration: 0  //  original position after the drag
+                        });
+                        });
+                        }
+                        ini_events($('#external-events div.external-event'));
+                        /* initialize the calendar
+                         -----------------------------------------------------------------*/
+                        //Date for the calendar events (dummy data)
+                        var date = new Date();
+                        var d = date.getDate(),
+                                m = date.getMonth(),
+                                y = date.getFullYear();
+                        $('#calendar').fullCalendar({
+                        header: {
+                        left: 'prev,next today',
+                                center: 'title',
+                                right: 'month,agendaWeek,agendaDay'
+                        },
+                                buttonText: {
+                                today: 'today',
+                                        month: 'month',
+                                        week: 'week',
+                                        day: 'day'
+                                },
+                                //Random default events
+                                events: [
+                            <ui:repeat value="#{planningIntervenantMB.planning}" var="pl">
+                                {
+                                        title: '#{pl.libelleEvt}',
+                                        start: new Date(<h:outputText value="#{pl.datePlanning}">
+                                    <f:convertDateTime pattern="yyyy"/>
+                                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="MM-1"/>
+                </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                <f:convertDateTime pattern="dd"/>
+                </h:outputText>, <h:outputText value="#{pl.heureDebut}">
+                    <f:convertDateTime pattern="HH"/>
+                    </h:outputText>, <h:outputText value="#{pl.heureDebut}">
+                    <f:convertDateTime pattern="mm"/>
+                    </h:outputText>),
+                                        end: new Date(<h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="yyyy"/>
+                    </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText>, <h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="dd"/>
+                    </h:outputText>, <h:outputText value="#{pl.heureFin}">
+                    <f:convertDateTime pattern="HH"/>
+                    </h:outputText>, <h:outputText value="#{pl.heureFin}">
+                    <f:convertDateTime pattern="mm"/>
+                    </h:outputText>),
+                                        allDay: false,
+                                        backgroundColor: (<h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText> >= <h:outputText value="#{planningIntervenantMB.now}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText>) ? "#0073b7" : "#001f3f",
+                                        borderColor: (<h:outputText value="#{pl.datePlanning}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText> >= <h:outputText value="#{planningIntervenantMB.now}">
+                    <f:convertDateTime pattern="MM-1"/>
+                    </h:outputText>) ? "#0073b7" : "#001f3f"
+
+                    },
+                    </ui:repeat>
+
+                                ],
+                                editable: true,
+                                droppable: true, // this allows things to be dropped onto the calendar !!!
+                                drop: function (date, allDay) { // this function is called when something is dropped
+
+                                // retrieve the dropped element's stored Event Object
+                                var originalEventObject = $(this).data('eventObject');
+                                // we need to copy it, so that multiple events don't have a reference to the same object
+                                var copiedEventObject = $.extend({}, originalEventObject);
+                                // assign it the date that was reported
+                                copiedEventObject.start = date;
+                                copiedEventObject.allDay = allDay;
+                                copiedEventObject.backgroundColor = $(this).css("background-color");
+                                copiedEventObject.borderColor = $(this).css("border-color");
+                                // render the event on the calendar
+                                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                                // is the "remove after drop" checkbox checked?
+                                if ($('#drop-remove').is(':checked')) {
+                                // if so, remove the element from the "Draggable Events" list
+                                $(this).remove();
+                                }
+
+                                }
+                        });
+                        /* ADDING EVENTS */
+                        var currColor = "#3c8dbc"; //Red by default
+                        //Color chooser button
+                        var colorChooser = $("#color-chooser-btn");
+                        $("#color-chooser > li > a").click(function (e) {
+                        e.preventDefault();
+                        //Save color
+                        currColor = $(this).css("color");
+                        //Add color effect to button
+                        $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+                        });
+                        $("#add-new-event").click(function (e) {
+                        e.preventDefault();
+                        //Get value and make sure it is not null
+                        var val = $("#new-event").val();
+                        if (val.length == 0) {
+                        return;
+                        }
+
+                        //Create events
+                        var event = $("<div />");
+                        event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
+                        event.html(val);
+                        $('#external-events').prepend(event);
+                        //Add draggable funtionality
+                        ini_events(event);
+                        //Remove event from text input
+                        $("#new-event").val("                                                                                                                                                                                                                                                                                                                                                                              ");
+                        });
+                        });
+                                                        </script>
+                                                        </h:panelGroup>
+                                                        </ui:define>                                                                                                                                                
+                                                        </ui:composition>
+
+                                                        </body>
+                                                        </html>

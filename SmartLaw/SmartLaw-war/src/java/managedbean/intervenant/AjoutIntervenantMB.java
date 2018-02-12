@@ -13,12 +13,11 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import modeles.evenement.EvtTarif;
 import modeles.intervenants.Intervenant;
-import modeles.intervenants.TarifIntervenant;
 import modeles.parametres.Fonction;
-import services.EvenementService;
+import modeles.parametres.TypeTarifEvt;
 import services.IntervenantService;
+import statiques.ObjetStatique;
 import utilitaire.MessageUtil;
 import utilitaire.Util;
 
@@ -36,6 +35,7 @@ public class AjoutIntervenantMB implements Serializable {
     private Intervenant nouveauIntervenant = new Intervenant();
     private List<Fonction> fonctions;
     private String seuilHoraire = "00:00";
+    
 
     /**
      * Creates a new instance of AjoutIntervenantMB
@@ -44,10 +44,11 @@ public class AjoutIntervenantMB implements Serializable {
     }
 
     public String valider() {
+
         try {
             Util util = new Util();
             nouveauIntervenant.setSeuilhoraire(util.toTime(seuilHoraire));
-            
+
             IntervenantService intServ = new IntervenantService();
             intServ.saveIntervenant(nouveauIntervenant);
             MessageUtil.addFlashInfoMessage("Intervenant ajouté");
@@ -85,5 +86,7 @@ public class AjoutIntervenantMB implements Serializable {
     public void setSeuilHoraire(String seuilHoraire) {
         this.seuilHoraire = seuilHoraire;
     }
+
+    
 
 }

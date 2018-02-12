@@ -25,6 +25,34 @@ import org.hibernate.Transaction;
  */
 public class IntervenantService extends BaseService {
 
+    public void saveTarifSpecial(EvtTarif evtTarif, Integer idIntervenant) throws Exception {
+        Session sess = null;
+        Transaction tr = null;
+        try {
+            sess = this.getDao().getSessionFact().openSession();
+            tr = sess.beginTransaction();
+            evtTarif.setType("ts");
+            this.save(evtTarif, sess);
+            TarifIntervenant tarifIntervenant = new TarifIntervenant();
+            tarifIntervenant.setIdIntervenant(idIntervenant);
+            tarifIntervenant.setIdEvtTarif(evtTarif.getId());
+            tarifIntervenant.setTaux((float) 100);
+            tarifIntervenant.setMt((float) 0);
+            this.save(tarifIntervenant, sess);
+            tr.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            tr.rollback();
+        } finally {
+            if (tr != null) {
+                tr = null;
+            }
+            if (sess != null) {
+                sess.close();
+            }
+        }
+    }
+
     public List<Intervenant> find(Intervenant intr) throws Exception {
         List<Intervenant> res = null;
         try {
