@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <f:metadata>
         <f:viewParam name="idClient" value="#{contactsClientMB.idClient}" required="true"/>
         <f:viewAction action="#{contactsClientMB.loadClient()}"/>
@@ -14,10 +15,21 @@
         <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
 
             <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                    .ui-inputfield{
+                        width:180px;
+                    }
+                    .ui-selectcheckboxmenu-multiple-container {
+                        width:240px;
+                    }
+                </style>
                 <section class="content-header">
                     <h1>
-                        Client
-                        <small>#{contactsClientMB.client.nom}</small>
+                        #{contactsClientMB.client.nom}
+                        <small>Contacts</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
@@ -29,22 +41,152 @@
 
 
                 <section class="content">
+                    <h:form id="growlForm">
+                        <p:growl id="growlCenter"/>
+                    </h:form>
                     <div class="btn-group">
                         <h:link class="btn btn-primary" 
-                                outcome="/pages/client/modification.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;" >
-                            <i class="fa fa-edit"></i>&nbsp; Modifier
+                                outcome="/pages/client/fiche.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;" >
+                            Fiche
                         </h:link>
 
+
                         <h:link class="btn btn-primary" 
-                                outcome="/pages/client/modification.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;">
-                            <i class="fa fa-credit-card"></i>&nbsp; Facturation
+                                outcome="/pages/client/facturation.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;">
+                            Facturation
                         </h:link>
                         <h:link class="btn btn-primary" 
                                 outcome="/pages/client/contacts.xhtml?idClient=#{contactsClientMB.idClient}&faces-redirect:true;">
-                            <i class="fa fa-users"></i>&nbsp; Contacts
+                            Contacts
                         </h:link>
+
+                    </div>
+                    
+                    <br></br>
+                    <br></br>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-users"></i>
+                                    <h1 class="box-title">Contacts</h1>
+                                    <div class="box-tools pull-right">
+
+                                        <button class="btn btn-primary btn-sm" onclick="#{contactsClientMB.loadContacts()};PF('dialog-contacts').show();">
+                                            <i class="fa fa-edit"></i>&nbsp;&nbsp;Ajouter
+                                        </button>
+
+                                    </div>
+                                </div>                                         
+                                <div class="box-body">
+                                    <h:panelGroup id="table">
+
+                                        <table class="table table-hover">
+                                            <ui:repeat value="#{contactsClientMB.liste}" var="c">
+                                                <tr>
+                                                    <td>#{c.nom} #{c.prenom}</td>
+                                                    <td style="width: 130px">
+                                                        <h:form>
+                                                            <div class="btn-group pull-right">
+
+                                                                <h:commandButton value="Voir" class="btn btn-primary btn-xs"
+                                                                                 action="#{contactsClientMB.voir(c.id)}"
+                                                                                 >
+                                                                    <f:param name="idClient" value="#{contactsClientMB.idClient}"/>
+                                                                    <f:ajax render=":info"/>
+                                                                </h:commandButton>
+                                                                <h:commandButton value="Enlever" class="btn btn-danger btn-xs"
+                                                                                 action="#{contactsClientMB.supprimer(c.id)}"
+                                                                                 update=":growlForm:growlCenter">
+                                                                    <f:param name="idClient" value="#{contactsClientMB.idClient}"/>
+                                                                    <f:ajax execute="@this" render=":table"/>
+                                                                </h:commandButton>
+                                                            </div>
+                                                        </h:form>
+
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </table>
+
+                                    </h:panelGroup>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-info"></i>
+                                    <h1 class="box-title">Informations</h1>
+                                </div>                                         
+                                <div class="box-body">
+                                    <h:panelGroup id="info">
+                                        <div class="box-body dl-horizontal">
+                                            <dl>
+                                                <p>#{contactsClientMB.contact.titreContact} #{contactsClientMB.contact.nom} #{contactsClientMB.contact.prenom}</p>
+                                                <p>#{contactsClientMB.contact.adresse}</p>
+                                                <p>#{contactsClientMB.contact.cp}</p>
+                                                <p>#{contactsClientMB.contact.pays}</p>
+                                                <p>#{contactsClientMB.contact.ville}</p>
+
+                                                <dt>Bureau</dt>
+                                                <dd>#{contactsClientMB.contact.bureau}</dd>
+
+                                                <dt>Mobile</dt>
+                                                <dd>#{contactsClientMB.contact.mobile}</dd>
+
+                                                <dt>Standard</dt>
+                                                <dd>#{contactsClientMB.contact.standard}</dd>
+
+                                                <dt>Fax</dt>
+                                                <dd>#{contactsClientMB.contact.fax}</dd>
+
+                                                <dt>Site web</dt>
+                                                <dd>#{contactsClientMB.contact.web}</dd>
+
+                                                <dt>Email</dt>
+                                                <dd>#{contactsClientMB.contact.email}</dd>                                        
+                                            </dl>
+                                        </div>
+                                    </h:panelGroup>
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </section>
+
+                <!-- dialog for contacts -->
+                <h:form id="form-addcontact">
+
+                    <p:dialog header="Contacts" widgetVar="dialog-contacts" modal="true" width="400">
+                        <h:panelGroup id="panel-setcontact">
+
+                            <p:selectOneRadio id="selectcont" value="#{contactsClientMB.idContactSelected}" 
+                                              layout="responsive" columns="1" 
+                                              required="true"
+                                              requiredMessage="Champ obligatoire">
+                                <f:selectItems value="#{contactsClientMB.contacts}" var="cont" itemLabel="#{cont.nom} 
+                                               #{cont.prenom}" itemValue="#{cont.id}"/>
+                            </p:selectOneRadio>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{contactsClientMB.ajouterContact()}" value="Valider"
+                                             onclick="PF('dialog-contacts').hide();">
+                                <f:param name="idClient" value="#{contactsClientMB.idClient}"/>
+                                <f:ajax execute=":form-addcontact" 
+                                        render=":table :growlForm:growlCenter"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+                </h:form>
             </ui:define>
 
         </ui:composition>

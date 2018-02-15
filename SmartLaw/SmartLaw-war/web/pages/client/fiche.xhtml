@@ -18,8 +18,8 @@
             <ui:define name="content">
                 <section class="content-header">
                     <h1>
-                        Client
-                        <small>#{ficheClientMB.client.nom}</small>
+                        #{ficheClientMB.client.nom}
+                        <small>Fiche</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
@@ -34,21 +34,26 @@
 
                     <div class="btn-group">
                         <h:link class="btn btn-primary" 
-                                outcome="/pages/client/modification.xhtml?idClient=#{ficheClientMB.idClient}&faces-redirect:true;" >
-                            <i class="fa fa-edit"></i>&nbsp; Modifier
+                                outcome="/pages/client/fiche.xhtml?idClient=#{ficheClientMB.idClient}&faces-redirect:true;" >
+                            Fiche
                         </h:link>
+                        
 
                         <h:link class="btn btn-primary" 
-                                outcome="/pages/client/modification.xhtml?idClient=#{ficheClientMB.idClient}&faces-redirect:true;">
-                            <i class="fa fa-credit-card"></i>&nbsp; Facturation
+                                outcome="/pages/client/facturation.xhtml?idClient=#{ficheClientMB.idClient}&faces-redirect:true;">
+                            Facturation
                         </h:link>
                         <h:link class="btn btn-primary" 
                                 outcome="/pages/client/contacts.xhtml?idClient=#{ficheClientMB.idClient}&faces-redirect:true;">
-                            <i class="fa fa-users"></i>&nbsp; Contacts
+                            Contacts
                         </h:link>
 
                     </div>
                     <h:form class="pull-right">
+                        <h:link class="btn btn-primary" 
+                                outcome="/pages/client/modification.xhtml?idClient=#{ficheClientMB.idClient}&faces-redirect:true;" >
+                            Modifier
+                        </h:link>&nbsp;&nbsp;
                         
                         <h:commandButton class="btn bg-maroon" 
                                          action="#{ficheClientMB.print()}"
@@ -56,6 +61,8 @@
                             
                         </h:commandButton>
                     </h:form>
+                    <br></br>
+                    <br></br>
 
 
                     <h:form id="growlForm">
