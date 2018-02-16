@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Paramètres
+                        <small>Tarifs normaux</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active">Tarifs normaux</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Fonction</h3>
+                                </div>
+                                <div class="box-body no-padding">
+                                    <h:form id="form-fonctions">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <ui:repeat value="#{tarifsNormauxMB.fonctions}" var="f">
+                                                <li onclick="addClass('.#{f.libelle}#{f.id}', 'active');" 
+                                                    class="li #{f.libelle}#{f.id}">
+                                                    <h:commandLink action="#{tarifsNormauxMB.onFonctionChange(f.id)}" 
+                                                                   value="#{f.libelle}">
+                                                        <f:ajax execute=":form-fonctions" render=":form-liste:panel"/>
+                                                    </h:commandLink>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
+
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Cotation des évènements se rapportant à cette fonction</h3>
+                                </div>
+                                <div class="box-body">
+                                    <h:form id="form-liste">
+                                        <h:panelGroup id="panel">
+                                            <table class="table">
+                                                <tbody>
+                                                    <ui:repeat value="#{tarifsNormauxMB.tarifs}" var="t">
+                                                        <tr>
+                                                            <td>#{t.libelle}</td>
+                                                            <td>
+                                                                <h:commandButton value="Supprimer"
+                                                                                 action="#{tarifsNormauxMB.supprimerTarif(t.id)}"
+                                                                                 class="btn btn-xs btn-danger"
+                                                                                 >
+                                                                    <f:ajax execute=":form-liste" render=":form-liste:panel"/>
+                                                                </h:commandButton>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+
+
+                                                </tbody>
+                                            </table>
+                                        </h:panelGroup>
+                                    </h:form>
+                                </div>
+                                <div class="box-footer">
+                                    <h:form id="form-ajout">
+                                        <h:commandButton rendered="#{tarifsNormauxMB.idFonctionSelected}" value="Ajouter"
+                                                         action="#{tarifsNormauxMB.loadTarifs()}"
+                                                         class="btn btn-primary"
+                                                         onclick="PF('dl').show();">
+                                            <f:ajax execute=":form-ajout" render=":dl-liste:pan"/>
+                                        </h:commandButton>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <h:form id="dl-liste">
+                    <p:dialog header="Modification" widgetVar="dl" modal="true" width="400">
+                        <h:panelGroup id="pan">
+
+                            <p:selectOneRadio id="selectcont" value="#{tarifsNormauxMB.idEvtSelected}" 
+                                              layout="responsive" columns="1" 
+                                              required="true"
+                                              requiredMessage="Champ obligatoire">
+                                <f:selectItems value="#{tarifsNormauxMB.evtTarifs}" var="evt" itemLabel="#{evt.libelle}" itemValue="#{evt.id}"/>
+                            </p:selectOneRadio>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{tarifsNormauxMB.ajouter()}" value="Ajouter"
+                                             onclick="PF('dl').hide();">
+                                <f:ajax execute=":dl-liste" 
+                                        render=":form-liste:panel :growlForm:growlCenter"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+
+                </h:form>
+
+                <script type="text/javascript">
+                    function addClass(elements, myClass) {
+                        removeClass('.li', 'active');
+
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
+
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
+
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
+
+                        //<![CDATA[
+                        for (var i = 0; i < elements.length; i++) {
+
+                            // if class is not already found
+                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
+
+                                // add class
+                                elements[i].className += ' ' + myClass;
+                            }
+                        }
+                        //]]>
+                    }
+                    function removeClass(elements, myClass) {
+
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
+
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
+
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
+
+                        // create pattern to find class name
+                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
+//<![CDATA[ 
+                        // remove class from all chosen elements
+                        for (var i = 0; i < elements.length; i++) {
+                            elements[i].className = elements[i].className.replace(reg, ' ');
+                        }
+                        //]]>
+                    }
+
+
+                </script>   
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
