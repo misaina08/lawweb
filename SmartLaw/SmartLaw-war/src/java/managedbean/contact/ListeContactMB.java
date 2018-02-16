@@ -45,8 +45,8 @@ public class ListeContactMB implements Serializable {
             MessageUtil.addFlashInfoMessage("Contact supprimé");
             return "/pages/contact/liste.xhtml?faces-redirect=true;";
         } catch (Exception ex) {
-            MessageUtil.addFlashErrorMessage("Erreur de suppression");
-            return "";
+            MessageUtil.addFlashErrorMessage("Erreur de suppression. Ce contact a déjà été utilisé ailleur. Vous ne pouvez pas le supprimer");
+            return "/pages/contact/liste.xhtml?faces-redirect=true;";
         }
 
     }

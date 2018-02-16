@@ -1,14 +1,114 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="idContact" value="#{ficheContactMB.idContact}"/>
+        <f:viewAction action="#{ficheContactMB.loadContact()}"/>
+    </f:metadata>
     <body>
 
         <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
 
             <ui:define name="content">
-                content
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        #{ficheContactMB.contact.nom} #{ficheContactMB.contact.prenom}
+                        <small>Fiche</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li><h:link outcome="/pages/contact/liste.xhtml"><i class="fa fa-users"></i>Contacts</h:link></li>
+                        <li class="active">Fiche</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+                    <h:link outcome="/pages/contact/modification.xhtml?idContact=#{ficheContactMB.idContact}"
+                            class="btn btn-primary pull-right" value="Modifier"/>
+                    
+                    <br></br>
+                    <br></br>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title">Informations générales</h3>
+                                </div>
+                                <div class="box-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Nom</dt>
+                                        <dd>#{ficheContactMB.contact.nom}</dd>
+                                        
+                                        <dt>Prénom</dt>
+                                        <dd>#{ficheContactMB.contact.prenom}</dd>
+                                        
+                                        <dt>Fonction</dt>
+                                        <dd>#{ficheContactMB.contact.fonction}</dd>
+                                        
+                                        <dt>Adresse</dt>
+                                        <dd>#{ficheContactMB.contact.adresse}</dd>
+                                        
+                                        <dt>Ville</dt>
+                                        <dd>#{ficheContactMB.contact.ville}</dd>
+                                        
+                                        <dt>Pays</dt>
+                                        <dd>#{ficheContactMB.contact.pays}</dd>
+                                        
+                                        <dt>Code postal</dt>
+                                        <dd>#{ficheContactMB.contact.codePostal}</dd>
+                                        
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xs-6">
+                            <div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title">Contact</h3>
+                                </div>
+                                <div class="box-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Standard</dt>
+                                        <dd>#{ficheContactMB.contact.standard}</dd>
+                                        
+                                        <dt>Burean</dt>
+                                        <dd>#{ficheContactMB.contact.bureau}</dd>
+                                        
+                                        <dt>Fax</dt>
+                                        <dd>#{ficheContactMB.contact.fax}</dd>
+                                        
+                                        <dt>Mobile</dt>
+                                        <dd>#{ficheContactMB.contact.mobile}</dd>
+                                        
+                                        <dt>Telex</dt>
+                                        <dd>#{ficheContactMB.contact.telex}</dd>
+                                        
+                                        <dt>Email</dt>
+                                        <dd>#{ficheContactMB.contact.email}</dd>
+                                        
+                                        <dt>Web</dt>
+                                        <dd>#{ficheContactMB.contact.web}</dd>
+                                        <dt>Autre</dt>
+                                        <dd>#{ficheContactMB.contact.autre}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </ui:define>
 
         </ui:composition>
