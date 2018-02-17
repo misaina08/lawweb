@@ -19,11 +19,11 @@
                 <section class="content-header">
                     <h1>
                         Paramètres
-                        <small>Factures</small>
+                        <small>Dossiers</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
-                        <li class="active">Factures</li>
+                        <li class="active">Dossiers</li>
                     </ol>
                 </section>
 
@@ -35,58 +35,36 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="box box-solid">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Ajout de section</h3>
-                                </div>
-                                <div class="box-body">
-                                    <h:form id="formulaire">
-                                        <div class="form-group">
-                                            <label for="lib">Libellé</label>
-                                            <h:inputText id="lib"
-                                                         value="#{factureMB.newType.libelle}"
-                                                         required="true" requiredMessage="Libellé obligatoire"
-                                                         class="form-control"/>
-                                            <h:message class="text-yellow" for="lib"/>
-                                        </div>
-                                        <h:commandButton value="Ajouter"
-                                                         class="btn btn-primary"
-                                                         action="#{factureMB.ajouter()}">
-                                            <f:ajax execute=":formulaire" render=":formulaire :form-liste:liste :growlForm:growlCenter"/>
-                                        </h:commandButton>
-                                    </h:form>
-                                </div>
-                            </div>
 
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Sections</h3>
+                                    <h3 class="box-title">Tiroirs par défaut des dossiers</h3>
                                 </div>
                                 <div class="box-body">
                                     <h:form id="form-liste">
                                         <h:panelGroup id="liste">
                                             <table class="table">
                                                 <thead>
-                                                    <th>Libellé</th>
+                                                    <th>Nom</th>
                                                     <th></th>
                                                 </thead>
                                                 <tbody>
 
-                                                    <ui:repeat value="#{factureMB.types}" var="proc">
+                                                    <ui:repeat value="#{dossiersMB.defaultDirs}" var="proc">
                                                         <tr>
-                                                            <td>#{proc.libelle}</td>
+                                                            <td>#{proc.nom}</td>
                                                             <td>
                                                                 <div class="btn-group pull-right">
                                                                     <h:commandButton value="Modifier"
                                                                                      class="btn btn-xs btn-primary"
-                                                                                     action="#{factureMB.load(proc.id)}"
+                                                                                     action="#{dossiersMB.load(proc.id)}"
                                                                                      onclick="PF('dialog').show();">
                                                                         <f:ajax execute=":form-liste" render=":dl-form:panel"/>
                                                                     </h:commandButton>
 
                                                                     <h:commandButton value="Supprimer"
                                                                                      class="btn btn-xs btn-danger"
-                                                                                     action="#{factureMB.supprimer(proc.id)}">
+                                                                                     action="#{dossiersMB.supprimer(proc.id)}">
                                                                         <f:ajax execute=":form-liste" render=":form-liste:liste :growlForm:growlCenter"/>
                                                                     </h:commandButton>
                                                                 </div>
@@ -99,45 +77,36 @@
                                         </h:panelGroup>
                                     </h:form>
                                 </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="box box-solid">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Ajout de mode de facturation</h3>
-                                </div>
-                                <div class="box-body">
-                                    <h:form id="formulairemode">
-                                        <div class="form-group">
-                                            <label for="libm">Libellé</label>
-                                            <h:inputText id="libm"
-                                                         value="#{factureMB.newMode.libelle}"
-                                                         required="true" requiredMessage="Libellé obligatoire"
-                                                         class="form-control"/>
-                                            <h:message class="text-yellow" for="libm"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="taux">Taux</label>
-                                            <h:inputText id="taux"
-                                                         value="#{factureMB.newMode.taux}"
-                                                         required="true" requiredMessage="Taux obligatoire"
-                                                         class="form-control"/>
-                                            <h:message class="text-yellow" for="taux"/>
+                                <div class="box-footer">
+                                    <p>Nouveau</p>
+                                    <h:form id="formulaire" class="form-horizontal">
+                                        <div class="form-group col-md-10">
+                                            <label for="lib" class="control-label col-md-3">Nom</label>
+                                            <div class="col-md-9">
+                                                <h:inputText id="lib"
+                                                             value="#{dossiersMB.newType.nom}"
+                                                             required="true" requiredMessage="Nom obligatoire"
+                                                             class="form-control"/>
+                                                <h:message class="text-yellow" for="lib"/>
+                                            </div>
                                         </div>
                                         <h:commandButton value="Ajouter"
-                                                         class="btn btn-primary"
-                                                         action="#{factureMB.ajouterMode()}">
-                                            <f:ajax execute=":formulairemode" render=":formulairemode :form-listemode:listemode :growlForm:growlCenter"/>
+                                                         class="btn btn-primary col-md-2"
+                                                         action="#{dossiersMB.ajouter()}">
+                                            <f:ajax execute=":formulaire" render=":formulaire :form-liste:liste :growlForm:growlCenter"/>
                                         </h:commandButton>
                                     </h:form>
                                 </div>
                             </div>
 
+                        </div>
+
+                        <div class="col-md-6">
+
+
                             <div class="box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Mode de facturation</h3>
+                                    <h3 class="box-title">Nature</h3>
                                 </div>
                                 <div class="box-body">
                                     <h:form id="form-listemode">
@@ -145,27 +114,25 @@
                                             <table class="table">
                                                 <thead>
                                                     <th>Libellé</th>
-                                                    <th>Taux</th>
                                                     <th></th>
                                                 </thead>
                                                 <tbody>
 
-                                                    <ui:repeat value="#{factureMB.modes}" var="proc">
+                                                    <ui:repeat value="#{dossiersMB.modes}" var="proc">
                                                         <tr>
                                                             <td>#{proc.libelle}</td>
-                                                            <td>#{proc.taux}</td>
                                                             <td>
                                                                 <div class="btn-group pull-right">
                                                                     <h:commandButton value="Modifier"
                                                                                      class="btn btn-xs btn-primary"
-                                                                                     action="#{factureMB.loadMode(proc.id)}"
+                                                                                     action="#{dossiersMB.loadMode(proc.id)}"
                                                                                      onclick="PF('dialogm').show();">
                                                                         <f:ajax execute=":form-listemode" render=":dl-mode:panelm"/>
                                                                     </h:commandButton>
 
                                                                     <h:commandButton value="Supprimer"
                                                                                      class="btn btn-xs btn-danger"
-                                                                                     action="#{factureMB.supprimerMode(proc.id)}">
+                                                                                     action="#{dossiersMB.supprimerMode(proc.id)}">
                                                                         <f:ajax execute=":form-listemode" render=":form-listemode:listemode :growlForm:growlCenter"/>
                                                                     </h:commandButton>
                                                                 </div>
@@ -178,6 +145,28 @@
                                         </h:panelGroup>
                                     </h:form>
                                 </div>
+                                <div class="box-footer">
+                                    <p>Nouveau</p>
+                                    <h:form id="formulairemode" class="form-horizontal">
+                                        <div class="form-group col-md-10">
+                                            <label class="col-md-3 control-label" for="libm">Libellé</label>
+                                            <div class="col-md-9">
+
+                                                <h:inputText id="libm"
+                                                             value="#{dossiersMB.newMode.libelle}"
+                                                             required="true" requiredMessage="Libellé obligatoire"
+                                                             class="form-control"/>
+                                                <h:message class="text-yellow" for="libm"/>
+                                            </div>
+                                        </div>
+
+                                        <h:commandButton value="Ajouter"
+                                                         class="btn btn-primary  col-md-2"
+                                                         action="#{dossiersMB.ajouterMode()}">
+                                            <f:ajax execute=":formulairemode" render=":formulairemode :form-listemode:listemode :growlForm:growlCenter"/>
+                                        </h:commandButton>
+                                    </h:form>
+                                </div>
                             </div>
 
                         </div>
@@ -188,14 +177,14 @@
                     <p:dialog header="Modification" widgetVar="dialog" modal="true" width="400">
                         <h:panelGroup id="panel">
                             <div class="form-group">
-                                <label for="flib">Libellé</label>
-                                <h:inputText class="form-control" id="flib" value="#{factureMB.typeToUpdate.libelle}"
-                                             required="true" requiredMessage="Libellé obligatoire"/>
+                                <label for="flib">Nom</label>
+                                <h:inputText class="form-control" id="flib" value="#{dossiersMB.typeToUpdate.nom}"
+                                             required="true" requiredMessage="Nom obligatoire"/>
                                 <h:message for="flib" class="text-yellow"/>
                             </div>
 
                             <h:commandButton class="btn btn-primary pull-right"
-                                             action="#{factureMB.modifier()}" value="Valider"
+                                             action="#{dossiersMB.modifier()}" value="Valider"
                                              onclick="PF('dialog').hide();">
                                 <f:ajax execute=":dl-form" 
                                         render=":form-liste:liste :growlForm:growlCenter"/>
@@ -211,20 +200,12 @@
                         <h:panelGroup id="panelm">
                             <div class="form-group">
                                 <label for="mlib">Libellé</label>
-                                <h:inputText class="form-control" id="mlib" value="#{factureMB.modeToUpdate.libelle}"
+                                <h:inputText class="form-control" id="mlib" value="#{dossiersMB.modeToUpdate.libelle}"
                                              required="true" requiredMessage="Libellé obligatoire"/>
                                 <h:message for="mlib" class="text-yellow"/>
                             </div>
-                            <div class="form-group">
-                                <label for="mtaux">Taux</label>
-                                <h:inputText id="mtaux"
-                                             value="#{factureMB.modeToUpdate.taux}"
-                                             required="true" requiredMessage="Taux obligatoire"
-                                             class="form-control"/>
-                                <h:message class="text-yellow" for="mtaux"/>
-                            </div>
                             <h:commandButton class="btn btn-primary pull-right"
-                                             action="#{factureMB.modifierMode()}" value="Valider"
+                                             action="#{dossiersMB.modifierMode()}" value="Valider"
                                              onclick="PF('dialogm').hide();">
                                 <f:ajax execute=":dl-mode" 
                                         render=":form-listemode:listemode :growlForm:growlCenter"/>

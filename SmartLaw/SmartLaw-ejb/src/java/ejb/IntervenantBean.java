@@ -5,12 +5,9 @@
  */
 package ejb;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import modeles.intervenants.Intervenant;
 import services.BaseService;
 
@@ -21,13 +18,6 @@ import services.BaseService;
 @Stateless
 @LocalBean
 public class IntervenantBean {
-
-    @PersistenceContext(unitName = "LawWeb-ejbPU")
-    private EntityManager em;
-
-    public void persist(Object object) {
-        em.persist(object);
-    }
 
     public Intervenant getByIdentification(String login, String mdp) throws Exception {
         List<Intervenant> result = null;

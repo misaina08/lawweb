@@ -47,7 +47,7 @@
                                                     class="li #{f.libelle}#{f.id}">
                                                     <h:commandLink action="#{tarifsNormauxMB.onFonctionChange(f.id)}" 
                                                                    value="#{f.libelle}">
-                                                        <f:ajax execute=":form-fonctions" render=":form-liste:panel"/>
+                                                        <f:ajax execute=":form-fonctions" render=":form-liste:panel :form-ajout"/>
                                                     </h:commandLink>
                                                 </li>
                                             </ui:repeat>
@@ -62,7 +62,7 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Cotation des évènements se rapportant à cette fonction</h3>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body no-padding">
                                     <h:form id="form-liste">
                                         <h:panelGroup id="panel">
                                             <table class="table">
@@ -70,10 +70,10 @@
                                                     <ui:repeat value="#{tarifsNormauxMB.tarifs}" var="t">
                                                         <tr>
                                                             <td>#{t.libelle}</td>
-                                                            <td>
+                                                            <td class="text-right">
                                                                 <h:commandButton value="Supprimer"
                                                                                  action="#{tarifsNormauxMB.supprimerTarif(t.id)}"
-                                                                                 class="btn btn-xs btn-danger"
+                                                                                 class="btn btn-xs btn-danger pull-right"
                                                                                  >
                                                                     <f:ajax execute=":form-liste" render=":form-liste:panel"/>
                                                                 </h:commandButton>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="box-footer">
                                     <h:form id="form-ajout">
-                                        <h:commandButton rendered="#{tarifsNormauxMB.idFonctionSelected}" value="Ajouter"
+                                        <h:commandButton rendered="#{tarifsNormauxMB.idFonctionSelected != null}" value="Ajouter"
                                                          action="#{tarifsNormauxMB.loadTarifs()}"
                                                          class="btn btn-primary"
                                                          onclick="PF('dl').show();">

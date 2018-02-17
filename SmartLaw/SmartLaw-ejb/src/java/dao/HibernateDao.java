@@ -1,6 +1,5 @@
 package dao;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import modeles.BaseModele;
@@ -12,7 +11,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import utilitaire.HibernateUtil;
 
-public class HibernateDao extends BaseDao {
+
+public class HibernateDao implements BaseDao {
 
     private SessionFactory sessionFact;
 

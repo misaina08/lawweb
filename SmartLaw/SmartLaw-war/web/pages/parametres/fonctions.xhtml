@@ -19,11 +19,11 @@
                 <section class="content-header">
                     <h1>
                         Paramètres
-                        <small>Procédures</small>
+                        <small>Fonctions</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
-                        <li class="active">Procédures</li>
+                        <li class="active">Fonctions</li>
                     </ol>
                 </section>
 
@@ -44,14 +44,14 @@
                                         <div class="form-group">
                                             <label for="lib">Libellé</label>
                                             <h:inputText id="lib"
-                                                         value="#{procedureMB.newProcedure.libelle}"
+                                                         value="#{fonctionsMB.newProcedure.libelle}"
                                                          required="true" requiredMessage="Libellé obligatoire"
                                                          class="form-control"/>
                                             <h:message class="text-yellow" for="lib"/>
                                         </div>
                                         <h:commandButton value="Ajouter"
                                                          class="btn btn-primary"
-                                                         action="#{procedureMB.ajouter()}">
+                                                         action="#{fonctionsMB.ajouter()}">
                                             <f:ajax execute=":formulaire" render=":formulaire :form-liste:liste :growlForm:growlCenter"/>
                                         </h:commandButton>
                                     </h:form>
@@ -73,21 +73,21 @@
                                                 </thead>
                                                 <tbody>
 
-                                                    <ui:repeat value="#{procedureMB.procedures}" var="proc">
+                                                    <ui:repeat value="#{fonctionsMB.procedures}" var="proc">
                                                         <tr>
                                                             <td>#{proc.libelle}</td>
                                                             <td>
                                                                 <div class="btn-group pull-right">
                                                                     <h:commandButton value="Modifier"
                                                                                      class="btn btn-xs btn-primary"
-                                                                                     action="#{procedureMB.load(proc.id)}"
+                                                                                     action="#{fonctionsMB.load(proc.id)}"
                                                                                      onclick="PF('dialog').show();">
                                                                         <f:ajax execute=":form-liste" render=":dl-form:panel"/>
                                                                     </h:commandButton>
 
                                                                     <h:commandButton value="Supprimer"
                                                                                      class="btn btn-xs btn-danger"
-                                                                                     action="#{procedureMB.supprimer(proc.id)}">
+                                                                                     action="#{fonctionsMB.supprimer(proc.id)}">
                                                                         <f:ajax execute=":form-liste" render=":form-liste:liste :growlForm:growlCenter"/>
                                                                     </h:commandButton>
                                                                 </div>
@@ -110,13 +110,13 @@
                         <h:panelGroup id="panel">
                             <div class="form-group">
                                 <label for="flib">Libellé</label>
-                                <h:inputText class="form-control" id="flib" value="#{procedureMB.toUpdate.libelle}"
+                                <h:inputText class="form-control" id="flib" value="#{fonctionsMB.toUpdate.libelle}"
                                          required="true" requiredMessage="Libellé obligatoire"/>
                             <h:message for="flib" class="text-yellow"/>
                             </div>
                             
                             <h:commandButton class="btn btn-primary pull-right"
-                                             action="#{procedureMB.modifier()}" value="Valider"
+                                             action="#{fonctionsMB.modifier()}" value="Valider"
                                              onclick="PF('dialog').hide();">
                                 <f:ajax execute=":dl-form" 
                                         render=":form-liste:liste :growlForm:growlCenter"/>

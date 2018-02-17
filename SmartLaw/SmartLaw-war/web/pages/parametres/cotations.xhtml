@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Paramètres
+                        <small>Cotation des évènements</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active">Cotation des évènements</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Cotation des évènements</h3>
+                                    <div class="box-tools pull-right">
+                                        <button class="btn btn-primary" onclick="PF('dl-new').show();">
+                                            <i class="fa ion-plus" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body no-padding">
+                                    <h:form id="form-liste">
+                                        <h:panelGroup id="panel">
+                                            <table class="table">
+                                                <thead>
+                                                    <th>Type</th>
+                                                    <th>Numero</th>
+                                                    <th>Code</th>
+                                                    <th>Libellé</th>
+                                                    <th class="text-center">Durée</th>
+                                                    <th class="text-center">Montant (Ar)</th>
+                                                    <th></th>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{cotationMB.cotations}" var="cotation">
+                                                        <tr>
+                                                            <td>#{cotation.libelleTypeTarif}</td>
+                                                            <td>#{cotation.numero}</td>
+                                                            <td>#{cotation.code}</td>
+                                                            <td>#{cotation.libelle}</td>
+                                                            <td class="text-center">
+                                                                <h:outputText value="#{cotation.duree}">
+                                                                    <f:convertDateTime pattern="hh:mm"/>
+                                                                </h:outputText>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <h:outputText value="#{cotation.montant}">
+                                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                                </h:outputText>
+                                                            </td>
+                                                            <td  class="text-right">
+                                                                <h:commandButton value="Modifier"
+                                                                                 action="#{cotationMB.modifier(cotation.id)}"
+                                                                                 onclick="PF('dl-update').show();"
+                                                                                 class="btn btn-xs btn-primary"
+                                                                                 >
+                                                                    <f:ajax execute=":form-liste" render=":form-update:pan-update"/>
+                                                                </h:commandButton>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+
+
+                                                </tbody>
+                                            </table>
+                                        </h:panelGroup>
+                                    </h:form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <h:form id="form-new" class="form-horizontal">
+                    <p:dialog header="Nouveau" widgetVar="dl-new" modal="true" width="500">
+                        <h:panelGroup id="pan-new">
+                            <div class="form-group">
+                                <label for="type" class="control-label col-md-3">Type</label>
+                                <div class=" col-md-9">
+                                    <h:selectOneMenu class="form-control" value="#{cotationMB.newTarif.idTypeTarif}">
+                                        <f:selectItems value="#{cotationMB.types}" var="t"
+                                                       itemValue="#{t.id}" itemLabel="#{t.libelle}">
+                                        </f:selectItems>
+                                    </h:selectOneMenu>
+                                    <h:message for="type" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code" class="control-label col-md-3">Code</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="code" class="form-control" value="#{cotationMB.newTarif.code}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="code" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="numero" class="control-label col-md-3">Numero</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="numero" class="form-control" value="#{cotationMB.newTarif.numero}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="numero" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="libelle" class="control-label col-md-3">Libellé</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="libelle" class="form-control" value="#{cotationMB.newTarif.libelle}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="libelle" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="duree" class="control-label col-md-3">Durée</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="duree" class="form-control" value="#{cotationMB.duree}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="duree" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="montant" class="control-label col-md-3">Montant (Ar)</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="montant" class="form-control" value="#{cotationMB.newTarif.montant}" required="true"
+                                                 requiredMessage="Champ obligatoire">
+                                        <f:convertNumber type="currency" currencySymbol=""/>
+                                    </h:inputText>
+                                    <h:message for="montant" class="text-yellow"/>
+                                </div>
+                            </div>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{cotationMB.ajouter()}" value="Ajouter"
+                                             >
+                                <f:ajax execute=":form-new" 
+                                        render=":form-liste:panel :growlForm:growlCenter :form-new"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+
+                </h:form>   
+
+                <h:form id="form-update" class="form-horizontal">
+                    <p:dialog header="Nouveau" widgetVar="dl-update" modal="true" width="500">
+                        <h:panelGroup id="pan-update">
+                            <div class="form-group">
+                                <label for="type1" class="control-label col-md-3">Type</label>
+                                <div class=" col-md-9">
+                                    <h:selectOneMenu class="form-control" value="#{cotationMB.toUpdate.idTypeTarif}">
+                                        <f:selectItems value="#{cotationMB.types}" var="t"
+                                                       itemValue="#{t.id}" itemLabel="#{t.libelle}">
+                                        </f:selectItems>
+                                    </h:selectOneMenu>
+                                    <h:message for="type1" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code1" class="control-label col-md-3">Code</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="code1" class="form-control" value="#{cotationMB.toUpdate.code}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="code1" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="numero1" class="control-label col-md-3">Numero</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="numero1" class="form-control" value="#{cotationMB.toUpdate.numero}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="numero1" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="libelle1" class="control-label col-md-3">Libellé</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="libelle1" class="form-control" value="#{cotationMB.toUpdate.libelle}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="libelle1" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="duree1" class="control-label col-md-3">Durée</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="duree1" class="form-control" value="#{cotationMB.duree}" required="true"
+                                                 requiredMessage="Champ obligatoire"/>
+                                    <h:message for="duree1" class="text-yellow"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="montant1" class="control-label col-md-3">Montant (Ar)</label>
+                                <div class=" col-md-9">
+                                    <h:inputText id="montant1" class="form-control" value="#{cotationMB.toUpdate.montant}" required="true"
+                                                 requiredMessage="Champ obligatoire">
+                                        <f:convertNumber type="currency" currencySymbol=""/>
+                                    </h:inputText>
+                                    <h:message for="montant1" class="text-yellow"/>
+                                </div>
+                            </div>
+
+                            <h:commandButton class="btn btn-primary pull-right"
+                                             action="#{cotationMB.validModif()}" value="Valider"
+                                             >
+                                <f:ajax execute=":form-update" 
+                                        render=":form-liste:panel :growlForm:growlCenter :form-update"/>
+
+                            </h:commandButton>
+                        </h:panelGroup>
+                    </p:dialog>
+
+                </h:form>  
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

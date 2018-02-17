@@ -33,7 +33,7 @@ public class TarifsNormauxMB implements Serializable {
     
     private List<Fonction> fonctions;
     private List<FonctionTarifEvtLibelle> tarifs = new ArrayList<FonctionTarifEvtLibelle>();
-    private Integer idFonctionSelected;
+    private Integer idFonctionSelected = null;
     private Integer idEvtSelected;
     private List<EvtTarif> evtTarifs;
 
