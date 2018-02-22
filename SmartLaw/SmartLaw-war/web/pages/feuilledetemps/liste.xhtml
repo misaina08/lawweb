@@ -71,8 +71,8 @@
                                             <li onclick="addClass('.fact0', 'active', 'lifact');" class="lifact fact0">
 
                                                 <h:commandLink
-                                                               action="#{feuilleDeTempsMB.onLegendeChange(0)}" 
-                                                               >
+                                                    action="#{feuilleDeTempsMB.onLegendeChange(0)}" 
+                                                    >
                                                     <i class="text-navy fa fa-square"></i><span>Toutes</span>
                                                     <f:ajax execute=":form-facturee" render=":liste-evt :totaux"/>
                                                 </h:commandLink>
@@ -80,8 +80,8 @@
                                             <li onclick="addClass('.fact1', 'active', 'lifact');" class="lifact fact1">
 
                                                 <h:commandLink
-                                                               action="#{feuilleDeTempsMB.onLegendeChange(1)}" 
-                                                               >
+                                                    action="#{feuilleDeTempsMB.onLegendeChange(1)}" 
+                                                    >
                                                     <i class="text-gray fa fa-square"></i><span>Non facturées</span>
                                                     <f:ajax execute=":form-facturee" render=":liste-evt :totaux"/>
                                                 </h:commandLink>
@@ -89,8 +89,8 @@
                                             <li onclick="addClass('.fact2', 'active', 'lifact');" class="lifact fact2">
 
                                                 <h:commandLink
-                                                               action="#{feuilleDeTempsMB.onLegendeChange(2)}" 
-                                                               >
+                                                    action="#{feuilleDeTempsMB.onLegendeChange(2)}" 
+                                                    >
                                                     <i class="text-success fa fa-square"></i><span>Facturées</span>
                                                     <f:ajax execute=":form-facturee" render=":liste-evt :totaux"/>
                                                 </h:commandLink>
@@ -110,21 +110,23 @@
                                 </div>
                                 <div class="box-body">
 
-                                    <h:form>
-                                        <div class="form-group">
-                                            <label>Date entre :</label>
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-
-                                                <h:inputText value="#{feuilleDeTempsMB.dateEntre}" class="form-control pull-right"
-                                                             id="reservation" 
-                                                             />
+                                    <h:form id="form-search">
+                                        <label>Date entre :</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p:calendar value="#{feuilleDeTempsMB.dateDebut}" inputStyle="width:100%;"
+                                                            id="datedebut" inputStyleClass="text-center" pattern="dd/MM/yyyy"/>
                                             </div>
+                                            <div class="col-md-4">
+                                                <p:calendar value="#{feuilleDeTempsMB.dateFin}" inputStyle="width:100%;" 
+                                                            inputStyleClass="text-center" pattern="dd/MM/yyyy"
+                                                            id="datefin"/>
+                                            </div>
+                                            <h:commandButton value="OK" class="col-md-1 btn btn-primary" 
+                                                             action="#{feuilleDeTempsMB.rechercher()}">
+                                                <f:ajax execute=":form-search" render=":liste-evt :totaux"/>
+                                            </h:commandButton>
                                         </div>
-                                        <h:commandButton value="OK"
-                                                         action="#{feuilleDeTempsMB.rechercher()}"/>
                                     </h:form>
                                 </div>
                             </div>
@@ -135,7 +137,7 @@
                                 <div class="box-body">
                                     <h:panelGroup id="liste-evt">
                                         <h:form>
-                                            <p:dataTable value="#{feuilleDeTempsMB.evenements}" var="evt"
+                                            <p:dataTable value="#{feuilleDeTempsMB.evenementsAffiches}" var="evt"
                                                          rowStyleClass="#{evt.afacturer eq 'false' ? 'bg-success' : evt.afacturer eq 'true' ? 'bg-gray': null}">
 
                                                 <p:column headerText="Date" width="120" styleClass="text-center">
@@ -200,16 +202,13 @@
                     </div>
                 </section>
 
-                <h:outputScript name="/js/moment.min.js"/>
-                <h:outputScript name="/js/daterangepicker.js"/>
                 <script>
-                    //Date range picker
-                    $('#reservation').daterangepicker();
+
                     document.querySelector('.Tous0').classList.add('active');
                     document.querySelector('.fact0').classList.add('active');
 
                     function addClass(elements, myClass, classToRemove) {
-                        removeClass('.'+classToRemove, 'active');
+                        removeClass('.' + classToRemove, 'active');
                         //<![CDATA[ 
                         // if there are no elements, we're done
                         if (!elements) {

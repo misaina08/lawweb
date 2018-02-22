@@ -8,6 +8,9 @@ package managedbean.feuilledetemps;
 import ejb.EvenementBean;
 import ejb.GeneriqueBean;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,10 +37,14 @@ public class FeuilleDeTempsMB implements Serializable {
 
     private List<Intervenant> intervenants;
     private List<EvtDossierLibelle> evenements;
+    private List<EvtDossierLibelle> evenementsAffiches;
     private List<MtTypeTarif> totauxTarif;
     private Util util = new Util();
     private String dateEntre;
     private Integer idIntervSelected = 0;
+
+    private Date dateDebut;
+    private Date dateFin;
     // toutes si 0
     // à facturées si 1 (true)
     // facturées si 2 (false)
@@ -52,15 +59,6 @@ public class FeuilleDeTempsMB implements Serializable {
     public void onIntervChange(Integer id) {
         try {
             idIntervSelected = id;
-//            if (id == 0) {
-//                evenements = (List<EvtDossierLibelle>) (List<?>) generiqueBean.getService().find(new EvtDossierLibelle());
-//            } else {
-//                EvtDossierLibelle e = new EvtDossierLibelle();
-//                e.setIdIntervenant(id);
-//                evenements = (List<EvtDossierLibelle>) (List<?>) generiqueBean.getService().find(e);
-//
-//            }
-//            totauxTarif = calculerTotaux();
             selectOnChange();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -70,7 +68,7 @@ public class FeuilleDeTempsMB implements Serializable {
     public List<MtTypeTarif> calculerTotaux() {
         List<MtTypeTarif> res = null;
         try {
-            return evenementBean.calculerTotaux(evenements);
+            return evenementBean.calculerTotaux(evenementsAffiches);
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -78,7 +76,12 @@ public class FeuilleDeTempsMB implements Serializable {
     }
 
     public void rechercher() {
-        System.out.println("date range " + dateEntre);
+        try {
+            selectOnChange();
+            calculerTotaux();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void onLegendeChange(Integer afacturee) {
@@ -106,8 +109,24 @@ public class FeuilleDeTempsMB implements Serializable {
                 e.setAfacturer(Boolean.FALSE);
             }
             evenements = (List<EvtDossierLibelle>) (List<?>) generiqueBean.getService().find(e);
+            lister();
             totauxTarif = calculerTotaux();
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void lister() {
+        try {
+            System.out.println("______________________lister");
+            evenementsAffiches = new ArrayList<EvtDossierLibelle>();
+            
+            for (EvtDossierLibelle e : evenements) {
+                if (e.getDaty().after(dateDebut) && e.getDaty().before(dateFin)) {
+                    evenementsAffiches.add(e);
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -158,5 +177,43 @@ public class FeuilleDeTempsMB implements Serializable {
     public void setDateEntre(String dateEntre) {
         this.dateEntre = dateEntre;
     }
+
+    public Date getDateDebut() {
+        if (dateDebut == null) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -15);
+            dateDebut = cal.getTime();
+        }
+        return dateDebut;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public Date getDateFin() {
+        if (dateFin == null) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, +15);
+            dateFin = cal.getTime();
+        }
+        return dateFin;
+    }
+
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
+    }
+
+    public List<EvtDossierLibelle> getEvenementsAffiches() {
+        if (evenementsAffiches== null) {
+            selectOnChange();
+        }
+        return evenementsAffiches;
+    }
+
+    public void setEvenementsAffiches(List<EvtDossierLibelle> evenementsAffiches) {
+        this.evenementsAffiches = evenementsAffiches;
+    }
+    
 
 }

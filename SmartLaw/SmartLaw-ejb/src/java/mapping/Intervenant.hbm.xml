@@ -51,6 +51,7 @@
             <property name="planning" column="planning"/>
             <property name="feuilledeTemps" column="feuilledetemps"/>
             <property name="utilisateur" column="utilisateur"/>
+            <property name="parametre" column="parametre"/>
 	    
             
             

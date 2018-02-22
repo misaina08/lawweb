@@ -54,8 +54,7 @@
         <extension>svg</extension>  
         <mime-type>image/svg+xml</mime-type>  
     </mime-mapping>
-    
-    <servlet>
+     <servlet>
         <servlet-name>Jersey</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
@@ -72,5 +71,6 @@
         <servlet-name>Jersey</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+   
     
 </web-app>

@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -18,14 +19,74 @@
 
                 <!-- Main content -->
                 <section class="content">
-
-                    <div class="alert alert-danger alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                        Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-solid box-primary">
+                                <div class="box-header">
+                                    <h1 class="box-title">Tâches à venir</h1>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Date</th>
+                                            <th>Tâche</th>
+                                            <th>Observateur</th>
+                                            <th>Dossier</th>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{accueilMB.tachesAVenir}" var="tache">
+                                                <tr>
+                                                    <td>
+                                                        <h:outputText value="#{tache.daty}">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td>#{tache.libelle}</td>
+                                                    <td>#{tache.nomDemandeur}</td>
+                                                    <td><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{tache.idDossier}" value="#{tache.vnomDossier}"/></td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-solid box-success">
+                                <div class="box-header">
+                                    <h1 class="box-title">Planning</h1>
+                                </div>
+                                <div class="box-body">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Date</th>
+                                            <th>Heure</th>
+                                            <th>Dossier</th>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{accueilMB.planningAVenir}" var="planning">
+                                                <tr>
+                                                    <td>
+                                                        <h:outputText value="#{planning.datePlanning}">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td>
+                                                        <h:outputText value="#{planning.heureDebut}">
+                                                            <f:convertDateTime pattern="hh:mm"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td><h:link outcome="/pages/dossier/fiche.xhtml?idDossier=#{planning.idDossier}" value="#{planning.vnomDossier}"/></td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </section>
+                <h:outputScript name="/js/jquery.js"/>
             </ui:define>
 
         </ui:composition>

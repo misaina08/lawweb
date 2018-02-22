@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../WEB-INF/templates/lte-admin.xhtml">
+
+            <ui:define name="content">
+
+
+                <style>
+                    .ui-widget-content a {
+                        color: white;
+                    }
+                </style>
+                <section class="content-header">
+                    <h1>
+                        Utilisateurs
+                        <small></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa fa-home"></i>Accueil</h:link></li>
+                        <li class="active">Utilisateurs</li>
+                    </ol>
+                </section>
+
+                <h:form id="growlForm">
+                    <p:growl id="growlCenter"/>
+                </h:form>
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="box no-border">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Utilisateurs</h3>
+                                </div>
+                                <div class="box-body no-padding">
+                                    <h:form id="form-interv">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <ui:repeat value="#{utilisateursMB.intervenants}" var="intervenant">
+                                                <li onclick="addClass('.#{intervenant.nom}#{intervenant.id}', 'active', 'li');" 
+                                                    class="li #{intervenant.nom}#{intervenant.id}">
+                                                    <h:commandLink action="#{utilisateursMB.onIntervChange(intervenant.id)}" 
+                                                                   value="#{intervenant.nom} #{intervenant.prenom}">
+                                                        <f:ajax execute=":form-interv" render=":formm:liste-evt"/>
+                                                    </h:commandLink>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
+                                    </h:form>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-9">
+                            
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false">Accès</a></li>
+                                    <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="true">Sécurité</a></li>
+
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <h:form class="form-horizontal" id="formm" >
+                                            <h:panelGroup id="liste-evt">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Intervenant</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.intervenant}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Contact</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.contact}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Client</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.client}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Dossier</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.dossier}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Factures</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.factures}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Feuille de temps</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.feuilledeTemps}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Planning</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.planning}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Paramètre</label>
+                                                    <div class="col-md-4">
+                                                        <h:selectOneMenu value="#{utilisateursMB.intervenant.parametre}"
+                                                                         class="form-control">
+                                                            <f:selectItem itemValue="lecture/ecriture" itemLabel="Lecture/écriture"/>
+                                                            <f:selectItem itemValue="aucun" itemLabel="Aucun"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+
+
+                                            </h:panelGroup>
+                                            <h:commandButton class="btn btn-primary" value="Valider"
+                                                             action="#{utilisateursMB.valider()}">
+                                                <f:ajax execute=":formm" render=":growlForm:growlCenter"/>
+                                            </h:commandButton>
+                                        </h:form>
+
+                                    </div><!-- /.tab-pane -->
+                                    <div class="tab-pane" id="tab_2">
+                                        <h:form class="form-horizontal" id="pppform">
+                                            <h:panelGroup id="ppp">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Ancien mot de passe</label>
+                                                    <div class="col-md-4">
+                                                        <h:inputSecret value="#{utilisateursMB.amdp}" class="form-control"
+                                                                       required="true" requiredMessage="Champ obligatoire"
+                                                                       id="amdp"/>
+                                                        <h:message for="amdp" class="text-yellow"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Nouveau mot de passe</label>
+                                                    <div class="col-md-4">
+                                                        <p:password value="#{utilisateursMB.nmdp}" class="form-control"
+                                                                       required="true" requiredMessage="Champ obligatoire" style="width:100%;"
+                                                                       id="nmdp" match="cmdp" validatorMessage="Mots de passe non identiques"/>
+                                                        <h:message for="nmdp" class="text-yellow"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Confirmation du mot de passe</label>
+                                                    <div class="col-md-4">
+                                                        <p:password value="#{utilisateursMB.cmdp}" class="form-control" style="width:100%;"
+                                                                       required="true" requiredMessage="Champ obligatoire"
+                                                                       id="cmdp"/>
+                                                        <h:message for="cmdp" class="text-yellow"/>
+                                                    </div>
+                                                </div>
+
+                                                <h:commandButton class="btn btn-primary" value="Modifier"
+                                                                 action="#{utilisateursMB.updateMdp()}">
+                                                    <f:ajax execute=":pppform" render=":pppform:ppp :growlForm:growlCenter"/>
+                                                </h:commandButton>
+                                            </h:panelGroup>
+                                        </h:form>  
+
+                                    </div><!-- /.tab-pane -->
+
+                                </div><!-- /.tab-content -->
+                            </div>
+                               
+                        </div>
+                    </div>
+                </section>
+
+                <script>
+                    addClass('.#{utilisateursMB.intervenant.nom}#{utilisateursMB.intervenant.id}', 'active', 'li');
+
+                    function addClass(elements, myClass, classToRemove) {
+                        removeClass('.' + classToRemove, 'active');
+                        //<![CDATA[ 
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
+
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
+
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
+
+                        // add class to all chosen elements
+                        for (var i = 0; i < elements.length; i++) {
+
+                            // if class is not already found
+                            if ((' ' + elements[i].className + ' ').indexOf(' ' + myClass + ' ') < 0) {
+
+                                // add class
+                                elements[i].className += ' ' + myClass;
+                            }
+                        }
+                        //]]>
+                    }
+                    function removeClass(elements, myClass) {
+                        //<![CDATA[ 
+                        // if there are no elements, we're done
+                        if (!elements) {
+                            return;
+                        }
+
+                        // if we have a selector, get the chosen elements
+                        if (typeof (elements) === 'string') {
+                            elements = document.querySelectorAll(elements);
+                        }
+
+                        // if we have a single DOM element, make it an array to simplify behavior
+                        else if (elements.tagName) {
+                            elements = [elements];
+                        }
+
+                        // create pattern to find class name
+                        var reg = new RegExp('(^| )' + myClass + '($| )', 'g');
+
+                        // remove class from all chosen elements
+                        for (var i = 0; i < elements.length; i++) {
+                            elements[i].className = elements[i].className.replace(reg, ' ');
+                        }
+                        //]]>
+                    }
+                </script>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

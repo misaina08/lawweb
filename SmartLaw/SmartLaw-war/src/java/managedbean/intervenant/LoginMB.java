@@ -6,9 +6,10 @@
 package managedbean.intervenant;
 
 import ejb.IntervenantBean;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import modeles.intervenants.Intervenant;
 import utilitaire.MessageUtil;
@@ -18,8 +19,8 @@ import utilitaire.MessageUtil;
  * @author misa
  */
 @Named(value = "loginMB")
-@RequestScoped
-public class LoginMB {
+@SessionScoped
+public class LoginMB implements Serializable{
 
     @EJB
     private IntervenantBean intervenantBean;
@@ -49,6 +50,16 @@ public class LoginMB {
             ex.printStackTrace();
             MessageUtil.messageErreur("Login ou mot de passe non valide");
             return "/pages/intervenant/login.xhtml";
+        }
+    }
+    
+    public String deconnecter() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            return "/pages/intervenant/login.xhtml?faces-redirect=true;";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "";
         }
     }
 

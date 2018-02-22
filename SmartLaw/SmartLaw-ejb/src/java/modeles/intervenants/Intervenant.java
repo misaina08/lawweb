@@ -55,6 +55,7 @@ public class Intervenant extends BaseModele{
     private String feuilledeTemps;
     private String planning;
     private String utilisateur;
+    private String parametre;
 
     /* public String toString()
     {
@@ -385,6 +386,15 @@ public class Intervenant extends BaseModele{
     public void setUtilisateur(String utilisateur) {
         this.utilisateur = utilisateur;
     }
+
+    public String getParametre() {
+        return parametre;
+    }
+
+    public void setParametre(String parametre) {
+        this.parametre = parametre;
+    }
+    
     
     @Override
     public int hashCode() {
