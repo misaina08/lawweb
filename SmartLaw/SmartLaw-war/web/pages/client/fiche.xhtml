@@ -58,7 +58,7 @@
                         <h:commandButton class="btn bg-maroon" 
                                          action="#{ficheClientMB.print()}"
                                          value="Imprimer">
-                            
+                            <f:param value="#{ficheClientMB.idClient}" name="idClient"/>
                         </h:commandButton>
                     </h:form>
                     <br></br>

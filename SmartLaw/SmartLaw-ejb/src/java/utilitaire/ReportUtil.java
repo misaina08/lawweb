@@ -128,22 +128,22 @@ public class ReportUtil {
      */
     public void download(Map<String, Object> parameters, HttpServletResponse response, ReportType reportType, String pathReport, String fileName) throws Exception {
         try {
-//            response.reset();
-//            JasperPrint jasperPrint = fillReport(parameters, pathReport);
-//            switch (reportType) {
-//                case PDF:
-//                    byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
-//                    response.setContentType("application/pdf");
-//                    response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".pdf");
-//                    response.getOutputStream().write(pdfBytes);
-//                case DOCX:
-//                    
-//            }
-//            //uncomment this line to make browser download the file
-//
-//            response.getOutputStream().flush();
-//            response.getOutputStream().close();
-//            response.flushBuffer();
+            response.reset();
+            JasperPrint jasperPrint = fillReport(parameters, pathReport);
+            switch (reportType) {
+                case PDF:
+                    byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+                    response.setContentType("application/pdf");
+                    response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".pdf");
+                    response.getOutputStream().write(pdfBytes);
+                case DOCX:
+                    
+            }
+            //uncomment this line to make browser download the file
+
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+            response.flushBuffer();
             
         } catch (Exception ex) {
             throw ex;

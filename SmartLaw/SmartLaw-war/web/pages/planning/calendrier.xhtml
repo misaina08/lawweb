@@ -191,7 +191,7 @@
                             events: [
                                                                    <ui:repeat value="#{calendrierMB.planning}" var="pl">
                                                         {
-                                    title: '#{pl.libelleEvt}',
+                                    title: "#{pl.libelleEvt}",
                                     start: new Date(<h:outputText value="#{pl.datePlanning}">
                                             <f:convertDateTime pattern="yyyy"/>
                                     </h:outputText>, <h:outputText value="#{pl.datePlanning}">

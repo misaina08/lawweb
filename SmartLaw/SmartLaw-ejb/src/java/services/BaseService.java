@@ -96,4 +96,9 @@ public class BaseService {
     {
         return getDao().getNextVal(seq);
     }
+    
+    public Integer getMaxId(String table, String idName) throws Exception
+    {
+        return getDao().getMaxId(table, idName);
+    }
 }

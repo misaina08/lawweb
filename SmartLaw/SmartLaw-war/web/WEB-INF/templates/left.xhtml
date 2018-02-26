@@ -13,52 +13,56 @@
                     <li class="header">Menus</li>
                     <!-- Optionally, you can add icons to the links -->
 
-                    
-                        <li><h:link outcome="/pages/accueil.xhtml"><i class="fa ion-ios-home"></i> <span>Accueil</span></h:link></li>
+
+                    <li><h:link outcome="/pages/accueil.xhtml"><i class="fa ion-ios-home"></i> <span>Accueil</span></h:link></li>
+
+                    <h:panelGroup rendered="#{intervSession.client == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/client/liste.xhtml"><i class="fa ion-android-people"></i> <span>Clients</span></h:link></li>
-                    
+                    </h:panelGroup>
 
-                    
+                    <h:panelGroup rendered="#{intervSession.contact == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/contact/liste.xhtml"><i class="fa ion-android-contacts"></i> <span>Contacts</span></h:link></li>
-                    
+                    </h:panelGroup>
 
-                    
+                    <h:panelGroup rendered="#{intervSession.dossier == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/dossier/liste.xhtml"><i class="fa icon ion-android-folder"></i> <span>Dossiers</span></h:link></li>
-                    
+                    </h:panelGroup>
 
-                    
+                    <h:panelGroup rendered="#{intervSession.factures == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/facturation/liste.xhtml"><i class="fa ion-card"></i> <span>Factures</span></h:link></li>
-                    
+                    </h:panelGroup>
 
-                    
+                    <h:panelGroup rendered="#{intervSession.feuilledeTemps == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/feuilledetemps/liste.xhtml"><i class="fa ion-calendar"></i> <span>Feuille de temps</span></h:link></li>
-                    
+                    </h:panelGroup>
 
-                    
+                    <h:panelGroup rendered="#{intervSession.planning == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/planning/calendrier.xhtml"><i class="fa ion-android-calendar"></i> <span>Planning</span></h:link></li>
-                    
-                    
-                    
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{intervSession.intervenant == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/intervenant/liste.xhtml"><i class="fa ion-ios-people"></i> <span>Intervenants</span></h:link></li>
-                        
-                        
-                        
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{intervSession.utilisateur == 'lecture/ecriture'}">
                         <li><h:link outcome="/pages/intervenant/utilisateurs.xhtml"><i class="fa ion-ios-people"></i> <span>Utilisateurs</span></h:link></li>
-                    
+                    </h:panelGroup>
 
-                    <li class="treeview">
-                        <a href="#"><i class="fa ion-settings"></i> <span>Paramètres</span> <i class="fa fa-angle-left pull-right"></i></a>
-                        <ul class="treeview-menu">
+                    <h:panelGroup rendered="#{intervSession.parametre == 'lecture/ecriture'}">
+                        <li class="treeview">
+                            <a href="#"><i class="fa ion-settings"></i> <span>Paramètres</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
 
-                            <li><h:link outcome="/pages/parametres/procedure.xhtml" value="Procédures"/></li>
-                            <li><h:link outcome="/pages/parametres/facture.xhtml" value="Factures"/></li>
-                            <li><h:link outcome="/pages/parametres/tarifsnormaux.xhtml" value="Tarifs normaux"/></li>
-                            <li><h:link outcome="/pages/parametres/cotations.xhtml" value="Cotation des évènements"/></li>
-                            <li><h:link outcome="/pages/parametres/titres.xhtml" value="Titres"/></li>
-                            <li><h:link outcome="/pages/parametres/fonctions.xhtml" value="Fonctions"/></li>
-                            <li><h:link outcome="/pages/parametres/dossiers.xhtml" value="Dossiers"/></li>
-                        </ul>
-                    </li>
+                                <li><h:link outcome="/pages/parametres/procedure.xhtml" value="Procédures"/></li>
+                                <li><h:link outcome="/pages/parametres/facture.xhtml" value="Factures"/></li>
+                                <li><h:link outcome="/pages/parametres/tarifsnormaux.xhtml" value="Tarifs normaux"/></li>
+                                <li><h:link outcome="/pages/parametres/cotations.xhtml" value="Cotation des évènements"/></li>
+                                <li><h:link outcome="/pages/parametres/titres.xhtml" value="Titres"/></li>
+                                <li><h:link outcome="/pages/parametres/fonctions.xhtml" value="Fonctions"/></li>
+                                <li><h:link outcome="/pages/parametres/dossiers.xhtml" value="Dossiers"/></li>
+                            </ul>
+                        </li>
+                    </h:panelGroup>
                 </ul><!-- /.sidebar-menu -->
             </section>
             <!-- /.sidebar -->

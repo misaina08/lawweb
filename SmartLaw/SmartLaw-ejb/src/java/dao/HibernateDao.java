@@ -257,4 +257,26 @@ public class HibernateDao implements BaseDao {
 
         return ((Integer) query.uniqueResult()).intValue();
     }
+    
+    public Integer getMaxId(String table, String idName, Session sess) {
+        Query query
+                = sess.createSQLQuery("select max("+idName+") as id from "+table)
+                .addScalar("id", Hibernate.INTEGER);
+
+        return ((Integer) query.uniqueResult()).intValue();
+    }
+    public Integer getMaxId(String table, String idName) {
+        Session sess = null;
+        try {
+            sess = sessionFact.openSession();
+            return this.getMaxId(table, idName, sess);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (sess != null) {
+                sess.close();
+            }
+        }
+    }
+    
 }

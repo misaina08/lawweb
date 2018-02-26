@@ -105,7 +105,8 @@ public class ListeEvtMB implements Serializable {
 
             facturationBean.genererFacture(evtAImprimer, tva);
             MessageUtil.addFlashInfoMessage("Tâches facturées");
-            return "/pages/dossier/liste.xhtml?faces-redirect=true;";
+            Integer newIdFacture = generiqueBean.getService().getMaxId("facture","idfacture");
+            return "/pages/facturation/fiche.xhtml?idFacture="+newIdFacture+"&faces-redirect=true;";
         } catch (Exception ex) {
             ex.printStackTrace();
             MessageUtil.addFlashErrorMessage(ex.getMessage());

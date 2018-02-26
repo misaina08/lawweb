@@ -89,7 +89,7 @@
                                             <p:column selectionMode="multiple" style="width:40px;text-align:center"/>
                                             <p:column headerText="Date" width="120" sortBy="#{evt.daty}" styleClass="text-center" filterBy="#{evt.daty}" filterMatchMode="contains">
                                                 <h:outputText value="#{evt.daty}">
-                                                    <f:convertDateTime pattern="DD/MM/YYYY"/>
+                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
                                                 </h:outputText>
                                             </p:column>
                                             <p:column headerText="Intervenant" sortBy="#{evt.nomInterv}" filterBy="#{evt.nomInterv}" filterMatchMode="contains">
