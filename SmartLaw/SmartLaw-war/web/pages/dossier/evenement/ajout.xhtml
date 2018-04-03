@@ -6,7 +6,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <f:metadata>
-        <f:viewParam name="idDossier" value="#{ajoutEvtMB.idDossier}" />
+        <f:viewParam name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
         <f:viewAction action="#{ajoutEvtMB.loadDossier()}"/>
     </f:metadata>
     <body>
@@ -71,7 +71,7 @@
                                                     </f:selectItems>
                                                     <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
                                                     <f:ajax listener="#{ajoutEvtMB.intervOnChange}" execute=":intervenants"
-                                                            render=":formulaire:toupdate">
+                                                            render=":formulaire:toupdate :growlForm:growlCenter">
 
                                                     </f:ajax>
                                                 </h:selectOneMenu>
@@ -99,15 +99,15 @@
                                                               value="#{ajoutEvtMB.tarifNSSelected.libelle} (#{ajoutEvtMB.tarifNSSelected.type})"/>
                                             </div>
                                             <div class="col-md-3">
-
-                                                <h:commandButton class="btn btn-primary" 
-                                                                 action="#{ajoutEvtMB.selectTarifsNSInterv}" value="Sélectionner"
-                                                                 type="button"
-                                                                 onclick="PF('dialog-evt').show();">
-                                                    <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
-                                                    <f:ajax execute=":formulaire" render=":form-evt:panel-evt"/>
-                                                </h:commandButton>
-
+                                                
+                                                    <h:commandButton class="btn btn-primary" 
+                                                                     action="#{ajoutEvtMB.selectTarifsNSInterv}" value="Sélectionner"
+                                                                     type="button"
+                                                                     onclick="PF('dialog-evt').show();">
+                                                        <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
+                                                        <f:ajax execute=":formulaire" render=":form-evt:panel-evt :growlForm:growlCenter"/>
+                                                    </h:commandButton>
+                                                
                                             </div>
                                             <h:message for="tache"/>
                                         </div>
@@ -152,7 +152,7 @@
                                             <label for="mt" class="control-label col-md-3">Montant (Ar)</label>
                                             <h:panelGroup id="panel-mt" class=" col-md-3">
                                                 <h:inputText id="mt" class="form-control text-right" value="#{ajoutEvtMB.evtDossier.mt}">
-                                                    <f:convertNumber type="currency" currencySymbol=""/>
+                                                    
                                                 </h:inputText>
                                                 <h:message class="text-yellow"  for="mt"/>
                                             </h:panelGroup>
@@ -169,7 +169,7 @@
                                     <f:param name="idDossier" value="#{ajoutEvtMB.idDossier}"/>
                                 </p:commandButton>
                             </div>
-                            
+
                         </h:form>
 
 

@@ -33,9 +33,11 @@
                 <section class="content">
 
                     <h:link outcome="/pages/intervenant/ajout.xhtml" class="btn btn-success" value="Nouveau"/>
+                    <br></br>
+                    <br></br>
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="box">
+                            <div class="box box-solid">
                                 <div class="box-header">
                                     <h3 class="box-title">Liste</h3>
                                 </div>
@@ -57,7 +59,7 @@
                                             <p:column>
                                                 <h:link value="Voir"
                                                         outcome="/pages/intervenant/fiche.xhtml?idIntervenant=#{intervenant.id}"
-                                                        class="btn btn-primary"/>
+                                                        class="btn btn-primary btn-xs"/>
                                             </p:column>
                                         </p:dataTable>
                                     </h:form>

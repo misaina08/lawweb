@@ -39,8 +39,8 @@
                     <br></br>
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="box">
-                                <div class="box-header">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
                                     <h3 class="box-title">Liste</h3>
 
                                 </div>
@@ -71,11 +71,10 @@
                                             </p:column>
                                             <p:column styleClass="text-center">
                                                 <div class="btn-group">
-                                                    <h:link class="btn btn-info" outcome="/pages/client/fiche.xhtml?idClient=#{item.id}&faces-redirect:true;">
-                                                        <i class="fa fa-info"></i>
+                                                    <h:link class="btn btn-info btn-xs" outcome="/pages/client/fiche.xhtml?idClient=#{item.id}&faces-redirect:true;" value="Fiche">
+                                                        
                                                     </h:link>
-                                                    <h:link class="btn btn-primary" outcome="/pages/client/modification.xhtml?idClient=#{item.id}&faces-redirect:true;" >
-                                                        <i class="fa fa-edit"></i>
+                                                    <h:link class="btn btn-primary btn-xs" outcome="/pages/client/modification.xhtml?idClient=#{item.id}&faces-redirect:true;" value="Modifier">
                                                     </h:link>
                                                 </div>
                                             </p:column>

@@ -98,6 +98,7 @@ public class AjoutEvtMB implements Serializable {
 
     public void intervOnChange(AjaxBehaviorEvent event) {
         try {
+            System.out.println("id selected : "+idIntervenantSelected);
             tarifNSSelected = null;
             evtDossier.setIdEvtTarif(0);
             Util u= new Util();
