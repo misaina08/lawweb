@@ -5,7 +5,10 @@
  */
 package modeles.evenement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import modeles.BaseModele;
 
 
@@ -18,8 +21,11 @@ public class EvtDossierLibelle extends BaseModele {
     private Integer idDossier;
     private Integer idEvtTarif;
     private Integer idIntervenant;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss", timezone = "EAT")
     private Date duree;
     private Float mt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy", timezone = "EAT")
     private Date daty;
 
     private Boolean afacturer;

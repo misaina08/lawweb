@@ -5,6 +5,7 @@
  */
 package modeles.dossiers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import modeles.BaseModele;
 
@@ -17,6 +18,7 @@ public class DossierLibelle extends BaseModele {
     private String nomDossier;
     private String nomAdversaire;
     private String lieu;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy", timezone = "EAT")
     private Date dateOuverture;
     private String noProcedure;
     private String region;

@@ -5,6 +5,7 @@
  */
 package modeles.planning;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Time;
 import java.util.Date;
 import modeles.BaseModele;
@@ -19,12 +20,16 @@ public class PlanningLibelle extends BaseModele{
     private Integer idJur;
     private Integer idTypeProcedure;
     private String notes;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy", timezone = "EAT")
     private Date dateProcedure;
     private Boolean planifiee;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy", timezone = "EAT")
     private Date datePlanning;
     private Integer rappel;
     private String uniteRappel;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm", timezone = "EAT")
     private Date heureDebut;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm", timezone = "EAT")
     private Date heureFin;
     private Integer idEvt;
     private String codeEvt;
